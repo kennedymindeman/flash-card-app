@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flashcards</title>
+        <link rel="stylesheet" href="styles.css" />
+    </head>
+    <body>
+        <div class="card" id="flashcard" onclick="flipCard()">
+            <div id="card-content">Click to start</div>
+        </div>
+
+        <div class="controls">
+            <button onclick="prevCard()">Previous</button>
+            <button onclick="nextCard()">Next</button>
+        </div>
+
+        <div class="counter" id="counter">0 / 0</div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
