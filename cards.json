@@ -1,170 +1,166 @@
 [
   {
-    "front": "Hi (casual)",
-    "back": "안녕"
+    "prompt": "Hi (casual)",
+    "answers": ["안녕"]
   },
   {
-    "front": "Hello (polite)",
-    "back": "안녕하세요"
+    "prompt": "Hello (polite)",
+    "answers": ["안녕하세요"]
   },
   {
-    "front": "Nice to meet you",
-    "back": "만나서 반갑습니다"
+    "prompt": "Nice to meet you",
+    "answers": ["만나서 반갑습니다"]
   },
   {
-    "front": "Yes (casual)",
-    "back": "응"
+    "prompt": "Yes (casual)",
+    "answers": ["응"]
   },
   {
-    "front": "Yeah (casual)",
-    "back": "어"
+    "prompt": "Yeah (casual)",
+    "answers": ["어"]
   },
   {
-    "front": "Yes (polite)",
-    "back": "네"
+    "prompt": "Yes (polite)",
+    "answers": ["네"]
   },
   {
-    "front": "Yes (formal)",
-    "back": "예"
+    "prompt": "Yes (formal)",
+    "answers": ["예"]
   },
   {
-    "front": "No (casual)",
-    "back": "아니"
+    "prompt": "No (casual)",
+    "answers": ["아니"]
   },
   {
-    "front": "No (polite)",
-    "back": "아니요"
+    "prompt": "No (polite)",
+    "answers": ["아니요"]
   },
   {
-    "front": "Good, I like it",
-    "back": "좋습니다"
+    "prompt": "Good, I like it",
+    "answers": ["좋습니다"]
   },
   {
-    "front": "I don't like it",
-    "back": "싫습니다"
+    "prompt": "I don't like it",
+    "answers": ["싫습니다"]
   },
   {
-    "front": "I don't know",
-    "back": "모릅니다"
+    "prompt": "I don't know",
+    "answers": ["모릅니다"]
   },
   {
-    "front": "Thanks (casual)",
-    "back": "고마워"
+    "prompt": "Thanks (casual)",
+    "answers": ["고마워"]
   },
   {
-    "front": "Thanks (polite)",
-    "back": "고마워요"
+    "prompt": "Thanks (polite)",
+    "answers": ["고마워요"]
   },
   {
-    "front": "Thank you (formal)",
-    "back": "고맙습니다"
+    "prompt": "Thank you (formal)",
+    "answers": ["고맙습니다", "감사합니다"]
   },
   {
-    "front": "Thank you (formal)",
-    "back": "감사합니다"
+    "prompt": "Sorry (casual)",
+    "answers": ["미안해"]
   },
   {
-    "front": "Sorry (casual)",
-    "back": "미안해"
+    "prompt": "Sorry (polite)",
+    "answers": ["미안해요"]
   },
   {
-    "front": "Sorry (polite)",
-    "back": "미안해요"
+    "prompt": "Sorry (formal)",
+    "answers": ["죄송합니다"]
   },
   {
-    "front": "Sorry (formal)",
-    "back": "죄송합니다"
+    "prompt": "No problem",
+    "answers": ["아닙니다"]
   },
   {
-    "front": "No problem",
-    "back": "아닙니다"
+    "prompt": "I'm okay",
+    "answers": ["괜찮습니다"]
   },
   {
-    "front": "I'm okay",
-    "back": "괜찮습니다"
+    "prompt": "Excuse me",
+    "answers": ["실례합니다"]
   },
   {
-    "front": "Excuse me",
-    "back": "실례합니다"
+    "prompt": "Please",
+    "answers": ["부탁합니다"]
   },
   {
-    "front": "Please",
-    "back": "부탁합니다"
+    "prompt": "Give me",
+    "answers": ["주세요"]
   },
   {
-    "front": "Give me",
-    "back": "주세요"
+    "prompt": "Thanks for the meal (before)",
+    "answers": ["잘 먹겠습니다"]
   },
   {
-    "front": "Thanks for the meal (before)",
-    "back": "잘 먹겠습니다"
+    "prompt": "Thanks for the meal (after)",
+    "answers": ["잘 먹었습니다"]
   },
   {
-    "front": "Thanks for the meal (after)",
-    "back": "잘 먹었습니다"
+    "prompt": "Goodbye (they go)",
+    "answers": ["안녕히 가세요"]
   },
   {
-    "front": "Goodbye (they go)",
-    "back": "안녕히 가세요"
+    "prompt": "Goodbye (they stay)",
+    "answers": ["안녕히 계세요"]
   },
   {
-    "front": "Goodbye (they stay)",
-    "back": "안녕히 계세요"
+    "prompt": "Happy birthday",
+    "answers": ["생일 축하합니다"]
   },
   {
-    "front": "Happy birthday",
-    "back": "생일 축하합니다"
+    "prompt": "This one",
+    "answers": ["이것"]
   },
   {
-    "front": "This one",
-    "back": "이것"
+    "prompt": "That one",
+    "answers": ["저것"]
   },
   {
-    "front": "That one",
-    "back": "저것"
+    "prompt": "Mom (casual)",
+    "answers": ["엄마"]
   },
   {
-    "front": "Mom (casual)",
-    "back": "엄마"
+    "prompt": "Mother (polite)",
+    "answers": ["어머니"]
   },
   {
-    "front": "Mother (polite)",
-    "back": "어머니"
+    "prompt": "Dad (casual)",
+    "answers": ["아빠"]
   },
   {
-    "front": "Dad (casual)",
-    "back": "아빠"
+    "prompt": "Father (polite)",
+    "answers": ["아버지"]
   },
   {
-    "front": "Father (polite)",
-    "back": "아버지"
+    "prompt": "Water",
+    "answers": ["물"]
   },
   {
-    "front": "Water",
-    "back": "물"
+    "prompt": "Bus",
+    "answers": ["버스"]
   },
   {
-    "front": "Bus",
-    "back": "버스"
+    "prompt": "Subway",
+    "answers": ["지하철"]
   },
   {
-    "front": "Subway",
-    "back": "지하철"
+    "prompt": "Taxi",
+    "answers": ["택시"]
   },
   {
-    "front": "Taxi",
-    "back": "택시"
+    "prompt": "Travel",
+    "answers": ["여행"]
   },
   {
-    "front": "Travel",
-    "back": "여행"
+    "prompt": "Work",
+    "answers": ["일"]
   },
   {
-    "front": "Work",
-    "back": "일"
-  },
-  {
-    "front": "Meal",
-    "back": "밥"
+    "prompt": "Meal",
+    "answers": ["밥"]
   }
 ]
