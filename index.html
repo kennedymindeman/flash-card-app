@@ -348,6 +348,13 @@
                     this.loadCards();
                     this.setupEventListeners();
                     this.updateStartScreen();
+
+                    this.initializeElements();
+                    this.loadConfiguration();
+                    this.loadCards().then(() => {
+                        this.setupEventListeners();
+                        this.updateStartScreen();
+                    });
                 }
 
                 initializeElements() {
@@ -406,58 +413,50 @@
                     }
                 }
 
-                loadCards() {
-                    // Sample flash cards - in a real implementation, this would load from a JSON file
-                    this.cards = [
-                        {
-                            prompt: "What is the capital of France?",
-                            answers: ["Paris", "paris"],
-                        },
-                        {
-                            prompt: "What is 2 + 2?",
-                            answers: ["4", "four", "Four"],
-                        },
-                        {
-                            prompt: "What programming language is this quiz written in?",
-                            answers: ["JavaScript", "javascript", "JS", "js"],
-                        },
-                        {
-                            prompt: "What does HTML stand for?",
-                            answers: [
-                                "HyperText Markup Language",
-                                "Hypertext Markup Language",
-                                "hypertext markup language",
-                            ],
-                        },
-                        {
-                            prompt: "What is the largest planet in our solar system?",
-                            answers: ["Jupiter", "jupiter"],
-                        },
-                        {
-                            prompt: "What year was the first iPhone released?",
-                            answers: ["2007"],
-                        },
-                        {
-                            prompt: "What does CSS stand for?",
-                            answers: [
-                                "Cascading Style Sheets",
-                                "cascading style sheets",
-                            ],
-                        },
-                        {
-                            prompt: "What is the chemical symbol for water?",
-                            answers: ["H2O", "h2o"],
-                        },
-                    ];
+                async loadCards() {
+                    try {
+                        const response = await fetch("cards.json");
+                        if (!response.ok) {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}`,
+                            );
+                        }
 
-                    // Initialize card tracking
-                    this.cards.forEach((card) => {
-                        card.consecutiveCorrect = 0;
-                        card.totalAttempts = 0;
-                        card.correctAttempts = 0;
-                    });
+                        const cardsData = await response.json();
 
-                    console.log("Cards loaded:", this.cards.length);
+                        // Validate that we have an array of cards
+                        if (!Array.isArray(cardsData)) {
+                            throw new Error("Cards data must be an array");
+                        }
+
+                        // Validate each card has required fields
+                        cardsData.forEach((card, index) => {
+                            if (!card.prompt || !Array.isArray(card.answers)) {
+                                throw new Error(
+                                    `Card ${index} is missing required fields (prompt, answers)`,
+                                );
+                            }
+                        });
+
+                        this.cards = cardsData;
+
+                        // Initialize card tracking
+                        this.cards.forEach((card) => {
+                            card.consecutiveCorrect = 0;
+                            card.totalAttempts = 0;
+                            card.correctAttempts = 0;
+                        });
+
+                        console.log(
+                            "Cards loaded from cards.json:",
+                            this.cards.length,
+                        );
+                    } catch (error) {
+                        console.error(
+                            "Error loading cards from cards.json:",
+                            error,
+                        );
+                    }
                 }
 
                 setupEventListeners() {
