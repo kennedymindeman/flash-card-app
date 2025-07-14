@@ -406,58 +406,33 @@
                     }
                 }
 
-                loadCards() {
-                    // Sample flash cards - in a real implementation, this would load from a JSON file
-                    this.cards = [
-                        {
-                            prompt: "What is the capital of France?",
-                            answers: ["Paris", "paris"],
-                        },
-                        {
-                            prompt: "What is 2 + 2?",
-                            answers: ["4", "four", "Four"],
-                        },
-                        {
-                            prompt: "What programming language is this quiz written in?",
-                            answers: ["JavaScript", "javascript", "JS", "js"],
-                        },
-                        {
-                            prompt: "What does HTML stand for?",
-                            answers: [
-                                "HyperText Markup Language",
-                                "Hypertext Markup Language",
-                                "hypertext markup language",
-                            ],
-                        },
-                        {
-                            prompt: "What is the largest planet in our solar system?",
-                            answers: ["Jupiter", "jupiter"],
-                        },
-                        {
-                            prompt: "What year was the first iPhone released?",
-                            answers: ["2007"],
-                        },
-                        {
-                            prompt: "What does CSS stand for?",
-                            answers: [
-                                "Cascading Style Sheets",
-                                "cascading style sheets",
-                            ],
-                        },
-                        {
-                            prompt: "What is the chemical symbol for water?",
-                            answers: ["H2O", "h2o"],
-                        },
-                    ];
+                async loadCards() {
+                    try {
+                        // Load cards from cards.json
+                        const response = await fetch("cards.json");
+                        if (!response.ok) {
+                            throw new Error(
+                                `HTTP error! status: ${response.status}`,
+                            );
+                        }
+                        this.cards = await response.json();
 
-                    // Initialize card tracking
-                    this.cards.forEach((card) => {
-                        card.consecutiveCorrect = 0;
-                        card.totalAttempts = 0;
-                        card.correctAttempts = 0;
-                    });
+                        // Initialize card tracking
+                        this.cards.forEach((card) => {
+                            card.consecutiveCorrect = 0;
+                            card.totalAttempts = 0;
+                            card.correctAttempts = 0;
+                        });
 
-                    console.log("Cards loaded:", this.cards.length);
+                        console.log("Cards loaded:", this.cards.length);
+                    } catch (error) {
+                        console.error("Error loading cards:", error);
+                        // Fallback to empty array if loading fails
+                        this.cards = [];
+                        alert(
+                            "Error loading flash cards. Please make sure cards.json is available.",
+                        );
+                    }
                 }
 
                 setupEventListeners() {
