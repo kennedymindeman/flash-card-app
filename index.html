@@ -7,9 +7,21 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <div class="card" id="flashcard" onclick="flipCard()">
+        <div class="card" id="flashcard">
             <div id="card-content">Click to start</div>
         </div>
+
+        <div class="answer-section">
+            <input
+                type="text"
+                id="answer-input"
+                placeholder="Type your answer here..."
+                onkeypress="handleEnter(event)"
+            />
+            <button onclick="checkAnswer()">Check Answer</button>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
 
         <div class="controls">
             <button onclick="prevCard()">Previous</button>
