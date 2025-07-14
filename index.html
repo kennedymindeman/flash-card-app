@@ -1,812 +1,925 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flashcard Practice</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Flash Card Quiz</title>
+        <link rel="stylesheet" href="#" id="css-styles" />
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            min-height: 100vh;
-            background: linear-gradient(135deg, #f0f8ff 0%, #e0e7ff 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
+            .container {
+                background: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                text-align: center;
+            }
 
-        .container {
-            background: white;
-            border-radius: 1rem;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
-            width: 100%;
-            max-width: 28rem;
-        }
+            .timer {
+                font-size: 24px;
+                font-weight: bold;
+                color: #333;
+                margin: 20px 0;
+            }
 
-        .header {
-            text-align: center;
-            margin-bottom: 1.5rem;
-        }
+            .timer.warning {
+                color: #ff6b35;
+            }
 
-        .title {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 0.5rem;
-        }
+            .timer.danger {
+                color: #d32f2f;
+            }
 
-        .stats {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            font-size: 0.875rem;
-        }
+            .prompt {
+                font-size: 20px;
+                margin: 20px 0;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 5px;
+                border-left: 4px solid #007bff;
+            }
 
-        .stat-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 9999px;
-            font-weight: 500;
-        }
+            .input-container {
+                margin: 20px 0;
+            }
 
-        .stat-correct {
-            background-color: #dbeafe;
-            color: #1e40af;
-        }
+            .answer-input {
+                font-size: 16px;
+                padding: 10px;
+                width: 300px;
+                border: 2px solid #ddd;
+                border-radius: 5px;
+                text-align: center;
+            }
 
-        .stat-mastered {
-            background-color: #dcfce7;
-            color: #166534;
-        }
+            .answer-input:focus {
+                outline: none;
+                border-color: #007bff;
+            }
 
-        .timer {
-            text-align: center;
-            margin-bottom: 1rem;
-        }
+            .feedback {
+                margin: 20px 0;
+                padding: 15px;
+                border-radius: 5px;
+                font-weight: bold;
+                font-size: 18px;
+            }
 
-        .timer-display {
-            font-size: 2rem;
-            font-family: 'Courier New', monospace;
-            font-weight: bold;
-            color: #2563eb;
-        }
+            .feedback.correct {
+                background: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
 
-        .timer-urgent {
-            color: #dc2626;
-        }
+            .feedback.incorrect {
+                background: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
 
-        .card {
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            border-radius: 0.75rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: white;
-            text-align: center;
-        }
+            .feedback.timeout {
+                background: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeaa7;
+            }
 
-        .card-front {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+            .stats {
+                display: flex;
+                justify-content: space-around;
+                margin: 20px 0;
+                padding: 15px;
+                background: #e9ecef;
+                border-radius: 5px;
+            }
 
-        .card-subtitle {
-            font-size: 0.875rem;
-            opacity: 0.8;
-        }
+            .stat {
+                text-align: center;
+            }
 
-        .waiting-card {
-            background: #f3f4f6;
-            color: #6b7280;
-        }
+            .stat-value {
+                font-size: 24px;
+                font-weight: bold;
+                color: #007bff;
+            }
 
-        .input-container {
-            margin-bottom: 1rem;
-        }
+            .stat-label {
+                font-size: 12px;
+                color: #666;
+                text-transform: uppercase;
+            }
 
-        .answer-input {
-            width: 100%;
-            padding: 0.75rem;
-            border: 2px solid #d1d5db;
-            border-radius: 0.5rem;
-            font-size: 1.125rem;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+            .start-screen,
+            .finished-screen {
+                text-align: center;
+            }
 
-        .answer-input:focus {
-            border-color: #3b82f6;
-        }
+            .start-screen h1 {
+                color: #007bff;
+                margin-bottom: 30px;
+            }
 
-        .input-hint {
-            text-align: center;
-            margin-top: 0.5rem;
-            font-size: 0.875rem;
-            color: #6b7280;
-        }
+            .finished-screen h1 {
+                color: #28a745;
+                margin-bottom: 30px;
+            }
 
-        .result {
-            margin-bottom: 1rem;
-        }
+            .instructions {
+                text-align: left;
+                margin: 20px 0;
+                padding: 20px;
+                background: #f8f9fa;
+                border-radius: 5px;
+            }
 
-        .result-box {
-            padding: 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1rem;
-        }
+            .btn {
+                background: #007bff;
+                color: white;
+                border: none;
+                padding: 12px 24px;
+                font-size: 16px;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 10px;
+            }
 
-        .result-correct {
-            background-color: #dcfce7;
-            color: #166534;
-        }
+            .btn:hover {
+                background: #0056b3;
+            }
 
-        .result-incorrect {
-            background-color: #fef2f2;
-            color: #dc2626;
-        }
+            .btn:disabled {
+                background: #6c757d;
+                cursor: not-allowed;
+            }
 
-        .result-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+            .hidden {
+                display: none;
+            }
 
-        .result-details {
-            font-size: 0.875rem;
-            color: #374151;
-        }
+            .progress-bar {
+                width: 100%;
+                height: 20px;
+                background: #e9ecef;
+                border-radius: 10px;
+                overflow: hidden;
+                margin: 20px 0;
+            }
 
-        .result-answer {
-            font-family: 'Courier New', monospace;
-            font-weight: 600;
-        }
+            .progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #007bff, #28a745);
+                transition: width 0.3s ease;
+            }
 
-        .progress-dots {
-            display: flex;
-            justify-content: center;
-            gap: 0.25rem;
-            margin-bottom: 1rem;
-        }
+            .card-info {
+                font-size: 14px;
+                color: #666;
+                margin: 10px 0;
+            }
 
-        .progress-dot {
-            width: 2rem;
-            height: 0.5rem;
-            border-radius: 9999px;
-            background-color: #d1d5db;
-            transition: background-color 0.2s;
-        }
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                }
+                50% {
+                    transform: scale(1.05);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
 
-        .progress-dot.active {
-            background-color: #3b82f6;
-        }
+            .pulse {
+                animation: pulse 0.3s ease-in-out;
+            }
 
-        .waiting-message {
-            text-align: center;
-            color: #6b7280;
-            margin-bottom: 1rem;
-        }
+            @keyframes shake {
+                0%,
+                100% {
+                    transform: translateX(0);
+                }
+                10%,
+                30%,
+                50%,
+                70%,
+                90% {
+                    transform: translateX(-5px);
+                }
+                20%,
+                40%,
+                60%,
+                80% {
+                    transform: translateX(5px);
+                }
+            }
 
-        .waiting-subtitle {
-            font-size: 0.875rem;
-            color: #9ca3af;
-        }
-
-        .completion-container {
-            text-align: center;
-        }
-
-        .completion-title {
-            font-size: 1.875rem;
-            font-weight: bold;
-            color: #1f2937;
-            margin-bottom: 1rem;
-        }
-
-        .completion-message {
-            font-size: 1.125rem;
-            color: #6b7280;
-        }
-
-        .hidden {
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <!-- Header -->
-        <div id="game-container">
-            <div class="header">
-                <h1 class="title">Flashcard Practice</h1>
+            .shake {
+                animation: shake 0.5s ease-in-out;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Start Screen -->
+            <div id="start-screen" class="start-screen">
+                <h1>Flash Card Quiz</h1>
+                <div class="instructions">
+                    <h3>Instructions:</h3>
+                    <ul>
+                        <li>You'll be shown flash card prompts</li>
+                        <li>Type your answer and press Enter</li>
+                        <li>
+                            Answer correctly multiple times in a row to master a
+                            card
+                        </li>
+                        <li>Beat the timer on each card</li>
+                        <li>Master all cards to complete the quiz!</li>
+                    </ul>
+                </div>
                 <div class="stats">
-                    <div class="stat-badge stat-correct">
-                        <span id="percent-correct">0</span>% Correct
+                    <div class="stat">
+                        <div class="stat-value" id="total-cards">0</div>
+                        <div class="stat-label">Total Cards</div>
                     </div>
-                    <div class="stat-badge stat-mastered">
-                        <span id="cards-mastered">0</span> Mastered
+                    <div class="stat">
+                        <div class="stat-value" id="mastery-requirement">5</div>
+                        <div class="stat-label">Correct Needed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="initial-cards">5</div>
+                        <div class="stat-label">Initial Cards</div>
                     </div>
                 </div>
+                <p>Press Enter to start the quiz!</p>
             </div>
 
-        <!-- Timer -->
-        <div id="timer" class="timer hidden">
-            <div id="timer-display" class="timer-display">0:00</div>
-        </div>
-
-        <!-- Card Display -->
-        <div id="card-display" class="card hidden">
-            <div id="card-front" class="card-front"></div>
-            <div class="card-subtitle">What's the translation?</div>
-        </div>
-
-        <!-- Waiting State -->
-        <div id="waiting-state" class="waiting-card card">
-            <div class="card-front">Ready to start?</div>
-            <div class="card-subtitle">Press Enter to begin</div>
-        </div>
-
-        <!-- Input Section -->
-        <div id="input-section" class="input-container hidden">
-            <input
-                type="text"
-                id="answer-input"
-                class="answer-input"
-                placeholder="Type your answer..."
-            >
-            <div class="input-hint">Press Enter to submit</div>
-        </div>
-
-        <!-- Result Section -->
-        <div id="result-section" class="result hidden">
-            <div id="result-box" class="result-box">
-                <div id="result-title" class="result-title"></div>
-                <div id="result-details" class="result-details"></div>
-            </div>
-            <div class="input-hint">Press Enter to continue</div>
-        </div>
-
-        <!-- Progress Dots -->
-        <div id="progress-dots" class="progress-dots hidden"></div>
-
-        <!-- Waiting Message -->
-        <div id="waiting-message" class="waiting-message">
-            <p>Press Enter to start your first card</p>
-            <div class="waiting-subtitle">Get ready to practice!</div>
-        </div>
-
-        <!-- Completion Screen -->
-        <div id="completion-screen" class="completion-container hidden">
-            <h1 class="completion-title">🎉 Congratulations!</h1>
-            <p class="completion-message">You've completed all the flashcards!</p>
-        </div>
-    </div>
-
-    <script>
-        class FlashcardApp {
-            constructor() {
-                this.defaultCards = [
-                    { front: "Hello", back: "Hola" },
-                    { front: "Goodbye", back: "Adiós" },
-                    { front: "Thank you", back: "Gracias" },
-                    { front: "Please", back: "Por favor" },
-                    { front: "Yes", back: "Sí" },
-                    { front: "No", back: "No" },
-                    { front: "Water", back: "Agua" },
-                    { front: "Food", back: "Comida" },
-                    { front: "House", back: "Casa" },
-                    { front: "Car", back: "Coche" },
-                    { front: "Dog", back: "Perro" },
-                    { front: "Cat", back: "Gato" },
-                    { front: "Book", back: "Libro" },
-                    { front: "School", back: "Escuela" },
-                    { front: "Friend", back: "Amigo" }
-                ];
-
-                this.allCards = [];
-                this.activeCards = [];
-                this.currentCardIndex = 0;
-                this.userInput = '';
-                this.gameState = 'loading';
-                this.timeLeft = 0;
-                this.isTimerRunning = false;
-                this.cardProgress = {};
-                this.usedCardIds = new Set();
-                this.showResult = false;
-                this.lastAnswer = { correct: false, userAnswer: '', correctAnswer: '' };
-                this.totalAttempts = 0;
-                this.correctAttempts = 0;
-                this.timerInterval = null;
-                this.availableChapters = [];
-                this.selectedChapters = new Set();
-
-                this.init();
-            }
-
-            async init() {
-                await this.discoverChapters();
-                this.showChapterSelection();
-            }
-
-            async discoverChapters() {
-                // Try to load flashcards.json
-                await this.tryLoadChapter('flashcards.json');
-                console.log(`Found ${this.availableChapters.length} chapter files`);
-            }
-
-            async tryLoadChapter(filename) {
-                try {
-                    const response = await fetch(filename);
-                    if (response.ok) {
-                        const data = await response.json();
-                        if (Array.isArray(data) && data.length > 0 && this.isValidCardFormat(data[0])) {
-                            this.availableChapters.push({
-                                filename: filename,
-                                displayName: this.formatChapterName(filename),
-                                cardCount: data.length,
-                                cards: data
-                            });
-                        }
-                    }
-                } catch (error) {
-                    // File doesn't exist or isn't valid JSON, continue
-                }
-            }
-
-            isValidCardFormat(card) {
-                return card &&
-                       typeof card === 'object' &&
-                       typeof card.front === 'string' &&
-                       typeof card.back === 'string';
-            }
-
-            formatChapterName(filename) {
-                // Convert filename to display name
-                const name = filename.replace('.json', '');
-                return name.charAt(0).toUpperCase() + name.slice(1).replace(/([0-9]+)/g, ' $1');
-            }
-
-            showChapterSelection() {
-                if (this.availableChapters.length === 0) {
-                    // No flashcards.json found, use default cards
-                    this.allCards = this.defaultCards;
-                    this.startGame();
-                    return;
-                }
-
-                // flashcards.json found, but since it's just one file, skip selection and load it directly
-                this.allCards = [];
-                let cardId = 1;
-
-                this.availableChapters[0].cards.forEach(card => {
-                    this.allCards.push({
-                        id: cardId++,
-                        front: card.front,
-                        back: card.back,
-                        chapter: this.availableChapters[0].displayName
-                    });
-                });
-
-                console.log(`Loaded ${this.allCards.length} cards from flashcards.json`);
-                this.startGame();
-            }
-
-            createChapterSelectionUI() {
-                const container = document.querySelector('.container');
-
-                const chapterSelectionHTML = `
-                    <div id="chapter-selection">
-                        <h2 style="text-align: center; margin-bottom: 2rem; color: #1f2937;">Select Chapters to Study</h2>
-                        <div id="chapter-list" style="margin-bottom: 2rem;">
-                            ${this.availableChapters.map(chapter => `
-                                <div class="chapter-item" style="display: flex; align-items: center; justify-content: space-between; padding: 1rem; margin-bottom: 0.5rem; border: 2px solid #e5e7eb; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s;" data-filename="${chapter.filename}">
-                                    <div style="display: flex; align-items: center;">
-                                        <input type="checkbox" class="chapter-checkbox" style="margin-right: 1rem; transform: scale(1.2);" data-filename="${chapter.filename}">
-                                        <div>
-                                            <div style="font-weight: 600; color: #1f2937;">${chapter.displayName}</div>
-                                            <div style="font-size: 0.875rem; color: #6b7280;">${chapter.cardCount} cards</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                        <div style="text-align: center;">
-                            <button id="start-study" style="background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; border: none; padding: 0.75rem 2rem; border-radius: 0.5rem; font-size: 1.125rem; font-weight: 600; cursor: pointer; margin-right: 1rem;" disabled>Start Studying</button>
-                            <button id="select-all" style="background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; padding: 0.75rem 1.5rem; border-radius: 0.5rem; font-size: 1rem; cursor: pointer;">Select All</button>
-                        </div>
+            <!-- Quiz Screen -->
+            <div id="quiz-screen" class="hidden">
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="percent-correct">0%</div>
+                        <div class="stat-label">Correct</div>
                     </div>
-                `;
+                    <div class="stat">
+                        <div class="stat-value" id="cards-mastered">0</div>
+                        <div class="stat-label">Mastered</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="cards-in-play">0</div>
+                        <div class="stat-label">In Play</div>
+                    </div>
+                </div>
 
-                container.innerHTML = chapterSelectionHTML;
-                this.bindChapterSelectionEvents();
-            }
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
 
-            bindChapterSelectionEvents() {
-                const checkboxes = document.querySelectorAll('.chapter-checkbox');
-                const startButton = document.getElementById('start-study');
-                const selectAllButton = document.getElementById('select-all');
-                const chapterItems = document.querySelectorAll('.chapter-item');
+                <div class="timer" id="timer">30</div>
 
-                // Make entire chapter item clickable
-                chapterItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        if (e.target.type !== 'checkbox') {
-                            const checkbox = item.querySelector('.chapter-checkbox');
-                            checkbox.checked = !checkbox.checked;
-                            this.updateChapterSelection();
+                <div class="prompt" id="prompt">Loading...</div>
+
+                <div class="input-container">
+                    <input
+                        type="text"
+                        id="answer-input"
+                        class="answer-input"
+                        placeholder="Type your answer here..."
+                        disabled
+                    />
+                </div>
+
+                <div class="card-info" id="card-info">Card 1 of 5</div>
+
+                <div id="feedback" class="feedback hidden"></div>
+
+                <button id="next-btn" class="btn hidden" disabled>
+                    Next Card
+                </button>
+            </div>
+
+            <!-- Finished Screen -->
+            <div id="finished-screen" class="finished-screen hidden">
+                <h1>🎉 Congratulations! 🎉</h1>
+                <p>You've mastered all the flash cards!</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-value" id="final-percent">100%</div>
+                        <div class="stat-label">Final Score</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="final-mastered">0</div>
+                        <div class="stat-label">Cards Mastered</div>
+                    </div>
+                </div>
+                <button id="reset-btn" class="btn">Play Again</button>
+            </div>
+        </div>
+
+        <script>
+            class FlashCardQuiz {
+                constructor() {
+                    this.config = {
+                        timeLimit: 30,
+                        timePerChar: 0.5,
+                        masteryRequirement: 5,
+                        initialCards: 5,
+                    };
+
+                    this.cards = [];
+                    this.cardsInPlay = [];
+                    this.masteredCards = [];
+                    this.currentCardIndex = 0;
+                    this.currentCard = null;
+                    this.timer = null;
+                    this.timeRemaining = 0;
+                    this.isPaused = false;
+                    this.totalAttempts = 0;
+                    this.correctAttempts = 0;
+                    this.gameState = "start"; // 'start', 'playing', 'paused', 'finished'
+
+                    this.initializeElements();
+                    this.loadConfiguration();
+                    this.loadCards();
+                    this.setupEventListeners();
+                    this.updateStartScreen();
+                }
+
+                initializeElements() {
+                    this.startScreen = document.getElementById("start-screen");
+                    this.quizScreen = document.getElementById("quiz-screen");
+                    this.finishedScreen =
+                        document.getElementById("finished-screen");
+                    this.timerElement = document.getElementById("timer");
+                    this.promptElement = document.getElementById("prompt");
+                    this.answerInput = document.getElementById("answer-input");
+                    this.feedbackElement = document.getElementById("feedback");
+                    this.nextBtn = document.getElementById("next-btn");
+                    this.resetBtn = document.getElementById("reset-btn");
+                    this.progressFill =
+                        document.getElementById("progress-fill");
+                    this.cardInfo = document.getElementById("card-info");
+
+                    // Stats elements
+                    this.percentCorrectElement =
+                        document.getElementById("percent-correct");
+                    this.cardsMasteredElement =
+                        document.getElementById("cards-mastered");
+                    this.cardsInPlayElement =
+                        document.getElementById("cards-in-play");
+                    this.totalCardsElement =
+                        document.getElementById("total-cards");
+                    this.masteryRequirementElement = document.getElementById(
+                        "mastery-requirement",
+                    );
+                    this.initialCardsElement =
+                        document.getElementById("initial-cards");
+                    this.finalPercentElement =
+                        document.getElementById("final-percent");
+                    this.finalMasteredElement =
+                        document.getElementById("final-mastered");
+                }
+
+                loadConfiguration() {
+                    // In a real implementation, this would load from config.json
+                    // For now, using default values
+                    try {
+                        // Simulate loading config.json
+                        const defaultConfig = {
+                            timeLimit: 30,
+                            timePerChar: 0.5,
+                            masteryRequirement: 5,
+                            initialCards: 5,
+                        };
+                        this.config = { ...defaultConfig };
+                        console.log("Configuration loaded:", this.config);
+                    } catch (error) {
+                        console.error(
+                            "Error loading configuration, using defaults:",
+                            error,
+                        );
+                    }
+                }
+
+                loadCards() {
+                    // Sample flash cards - in a real implementation, this would load from a JSON file
+                    this.cards = [
+                        {
+                            prompt: "What is the capital of France?",
+                            answers: ["Paris", "paris"],
+                        },
+                        {
+                            prompt: "What is 2 + 2?",
+                            answers: ["4", "four", "Four"],
+                        },
+                        {
+                            prompt: "What programming language is this quiz written in?",
+                            answers: ["JavaScript", "javascript", "JS", "js"],
+                        },
+                        {
+                            prompt: "What does HTML stand for?",
+                            answers: [
+                                "HyperText Markup Language",
+                                "Hypertext Markup Language",
+                                "hypertext markup language",
+                            ],
+                        },
+                        {
+                            prompt: "What is the largest planet in our solar system?",
+                            answers: ["Jupiter", "jupiter"],
+                        },
+                        {
+                            prompt: "What year was the first iPhone released?",
+                            answers: ["2007"],
+                        },
+                        {
+                            prompt: "What does CSS stand for?",
+                            answers: [
+                                "Cascading Style Sheets",
+                                "cascading style sheets",
+                            ],
+                        },
+                        {
+                            prompt: "What is the chemical symbol for water?",
+                            answers: ["H2O", "h2o"],
+                        },
+                    ];
+
+                    // Initialize card tracking
+                    this.cards.forEach((card) => {
+                        card.consecutiveCorrect = 0;
+                        card.totalAttempts = 0;
+                        card.correctAttempts = 0;
+                    });
+
+                    console.log("Cards loaded:", this.cards.length);
+                }
+
+                setupEventListeners() {
+                    // Global key listener for Enter key
+                    document.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter") {
+                            this.handleEnterKey();
                         }
                     });
-                });
 
-                checkboxes.forEach(checkbox => {
-                    checkbox.addEventListener('change', () => {
-                        this.updateChapterSelection();
-                    });
-                });
-
-                selectAllButton.addEventListener('click', () => {
-                    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
-                    checkboxes.forEach(checkbox => {
-                        checkbox.checked = !allChecked;
-                    });
-                    this.updateChapterSelection();
-                });
-
-                startButton.addEventListener('click', () => {
-                    this.loadSelectedChapters();
-                });
-            }
-
-            updateChapterSelection() {
-                const checkboxes = document.querySelectorAll('.chapter-checkbox');
-                const startButton = document.getElementById('start-study');
-                const selectAllButton = document.getElementById('select-all');
-                const chapterItems = document.querySelectorAll('.chapter-item');
-
-                let selectedCount = 0;
-                this.selectedChapters.clear();
-
-                checkboxes.forEach((checkbox, index) => {
-                    const chapterItem = chapterItems[index];
-                    if (checkbox.checked) {
-                        selectedCount++;
-                        this.selectedChapters.add(checkbox.dataset.filename);
-                        chapterItem.style.borderColor = '#3b82f6';
-                        chapterItem.style.backgroundColor = '#eff6ff';
-                    } else {
-                        chapterItem.style.borderColor = '#e5e7eb';
-                        chapterItem.style.backgroundColor = 'white';
-                    }
-                });
-
-                startButton.disabled = selectedCount === 0;
-                startButton.style.opacity = selectedCount === 0 ? '0.5' : '1';
-                startButton.style.cursor = selectedCount === 0 ? 'not-allowed' : 'pointer';
-
-                const allChecked = selectedCount === checkboxes.length;
-                selectAllButton.textContent = allChecked ? 'Deselect All' : 'Select All';
-            }
-
-            loadSelectedChapters() {
-                this.allCards = [];
-                let cardId = 1;
-
-                this.availableChapters.forEach(chapter => {
-                    if (this.selectedChapters.has(chapter.filename)) {
-                        chapter.cards.forEach(card => {
-                            this.allCards.push({
-                                id: cardId++,
-                                front: card.front,
-                                back: card.back,
-                                chapter: chapter.displayName
-                            });
-                        });
-                    }
-                });
-
-                console.log(`Loaded ${this.allCards.length} cards from ${this.selectedChapters.size} chapters`);
-                this.startGame();
-            }
-
-            startGame() {
-                // Hide chapter selection and show game
-                const chapterSelection = document.getElementById('chapter-selection');
-                if (chapterSelection) {
-                    chapterSelection.style.display = 'none';
-                }
-
-                const gameContainer = document.getElementById('game-container');
-                if (gameContainer) {
-                    gameContainer.style.display = 'block';
-                } else {
-                    // Create game container if it doesn't exist
-                    const container = document.querySelector('.container');
-                    container.innerHTML = `<div id="game-container">${container.innerHTML}</div>`;
-                }
-
-                this.initializeGame();
-                this.bindEvents();
-                this.updateDisplay();
-            }
-
-            initializeGame() {
-                if (this.allCards.length === 0) {
-                    console.error('No flashcards available!');
-                    return;
-                }
-
-                const initialCards = this.allCards.slice(0, Math.min(5, this.allCards.length));
-                this.activeCards = initialCards;
-                this.usedCardIds = new Set(initialCards.map(card => card.id));
-
-                const initialProgress = {};
-                initialCards.forEach(card => {
-                    initialProgress[card.id] = 0;
-                });
-                this.cardProgress = initialProgress;
-
-                // Set to waiting state after loading
-                this.gameState = 'waiting';
-            }
-
-            bindEvents() {
-                const input = document.getElementById('answer-input');
-                input.addEventListener('input', (e) => {
-                    this.userInput = e.target.value;
-                });
-
-                // Handle Enter key globally based on game state
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') {
-                        e.preventDefault();
-
-                        if (this.gameState === 'waiting') {
-                            this.startAnswering();
-                        } else if (this.gameState === 'answering' && !this.showResult) {
-                            this.handleSubmitAnswer();
-                        } else if (this.gameState === 'reviewing' && this.showResult) {
-                            this.handleNextCard();
+                    // Answer input listener
+                    this.answerInput.addEventListener("input", (e) => {
+                        if (this.gameState === "playing" && !this.isPaused) {
+                            // Auto-submit could be added here if desired
                         }
-                    }
-                });
-            }
+                    });
 
-            startAnswering() {
-                this.gameState = 'answering';
-                this.showResult = false;
-                if (this.activeCards.length > 0) {
-                    this.startTimer(this.activeCards[this.currentCardIndex].back.length);
+                    // Button listeners
+                    this.nextBtn.addEventListener("click", () => {
+                        this.nextCard();
+                    });
+
+                    this.resetBtn.addEventListener("click", () => {
+                        this.resetGame();
+                    });
                 }
-                this.updateDisplay();
-                setTimeout(() => {
-                    const input = document.getElementById('answer-input');
-                    input.focus();
-                }, 100);
-            }
 
-            startTimer(expectedLength) {
-                const timerDuration = Math.max(10, 10 + expectedLength);
-                this.timeLeft = timerDuration;
-                this.isTimerRunning = true;
+                handleEnterKey() {
+                    switch (this.gameState) {
+                        case "start":
+                            this.startQuiz();
+                            break;
+                        case "playing":
+                            if (!this.isPaused) {
+                                this.submitAnswer();
+                            }
+                            break;
+                        case "paused":
+                            this.nextCard();
+                            break;
+                        case "finished":
+                            this.resetGame();
+                            break;
+                    }
+                }
 
-                this.timerInterval = setInterval(() => {
-                    this.timeLeft--;
+                updateStartScreen() {
+                    this.totalCardsElement.textContent = this.cards.length;
+                    this.masteryRequirementElement.textContent =
+                        this.config.masteryRequirement;
+                    this.initialCardsElement.textContent = Math.min(
+                        this.config.initialCards,
+                        this.cards.length,
+                    );
+                }
+
+                startQuiz() {
+                    this.gameState = "playing";
+                    this.showScreen("quiz");
+                    this.initializeRound();
+                    this.displayCurrentCard();
+                }
+
+                initializeRound() {
+                    // Shuffle all cards
+                    this.shuffleArray(this.cards);
+
+                    // Select initial cards
+                    const availableCards = this.cards.filter(
+                        (card) =>
+                            card.consecutiveCorrect <
+                            this.config.masteryRequirement,
+                    );
+                    this.cardsInPlay = availableCards.slice(
+                        0,
+                        Math.min(
+                            this.config.initialCards,
+                            availableCards.length,
+                        ),
+                    );
+
+                    // Shuffle cards in play
+                    this.shuffleArray(this.cardsInPlay);
+
+                    this.currentCardIndex = 0;
+                    this.updateStats();
+                    this.updateProgress();
+                }
+
+                displayCurrentCard() {
+                    if (this.currentCardIndex >= this.cardsInPlay.length) {
+                        this.checkRoundComplete();
+                        return;
+                    }
+
+                    this.currentCard = this.cardsInPlay[this.currentCardIndex];
+                    this.promptElement.textContent = this.currentCard.prompt;
+                    this.answerInput.value = "";
+                    this.answerInput.disabled = false;
+                    this.answerInput.focus();
+
+                    // Calculate time limit
+                    const flatTime = this.config.timeLimit;
+                    const charTime =
+                        this.currentCard.prompt.length *
+                        this.config.timePerChar;
+                    this.timeRemaining = Math.max(flatTime, charTime);
+
+                    this.hideFeedback();
+                    this.updateCardInfo();
+                    this.startTimer();
+                }
+
+                startTimer() {
+                    this.clearTimer();
                     this.updateTimerDisplay();
 
-                    if (this.timeLeft <= 0) {
-                        this.handleTimeUp();
+                    this.timer = setInterval(() => {
+                        this.timeRemaining--;
+                        this.updateTimerDisplay();
+
+                        if (this.timeRemaining <= 0) {
+                            this.handleTimeout();
+                        }
+                    }, 1000);
+                }
+
+                updateTimerDisplay() {
+                    this.timerElement.textContent = this.timeRemaining;
+
+                    // Update timer styling based on remaining time
+                    const percentage =
+                        this.timeRemaining /
+                        Math.max(
+                            this.config.timeLimit,
+                            this.currentCard.prompt.length *
+                                this.config.timePerChar,
+                        );
+
+                    this.timerElement.classList.remove("warning", "danger");
+                    if (percentage <= 0.25) {
+                        this.timerElement.classList.add("danger");
+                    } else if (percentage <= 0.5) {
+                        this.timerElement.classList.add("warning");
                     }
-                }, 1000);
-            }
-
-            stopTimer() {
-                this.isTimerRunning = false;
-                if (this.timerInterval) {
-                    clearInterval(this.timerInterval);
-                }
-            }
-
-            handleTimeUp() {
-                this.isTimerRunning = false;
-                this.handleSubmitAnswer();
-            }
-
-            handleSubmitAnswer() {
-                if (this.activeCards.length === 0) return;
-
-                const currentCard = this.activeCards[this.currentCardIndex];
-                const isCorrect = this.userInput.trim().toLowerCase() === currentCard.back.toLowerCase();
-
-                this.lastAnswer = {
-                    correct: isCorrect,
-                    userAnswer: this.userInput.trim(),
-                    correctAnswer: currentCard.back
-                };
-
-                this.totalAttempts++;
-                if (isCorrect) {
-                    this.correctAttempts++;
                 }
 
-                const newProgress = { ...this.cardProgress };
-                if (isCorrect) {
-                    newProgress[currentCard.id] = (newProgress[currentCard.id] || 0) + 1;
-                } else {
-                    newProgress[currentCard.id] = 0;
-                }
-                this.cardProgress = newProgress;
-
-                // Set to reviewing state and show result
-                this.showResult = true;
-                this.gameState = 'reviewing';
-                this.stopTimer();
-
-                // Remove focus from input so global handler takes over
-                document.getElementById('answer-input').blur();
-                this.updateDisplay();
-            }
-
-            handleNextCard() {
-                const updatedCards = this.activeCards.filter(card => (this.cardProgress[card.id] || 0) < 5);
-
-                let cardsToAdd = [];
-                const availableCards = this.allCards.filter(card => !this.usedCardIds.has(card.id));
-
-                const allCurrentCardsCorrect = this.activeCards.every(card => (this.cardProgress[card.id] || 0) > 0);
-
-                if (updatedCards.length < 5 && availableCards.length > 0) {
-                    const cardsNeeded = Math.min(5 - updatedCards.length, availableCards.length);
-                    cardsToAdd = availableCards.slice(0, cardsNeeded);
-                } else if (allCurrentCardsCorrect && availableCards.length > 0) {
-                    cardsToAdd = [availableCards[0]];
+                clearTimer() {
+                    if (this.timer) {
+                        clearInterval(this.timer);
+                        this.timer = null;
+                    }
                 }
 
-                const newUsedCardIds = new Set(this.usedCardIds);
-                cardsToAdd.forEach(card => {
-                    newUsedCardIds.add(card.id);
-                    this.cardProgress[card.id] = 0;
-                });
-                this.usedCardIds = newUsedCardIds;
+                submitAnswer() {
+                    if (this.isPaused) return;
 
-                const newActiveCards = [...updatedCards, ...cardsToAdd];
-                this.activeCards = newActiveCards;
+                    const userAnswer = this.answerInput.value.trim();
 
-                if (newActiveCards.length === 0) {
-                    this.gameState = 'completed';
-                    this.updateDisplay();
-                    return;
-                }
+                    if (userAnswer === "") {
+                        this.showFeedback(
+                            "Please enter an answer",
+                            "incorrect",
+                        );
+                        return;
+                    }
 
-                let nextIndex = this.currentCardIndex;
-                if (nextIndex >= newActiveCards.length) {
-                    nextIndex = 0;
-                } else if (updatedCards.length === this.activeCards.length) {
-                    nextIndex = (nextIndex + 1) % newActiveCards.length;
-                }
+                    this.clearTimer();
+                    this.currentCard.totalAttempts++;
+                    this.totalAttempts++;
 
-                this.currentCardIndex = nextIndex;
-                this.userInput = '';
-                this.showResult = false;
+                    const isCorrect = this.checkAnswer(
+                        userAnswer,
+                        this.currentCard.answers,
+                    );
 
-                // Start the next round
-                this.startAnswering();
-            }
-
-            updateDisplay() {
-                this.updateStats();
-                this.updateVisibility();
-                this.updateProgressDots();
-                this.updateTimerDisplay();
-
-                if (this.gameState === 'completed') {
-                    return;
-                }
-
-                if (this.activeCards.length > 0) {
-                    const currentCard = this.activeCards[this.currentCardIndex];
-                    document.getElementById('card-front').textContent = currentCard.front;
-                }
-
-                if (this.gameState === 'reviewing' && this.showResult) {
-                    this.updateResult();
-                }
-            }
-
-            updateStats() {
-                const percentCorrect = this.totalAttempts === 0 ? 0 : Math.round((this.correctAttempts / this.totalAttempts) * 100);
-                const cardsMastered = this.allCards.filter(card => (this.cardProgress[card.id] || 0) >= 5).length;
-
-                document.getElementById('percent-correct').textContent = percentCorrect;
-                document.getElementById('cards-mastered').textContent = cardsMastered;
-            }
-
-            updateVisibility() {
-                const elements = {
-                    'waiting-state': this.gameState === 'waiting',
-                    'card-display': this.gameState !== 'waiting' && this.gameState !== 'completed' && this.gameState !== 'loading',
-                    'timer': this.gameState === 'answering',
-                    'input-section': this.gameState === 'answering' && !this.showResult,
-                    'result-section': this.gameState === 'reviewing' && this.showResult,
-                    'progress-dots': this.gameState !== 'waiting' && this.gameState !== 'completed' && this.gameState !== 'loading',
-                    'waiting-message': this.gameState === 'waiting',
-                    'completion-screen': this.gameState === 'completed'
-                };
-
-                Object.entries(elements).forEach(([id, show]) => {
-                    const element = document.getElementById(id);
-                    if (show) {
-                        element.classList.remove('hidden');
+                    if (isCorrect) {
+                        this.handleCorrectAnswer();
                     } else {
-                        element.classList.add('hidden');
+                        this.handleIncorrectAnswer();
                     }
-                });
 
-                // Show loading message
-                if (this.gameState === 'loading') {
-                    const waitingCard = document.getElementById('waiting-state');
-                    waitingCard.innerHTML = `
-                        <div class="card-front">Loading flashcards...</div>
-                        <div class="card-subtitle">Please wait</div>
-                    `;
-                    waitingCard.classList.remove('hidden');
+                    this.updateStats();
+                    this.pauseForFeedback();
                 }
-            }
 
-            updateProgressDots() {
-                const dotsContainer = document.getElementById('progress-dots');
-                dotsContainer.innerHTML = '';
+                checkAnswer(userAnswer, correctAnswers) {
+                    const normalizedUserAnswer = userAnswer
+                        .toLowerCase()
+                        .trim();
+                    return correctAnswers.some(
+                        (answer) =>
+                            answer.toLowerCase().trim() ===
+                            normalizedUserAnswer,
+                    );
+                }
 
-                this.activeCards.forEach((card, index) => {
-                    const dot = document.createElement('div');
-                    dot.className = 'progress-dot';
-                    if (index === this.currentCardIndex) {
-                        dot.classList.add('active');
+                handleCorrectAnswer() {
+                    this.currentCard.consecutiveCorrect++;
+                    this.currentCard.correctAttempts++;
+                    this.correctAttempts++;
+
+                    this.playAudioFeedback("correct");
+                    this.showFeedback("Correct!", "correct");
+                    this.addVisualFeedback("pulse");
+
+                    if (
+                        this.currentCard.consecutiveCorrect >=
+                        this.config.masteryRequirement
+                    ) {
+                        this.masterCard();
                     }
-                    dotsContainer.appendChild(dot);
-                });
-            }
+                }
 
-            updateTimerDisplay() {
-                const timerDisplay = document.getElementById('timer-display');
-                const mins = Math.floor(this.timeLeft / 60);
-                const secs = this.timeLeft % 60;
-                timerDisplay.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+                handleIncorrectAnswer() {
+                    this.currentCard.consecutiveCorrect = 0;
 
-                if (this.timeLeft <= 5) {
-                    timerDisplay.classList.add('timer-urgent');
-                } else {
-                    timerDisplay.classList.remove('timer-urgent');
+                    this.playAudioFeedback("incorrect");
+                    const correctAnswer = this.currentCard.answers[0];
+                    this.showFeedback(
+                        `Incorrect. The answer is: ${correctAnswer}`,
+                        "incorrect",
+                    );
+                    this.addVisualFeedback("shake");
+                }
+
+                handleTimeout() {
+                    this.clearTimer();
+                    this.currentCard.totalAttempts++;
+                    this.totalAttempts++;
+                    this.currentCard.consecutiveCorrect = 0;
+
+                    this.playAudioFeedback("timeout");
+                    const correctAnswer = this.currentCard.answers[0];
+                    this.showFeedback(
+                        `Time's up! The answer is: ${correctAnswer}`,
+                        "timeout",
+                    );
+                    this.addVisualFeedback("shake");
+
+                    this.updateStats();
+                    this.pauseForFeedback();
+                }
+
+                masterCard() {
+                    this.masteredCards.push(this.currentCard);
+                    this.cardsInPlay.splice(this.currentCardIndex, 1);
+                    this.currentCardIndex--; // Adjust index since we removed a card
+
+                    this.showFeedback("Mastered! 🎉", "correct");
+
+                    if (this.masteredCards.length === this.cards.length) {
+                        setTimeout(() => {
+                            this.finishQuiz();
+                        }, 2000);
+                    }
+                }
+
+                pauseForFeedback() {
+                    this.isPaused = true;
+                    this.answerInput.disabled = true;
+                    this.gameState = "paused";
+                    this.nextBtn.classList.remove("hidden");
+                    this.nextBtn.disabled = false;
+                }
+
+                nextCard() {
+                    this.isPaused = false;
+                    this.gameState = "playing";
+                    this.nextBtn.classList.add("hidden");
+                    this.currentCardIndex++;
+                    this.displayCurrentCard();
+                }
+
+                checkRoundComplete() {
+                    // Check if we need to add more cards
+                    const availableCards = this.cards.filter(
+                        (card) =>
+                            card.consecutiveCorrect <
+                                this.config.masteryRequirement &&
+                            !this.cardsInPlay.includes(card),
+                    );
+
+                    if (
+                        this.cardsInPlay.length < this.config.initialCards &&
+                        availableCards.length > 0
+                    ) {
+                        this.cardsInPlay.push(availableCards[0]);
+                    }
+
+                    if (this.cardsInPlay.length === 0) {
+                        this.finishQuiz();
+                        return;
+                    }
+
+                    // Shuffle and restart round
+                    this.shuffleArray(this.cardsInPlay);
+                    this.currentCardIndex = 0;
+                    this.updateProgress();
+                    this.displayCurrentCard();
+                }
+
+                finishQuiz() {
+                    this.gameState = "finished";
+                    this.clearTimer();
+
+                    const finalPercent =
+                        this.totalAttempts > 0
+                            ? Math.round(
+                                  (this.correctAttempts / this.totalAttempts) *
+                                      100,
+                              )
+                            : 0;
+
+                    this.finalPercentElement.textContent = `${finalPercent}%`;
+                    this.finalMasteredElement.textContent =
+                        this.masteredCards.length;
+
+                    this.showScreen("finished");
+                }
+
+                resetGame() {
+                    this.clearTimer();
+
+                    // Reset all card states
+                    this.cards.forEach((card) => {
+                        card.consecutiveCorrect = 0;
+                        card.totalAttempts = 0;
+                        card.correctAttempts = 0;
+                    });
+
+                    // Reset game state
+                    this.cardsInPlay = [];
+                    this.masteredCards = [];
+                    this.currentCardIndex = 0;
+                    this.currentCard = null;
+                    this.totalAttempts = 0;
+                    this.correctAttempts = 0;
+                    this.isPaused = false;
+                    this.gameState = "start";
+
+                    this.showScreen("start");
+                    this.updateStartScreen();
+                }
+
+                showScreen(screen) {
+                    this.startScreen.classList.add("hidden");
+                    this.quizScreen.classList.add("hidden");
+                    this.finishedScreen.classList.add("hidden");
+
+                    switch (screen) {
+                        case "start":
+                            this.startScreen.classList.remove("hidden");
+                            break;
+                        case "quiz":
+                            this.quizScreen.classList.remove("hidden");
+                            break;
+                        case "finished":
+                            this.finishedScreen.classList.remove("hidden");
+                            break;
+                    }
+                }
+
+                showFeedback(message, type) {
+                    this.feedbackElement.textContent = message;
+                    this.feedbackElement.className = `feedback ${type}`;
+                    this.feedbackElement.classList.remove("hidden");
+                }
+
+                hideFeedback() {
+                    this.feedbackElement.classList.add("hidden");
+                }
+
+                updateStats() {
+                    const percentCorrect =
+                        this.totalAttempts > 0
+                            ? Math.round(
+                                  (this.correctAttempts / this.totalAttempts) *
+                                      100,
+                              )
+                            : 0;
+
+                    this.percentCorrectElement.textContent = `${percentCorrect}%`;
+                    this.cardsMasteredElement.textContent =
+                        this.masteredCards.length;
+                    this.cardsInPlayElement.textContent =
+                        this.cardsInPlay.length;
+                }
+
+                updateProgress() {
+                    const progress =
+                        this.cards.length > 0
+                            ? (this.masteredCards.length / this.cards.length) *
+                              100
+                            : 0;
+                    this.progressFill.style.width = `${progress}%`;
+                }
+
+                updateCardInfo() {
+                    this.cardInfo.textContent = `Card ${this.currentCardIndex + 1} of ${this.cardsInPlay.length}`;
+                }
+
+                playAudioFeedback(type) {
+                    // Simple audio feedback using Web Audio API
+                    try {
+                        const audioContext = new (window.AudioContext ||
+                            window.webkitAudioContext)();
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+
+                        let frequency;
+                        switch (type) {
+                            case "correct":
+                                frequency = 800; // High pleasant tone
+                                break;
+                            case "incorrect":
+                                frequency = 200; // Low tone
+                                break;
+                            case "timeout":
+                                frequency = 300; // Medium tone
+                                break;
+                        }
+
+                        oscillator.frequency.value = frequency;
+                        gainNode.gain.setValueAtTime(
+                            0.1,
+                            audioContext.currentTime,
+                        );
+                        gainNode.gain.exponentialRampToValueAtTime(
+                            0.01,
+                            audioContext.currentTime + 0.1,
+                        );
+
+                        oscillator.start();
+                        oscillator.stop(audioContext.currentTime + 0.1);
+                    } catch (error) {
+                        console.log("Audio feedback not available:", error);
+                    }
+                }
+
+                addVisualFeedback(type) {
+                    this.promptElement.classList.add(type);
+                    setTimeout(() => {
+                        this.promptElement.classList.remove(type);
+                    }, 500);
+                }
+
+                shuffleArray(array) {
+                    for (let i = array.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [array[i], array[j]] = [array[j], array[i]];
+                    }
                 }
             }
 
-            updateResult() {
-                const resultBox = document.getElementById('result-box');
-                const resultTitle = document.getElementById('result-title');
-                const resultDetails = document.getElementById('result-details');
-
-                if (this.lastAnswer.correct) {
-                    resultBox.className = 'result-box result-correct';
-                    resultTitle.textContent = '✓ Correct!';
-                    resultDetails.innerHTML = '';
-                } else {
-                    resultBox.className = 'result-box result-incorrect';
-                    resultTitle.textContent = '✗ Incorrect';
-                    resultDetails.innerHTML = `
-                        <div>Your answer: <span class="result-answer">${this.lastAnswer.userAnswer}</span></div>
-                        <div>Correct answer: <span class="result-answer">${this.lastAnswer.correctAnswer}</span></div>
-                    `;
-                }
-            }
-        }
-
-        // Initialize the app when the page loads
-        document.addEventListener('DOMContentLoaded', () => {
-            new FlashcardApp();
-        });
-    </script>
-</body>
+            // Initialize the quiz when the page loads
+            document.addEventListener("DOMContentLoaded", () => {
+                new FlashCardQuiz();
+            });
+        </script>
+    </body>
 </html>
