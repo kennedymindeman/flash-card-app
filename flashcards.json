@@ -1,0 +1,170 @@
+[
+  {
+    "front": "Hi (casual)",
+    "back": "안녕"
+  },
+  {
+    "front": "Hello (polite)",
+    "back": "안녕하세요"
+  },
+  {
+    "front": "Nice to meet you",
+    "back": "만나서 반갑습니다"
+  },
+  {
+    "front": "Yes (casual)",
+    "back": "응"
+  },
+  {
+    "front": "Yeah (casual)",
+    "back": "어"
+  },
+  {
+    "front": "Yes (polite)",
+    "back": "네"
+  },
+  {
+    "front": "Yes (formal)",
+    "back": "예"
+  },
+  {
+    "front": "No (casual)",
+    "back": "아니"
+  },
+  {
+    "front": "No (polite)",
+    "back": "아니요"
+  },
+  {
+    "front": "Good, I like it",
+    "back": "좋습니다"
+  },
+  {
+    "front": "I don't like it",
+    "back": "싫습니다"
+  },
+  {
+    "front": "I don't know",
+    "back": "모릅니다"
+  },
+  {
+    "front": "Thanks (casual)",
+    "back": "고마워"
+  },
+  {
+    "front": "Thanks (polite)",
+    "back": "고마워요"
+  },
+  {
+    "front": "Thank you (formal)",
+    "back": "고맙습니다"
+  },
+  {
+    "front": "Thank you (formal)",
+    "back": "감사합니다"
+  },
+  {
+    "front": "Sorry (casual)",
+    "back": "미안해"
+  },
+  {
+    "front": "Sorry (polite)",
+    "back": "미안해요"
+  },
+  {
+    "front": "Sorry (formal)",
+    "back": "죄송합니다"
+  },
+  {
+    "front": "No problem",
+    "back": "아닙니다"
+  },
+  {
+    "front": "I'm okay",
+    "back": "괜찮습니다"
+  },
+  {
+    "front": "Excuse me",
+    "back": "실례합니다"
+  },
+  {
+    "front": "Please",
+    "back": "부탁합니다"
+  },
+  {
+    "front": "Give me",
+    "back": "주세요"
+  },
+  {
+    "front": "Thanks for the meal (before)",
+    "back": "잘 먹겠습니다"
+  },
+  {
+    "front": "Thanks for the meal (after)",
+    "back": "잘 먹었습니다"
+  },
+  {
+    "front": "Goodbye (they go)",
+    "back": "안녕히 가세요"
+  },
+  {
+    "front": "Goodbye (they stay)",
+    "back": "안녕히 계세요"
+  },
+  {
+    "front": "Happy birthday",
+    "back": "생일 축하합니다"
+  },
+  {
+    "front": "This one",
+    "back": "이것"
+  },
+  {
+    "front": "That one",
+    "back": "저것"
+  },
+  {
+    "front": "Mom (casual)",
+    "back": "엄마"
+  },
+  {
+    "front": "Mother (polite)",
+    "back": "어머니"
+  },
+  {
+    "front": "Dad (casual)",
+    "back": "아빠"
+  },
+  {
+    "front": "Father (polite)",
+    "back": "아버지"
+  },
+  {
+    "front": "Water",
+    "back": "물"
+  },
+  {
+    "front": "Bus",
+    "back": "버스"
+  },
+  {
+    "front": "Subway",
+    "back": "지하철"
+  },
+  {
+    "front": "Taxi",
+    "back": "택시"
+  },
+  {
+    "front": "Travel",
+    "back": "여행"
+  },
+  {
+    "front": "Work",
+    "back": "일"
+  },
+  {
+    "front": "Meal",
+    "back": "밥"
+  }
+]
