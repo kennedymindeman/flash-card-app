@@ -230,5 +230,77 @@
   {
     "prompt": "Grandfather",
     "answers": ["할아버지"]
+  },
+  {
+    "prompt": "Anxiety, worry",
+    "answers": ["걱정"]
+  },
+  {
+    "prompt": "Anger",
+    "answers": ["화"]
+  },
+  {
+    "prompt": "Feeling",
+    "answers": ["기분"]
+  },
+  {
+    "prompt": "Glad, happy",
+    "answers": ["기쁘다"]
+  },
+  {
+    "prompt": "Embarrassed, ashamed",
+    "answers": ["창피하다"]
+  },
+  {
+    "prompt": "Surprised, amazed",
+    "answers": ["놀라다"]
+  },
+  {
+    "prompt": "Happiness",
+    "answers": ["행복"]
+  },
+  {
+    "prompt": "Enjoyable, cheerful",
+    "answers": ["즐겁다"]
+  },
+  {
+    "prompt": "Scary",
+    "answers": ["무섭다"]
+  },
+  {
+    "prompt": "Envious",
+    "answers": ["부럽다"]
+  },
+  {
+    "prompt": "Uneasiness, restlessness",
+    "answers": ["불안"]
+  },
+  {
+    "prompt": "Love",
+    "answers": ["사랑"]
+  },
+  {
+    "prompt": "Smile, Laugh",
+    "answers": ["웃다"]
+  },
+  {
+    "prompt": "Cry",
+    "answers": ["울다"]
+  },
+  {
+    "prompt": "Sad",
+    "answers": ["슬프다"]
+  },
+  {
+    "prompt": "Excited",
+    "answers": ["신나다"]
+  },
+  {
+    "prompt": "Depressed",
+    "answers": ["우울하다"]
+  },
+  {
+    "prompt": "Lonely",
+    "answers": ["외롭다"]
   }
 ]
