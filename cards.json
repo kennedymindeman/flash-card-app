@@ -302,5 +302,85 @@
   {
     "prompt": "Lonely",
     "answers": ["외롭다"]
+  },
+  {
+    "prompt": "Personality",
+    "answers": ["성격"]
+  },
+  {
+    "prompt": "Strong",
+    "answers": ["강하다"]
+  },
+  {
+    "prompt": "Activity",
+    "answers": ["활동"]
+  },
+  {
+    "prompt": "Lie",
+    "answers": ["거짓말"]
+  },
+  {
+    "prompt": "Fear",
+    "answers": ["겁"]
+  },
+  {
+    "prompt": "Lazy",
+    "answers": ["게으르다"]
+  },
+  {
+    "prompt": "Kindness",
+    "answers": ["친절"]
+  },
+  {
+    "prompt": "Joke",
+    "answers": ["농담"]
+  },
+  {
+    "prompt": "Different",
+    "answers": ["다르다"]
+  },
+  {
+    "prompt": "Good-hearted",
+    "answers": ["착하다"]
+  },
+  {
+    "prompt": "Embarrassed, shy",
+    "answers": ["부끄럽다"]
+  },
+  {
+    "prompt": "Diligent",
+    "answers": ["부지런하다"]
+  },
+  {
+    "prompt": "Unfriendly, unkind",
+    "answers": ["불친절하다"]
+  },
+  {
+    "prompt": "Thought",
+    "answers": ["생각"]
+  },
+  {
+    "prompt": "Hurry, rush",
+    "answers": ["서두르다"]
+  },
+  {
+    "prompt": "Habit",
+    "answers": ["습관"]
+  },
+  {
+    "prompt": "Endure",
+    "answers": ["참다"]
+  },
+  {
+    "prompt": "Popularity",
+    "answers": ["인기"]
+  },
+  {
+    "prompt": "Boast, brag",
+    "answers": ["자랑"]
+  },
+  {
+    "prompt": "Confidence",
+    "answers": ["자신감"]
   }
 ]
