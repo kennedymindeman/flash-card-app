@@ -98,14 +98,35 @@ class FlashCardQuiz {
   }
 
   setupEventListeners() {
-    // Global key listener for Enter key
+    let isComposing = false;
+
+    // Composition event listeners for Korean/IME input
+    this.answerInput.addEventListener("compositionstart", () => {
+      isComposing = true;
+    });
+
+    this.answerInput.addEventListener("compositionend", () => {
+      isComposing = false;
+    });
+
+    // Specific handler for the answer input
+    this.answerInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !isComposing) {
+        e.preventDefault();
+        if (this.gameState === "playing" && !this.isPaused) {
+          this.submitAnswer();
+        }
+      }
+    });
+
+    // Global listener for other screens (but NOT when focused on answer input)
     document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
+      if (e.key === "Enter" && e.target !== this.answerInput) {
         this.handleEnterKey();
       }
     });
 
-    // Answer input listener
+    // Answer input listener for other input events
     this.answerInput.addEventListener("input", (e) => {
       if (this.gameState === "playing" && !this.isPaused) {
         // Auto-submit could be added here if desired
@@ -121,7 +142,6 @@ class FlashCardQuiz {
       this.resetGame();
     });
   }
-
   handleEnterKey() {
     switch (this.gameState) {
       case "start":
