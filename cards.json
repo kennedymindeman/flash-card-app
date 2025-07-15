@@ -162,5 +162,73 @@
   {
     "prompt": "Meal",
     "answers": ["밥"]
+  },
+  {
+    "prompt": "Family",
+    "answers": ["가족"]
+  },
+  {
+    "prompt": "Grandmother",
+    "answers": ["할머니"]
+  },
+  {
+    "prompt": "I, me",
+    "answers": ["나"]
+  },
+  {
+    "prompt": "Older brother (male to male)",
+    "answers": ["형"]
+  },
+  {
+    "prompt": "Husband",
+    "answers": ["남편"]
+  },
+  {
+    "prompt": "Older sister (male to female)",
+    "answers": ["누나"]
+  },
+  {
+    "prompt": "Younger sibling",
+    "answers": ["동생"]
+  },
+  {
+    "prompt": "Daughter",
+    "answers": ["딸"]
+  },
+  {
+    "prompt": "Kid, child",
+    "answers": ["아이"]
+  },
+  {
+    "prompt": "We, our",
+    "answers": ["우리"]
+  },
+  {
+    "prompt": "Older sister (female to female)",
+    "answers": ["언니"]
+  },
+  {
+    "prompt": "We, our (honorific)",
+    "answers": ["저희"]
+  },
+  {
+    "prompt": "Older brother (female to male)",
+    "answers": ["오빠"]
+  },
+  {
+    "prompt": "Baby",
+    "answers": ["아기"]
+  },
+  {
+    "prompt": "Wife",
+    "answers": ["아내"]
+  },
+  {
+    "prompt": "Son",
+    "answers": ["아들"]
+  },
+  {
+    "prompt": "Grandfather",
+    "answers": ["할아버지"]
   }
 ]
