@@ -1,0 +1,78 @@
+[
+  {
+    "prompt": "Cute",
+    "answers": ["귀엽다"]
+  },
+  {
+    "prompt": "Long",
+    "answers": ["길다"]
+  },
+  {
+    "prompt": "Slim, thin",
+    "answers": ["날씬하다"]
+  },
+  {
+    "prompt": "Tall, big",
+    "answers": ["크다"]
+  },
+  {
+    "prompt": "Diet",
+    "answers": ["다이어트"]
+  },
+  {
+    "prompt": "Strong, robust",
+    "answers": ["튼튼하다"]
+  },
+  {
+    "prompt": "Weight",
+    "answers": ["몸무게"]
+  },
+  {
+    "prompt": "Same",
+    "answers": ["똑같다"]
+  },
+  {
+    "prompt": "Fat, overweight",
+    "answers": ["뚱뚱하다"]
+  },
+  {
+    "prompt": "Skinny, gaunt",
+    "answers": ["마르다"]
+  },
+  {
+    "prompt": "Appearance",
+    "answers": ["모습"]
+  },
+  {
+    "prompt": "Height",
+    "answers": ["키"]
+  },
+  {
+    "prompt": "Voice",
+    "answers": ["목소리"]
+  },
+  {
+    "prompt": "Similar",
+    "answers": ["비슷하다"]
+  },
+  {
+    "prompt": "Short",
+    "answers": ["짧다"]
+  },
+  {
+    "prompt": "Young",
+    "answers": ["젊다"]
+  },
+  {
+    "prompt": "Pretty",
+    "answers": ["예쁘다"]
+  },
+  {
+    "prompt": "Small",
+    "answers": ["작다"]
+  },
+  {
+    "prompt": "Handsome, good looking",
+    "answers": ["잘생기다"]
+  }
+]
