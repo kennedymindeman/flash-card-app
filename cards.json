@@ -1,39 +1,19 @@
 [
   {
-    "prompt": "Hi (casual)",
+    "prompt": "Hi",
     "answers": ["안녕"]
-  },
-  {
-    "prompt": "Hello (polite)",
-    "answers": ["안녕하세요"]
   },
   {
     "prompt": "Nice to meet you",
     "answers": ["만나서 반갑습니다"]
   },
   {
-    "prompt": "Yes (casual)",
-    "answers": ["응"]
+    "prompt": "Yes",
+    "answers": ["응", "어", "네", "예"]
   },
   {
-    "prompt": "Yeah (casual)",
-    "answers": ["어"]
-  },
-  {
-    "prompt": "Yes (polite)",
-    "answers": ["네"]
-  },
-  {
-    "prompt": "Yes (formal)",
-    "answers": ["예"]
-  },
-  {
-    "prompt": "No (casual)",
-    "answers": ["아니"]
-  },
-  {
-    "prompt": "No (polite)",
-    "answers": ["아니요"]
+    "prompt": "No",
+    "answers": ["아니", "아니요"]
   },
   {
     "prompt": "Good, I like it",
@@ -48,36 +28,16 @@
     "answers": ["모릅니다"]
   },
   {
-    "prompt": "Thanks (casual)",
-    "answers": ["고마워"]
+    "prompt": "Thanks",
+    "answers": ["고마워", "고마워요", "고맙습니다", "감사합니다"]
   },
   {
-    "prompt": "Thanks (polite)",
-    "answers": ["고마워요"]
+    "prompt": "Sorry",
+    "answers": ["미안해", "미안해요", "죄송합니다"]
   },
   {
-    "prompt": "Thank you (formal)",
-    "answers": ["고맙습니다", "감사합니다"]
-  },
-  {
-    "prompt": "Sorry (casual)",
-    "answers": ["미안해"]
-  },
-  {
-    "prompt": "Sorry (polite)",
-    "answers": ["미안해요"]
-  },
-  {
-    "prompt": "Sorry (formal)",
-    "answers": ["죄송합니다"]
-  },
-  {
-    "prompt": "No problem",
-    "answers": ["아닙니다"]
-  },
-  {
-    "prompt": "I'm okay",
-    "answers": ["괜찮습니다"]
+    "prompt": "No problem, I'm okay",
+    "answers": ["아닙니다", "괜찮습니다"]
   },
   {
     "prompt": "Excuse me",
@@ -92,11 +52,11 @@
     "answers": ["주세요"]
   },
   {
-    "prompt": "Thanks for the meal (before)",
+    "prompt": "Thanks for the meal (before eating)",
     "answers": ["잘 먹겠습니다"]
   },
   {
-    "prompt": "Thanks for the meal (after)",
+    "prompt": "Thanks for the meal (after eating)",
     "answers": ["잘 먹었습니다"]
   },
   {
@@ -112,6 +72,18 @@
     "answers": ["생일 축하합니다"]
   },
   {
+    "prompt": "Where is",
+    "answers": ["어디에 있습니까"]
+  },
+  {
+    "prompt": "Mom/mother",
+    "answers": ["엄마", "어머니"]
+  },
+  {
+    "prompt": "Dad/father",
+    "answers": ["아빠", "아버지"]
+  },
+  {
     "prompt": "This one",
     "answers": ["이것"]
   },
@@ -120,20 +92,24 @@
     "answers": ["저것"]
   },
   {
-    "prompt": "Mom (casual)",
-    "answers": ["엄마"]
+    "prompt": "Job",
+    "answers": ["직업"]
   },
   {
-    "prompt": "Mother (polite)",
-    "answers": ["어머니"]
+    "prompt": "Subway",
+    "answers": ["지하철"]
   },
   {
-    "prompt": "Dad (casual)",
-    "answers": ["아빠"]
+    "prompt": "Restaurant",
+    "answers": ["식당"]
   },
   {
-    "prompt": "Father (polite)",
-    "answers": ["아버지"]
+    "prompt": "Work",
+    "answers": ["일"]
+  },
+  {
+    "prompt": "Toilet/bathroom",
+    "answers": ["화장실"]
   },
   {
     "prompt": "Water",
@@ -144,10 +120,6 @@
     "answers": ["버스"]
   },
   {
-    "prompt": "Subway",
-    "answers": ["지하철"]
-  },
-  {
     "prompt": "Taxi",
     "answers": ["택시"]
   },
@@ -156,231 +128,7 @@
     "answers": ["여행"]
   },
   {
-    "prompt": "Work",
-    "answers": ["일"]
-  },
-  {
     "prompt": "Meal",
     "answers": ["밥"]
-  },
-  {
-    "prompt": "Family",
-    "answers": ["가족"]
-  },
-  {
-    "prompt": "Grandmother",
-    "answers": ["할머니"]
-  },
-  {
-    "prompt": "I, me",
-    "answers": ["나"]
-  },
-  {
-    "prompt": "Older brother (male to male)",
-    "answers": ["형"]
-  },
-  {
-    "prompt": "Husband",
-    "answers": ["남편"]
-  },
-  {
-    "prompt": "Older sister (male to female)",
-    "answers": ["누나"]
-  },
-  {
-    "prompt": "Younger sibling",
-    "answers": ["동생"]
-  },
-  {
-    "prompt": "Daughter",
-    "answers": ["딸"]
-  },
-  {
-    "prompt": "Kid, child",
-    "answers": ["아이"]
-  },
-  {
-    "prompt": "We, our",
-    "answers": ["우리"]
-  },
-  {
-    "prompt": "Older sister (female to female)",
-    "answers": ["언니"]
-  },
-  {
-    "prompt": "We, our (honorific)",
-    "answers": ["저희"]
-  },
-  {
-    "prompt": "Older brother (female to male)",
-    "answers": ["오빠"]
-  },
-  {
-    "prompt": "Baby",
-    "answers": ["아기"]
-  },
-  {
-    "prompt": "Wife",
-    "answers": ["아내"]
-  },
-  {
-    "prompt": "Son",
-    "answers": ["아들"]
-  },
-  {
-    "prompt": "Grandfather",
-    "answers": ["할아버지"]
-  },
-  {
-    "prompt": "Anxiety, worry",
-    "answers": ["걱정"]
-  },
-  {
-    "prompt": "Anger",
-    "answers": ["화"]
-  },
-  {
-    "prompt": "Feeling",
-    "answers": ["기분"]
-  },
-  {
-    "prompt": "Glad, happy",
-    "answers": ["기쁘다"]
-  },
-  {
-    "prompt": "Embarrassed, ashamed",
-    "answers": ["창피하다"]
-  },
-  {
-    "prompt": "Surprised, amazed",
-    "answers": ["놀라다"]
-  },
-  {
-    "prompt": "Happiness",
-    "answers": ["행복"]
-  },
-  {
-    "prompt": "Enjoyable, cheerful",
-    "answers": ["즐겁다"]
-  },
-  {
-    "prompt": "Scary",
-    "answers": ["무섭다"]
-  },
-  {
-    "prompt": "Envious",
-    "answers": ["부럽다"]
-  },
-  {
-    "prompt": "Uneasiness, restlessness",
-    "answers": ["불안"]
-  },
-  {
-    "prompt": "Love",
-    "answers": ["사랑"]
-  },
-  {
-    "prompt": "Smile, Laugh",
-    "answers": ["웃다"]
-  },
-  {
-    "prompt": "Cry",
-    "answers": ["울다"]
-  },
-  {
-    "prompt": "Sad",
-    "answers": ["슬프다"]
-  },
-  {
-    "prompt": "Excited",
-    "answers": ["신나다"]
-  },
-  {
-    "prompt": "Depressed",
-    "answers": ["우울하다"]
-  },
-  {
-    "prompt": "Lonely",
-    "answers": ["외롭다"]
-  },
-  {
-    "prompt": "Personality",
-    "answers": ["성격"]
-  },
-  {
-    "prompt": "Strong",
-    "answers": ["강하다"]
-  },
-  {
-    "prompt": "Activity",
-    "answers": ["활동"]
-  },
-  {
-    "prompt": "Lie",
-    "answers": ["거짓말"]
-  },
-  {
-    "prompt": "Fear",
-    "answers": ["겁"]
-  },
-  {
-    "prompt": "Lazy",
-    "answers": ["게으르다"]
-  },
-  {
-    "prompt": "Kindness",
-    "answers": ["친절"]
-  },
-  {
-    "prompt": "Joke",
-    "answers": ["농담"]
-  },
-  {
-    "prompt": "Different",
-    "answers": ["다르다"]
-  },
-  {
-    "prompt": "Good-hearted",
-    "answers": ["착하다"]
-  },
-  {
-    "prompt": "Embarrassed, shy",
-    "answers": ["부끄럽다"]
-  },
-  {
-    "prompt": "Diligent",
-    "answers": ["부지런하다"]
-  },
-  {
-    "prompt": "Unfriendly, unkind",
-    "answers": ["불친절하다"]
-  },
-  {
-    "prompt": "Thought",
-    "answers": ["생각"]
-  },
-  {
-    "prompt": "Hurry, rush",
-    "answers": ["서두르다"]
-  },
-  {
-    "prompt": "Habit",
-    "answers": ["습관"]
-  },
-  {
-    "prompt": "Endure",
-    "answers": ["참다"]
-  },
-  {
-    "prompt": "Popularity",
-    "answers": ["인기"]
-  },
-  {
-    "prompt": "Boast, brag",
-    "answers": ["자랑"]
-  },
-  {
-    "prompt": "Confidence",
-    "answers": ["자신감"]
   }
 ]
