@@ -130,5 +130,77 @@
   {
     "prompt": "Meal",
     "answers": ["밥"]
+  },
+  {
+    "prompt": "Marriage",
+    "answers": ["결혼"]
+  },
+  {
+    "prompt": "Worry",
+    "answers": ["고민"]
+  },
+  {
+    "prompt": "Born",
+    "answers": ["태어나다"]
+  },
+  {
+    "prompt": "Employment, getting a job",
+    "answers": ["취직"]
+  },
+  {
+    "prompt": "Dream",
+    "answers": ["꿈"]
+  },
+  {
+    "prompt": "Age",
+    "answers": ["나이"]
+  },
+  {
+    "prompt": "Date",
+    "answers": ["데이트하다"]
+  },
+  {
+    "prompt": "Die",
+    "answers": ["죽다"]
+  },
+  {
+    "prompt": "Become",
+    "answers": ["되다"]
+  },
+  {
+    "prompt": "Wish",
+    "answers": ["바라다"]
+  },
+  {
+    "prompt": "Luck",
+    "answers": ["운"]
+  },
+  {
+    "prompt": "Birthday (honorific)",
+    "answers": ["생신"]
+  },
+  {
+    "prompt": "Birthday",
+    "answers": ["생일"]
+  },
+  {
+    "prompt": "Gender",
+    "answers": ["성별"]
+  },
+  {
+    "prompt": "Feast",
+    "answers": ["잔치"]
+  },
+  {
+    "prompt": "Child",
+    "answers": ["어린이"]
+  },
+  {
+    "prompt": "Congratulations",
+    "answers": ["축하"]
+  },
+  {
+    "prompt": "Young",
+    "answers": ["어리다"]
   }
 ]
