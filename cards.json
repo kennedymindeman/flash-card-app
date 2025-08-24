@@ -202,5 +202,57 @@
   {
     "prompt": "Young",
     "answers": ["어리다"]
+  },
+  {
+    "prompt": "Tteokbokki (rice cakes)",
+    "answers": ["떡볶이"]
+  },
+  {
+    "prompt": "Gimbap (seaweed rice roll)",
+    "answers": ["김밥"]
+  },
+  {
+    "prompt": "Drink",
+    "answers": ["음료수"]
+  },
+  {
+    "prompt": "Menu",
+    "answers": ["메뉴"]
+  },
+  {
+    "prompt": "Serving",
+    "answers": ["인분"]
+  },
+  {
+    "prompt": "I'll order",
+    "answers": ["주세요"]
+  },
+  {
+    "prompt": "Tasty",
+    "answers": ["맛있다"]
+  },
+  {
+    "prompt": "Bad (taste)",
+    "answers": ["맛없다"]
+  },
+  {
+    "prompt": "Spicy",
+    "answers": ["맵다"]
+  },
+  {
+    "prompt": "Sweet",
+    "answers": ["달다"]
+  },
+  {
+    "prompt": "Bland",
+    "answers": ["싱겁다"]
+  },
+  {
+    "prompt": "Salty",
+    "answers": ["짜다"]
+  },
+  {
+    "prompt": "Bitter",
+    "answers": ["쓰다"]
   }
 ]
