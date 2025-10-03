@@ -318,13 +318,20 @@ class FlashCardQuiz {
     const isCorrect = this.checkAnswer(userAnswer, this.currentCard.answers);
 
     if (isCorrect) {
-      this.handleCorrectAnswer(alwaysShowAnswer);
+      if (alwaysShowAnswer) {
+        this.handleCorrectAnswer(true);
+        this.updateStats();
+        this.pauseForFeedback();
+      } else {
+        this.handleCorrectAnswer(false);
+        this.updateStats();
+        this.nextCard(); // Immediately go to next card
+      }
     } else {
       this.handleIncorrectAnswer();
+      this.updateStats();
+      this.pauseForFeedback();
     }
-
-    this.updateStats();
-    this.pauseForFeedback();
   }
 
   checkAnswer(userAnswer, correctAnswers) {
