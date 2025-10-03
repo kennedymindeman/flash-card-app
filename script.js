@@ -8,6 +8,8 @@ class FlashCardQuiz {
     };
 
     this.cards = [];
+    this.decks = {};
+    this.currentDeck = null;
     this.cardsInPlay = [];
     this.masteredCards = [];
     this.currentCardIndex = 0;
@@ -72,29 +74,56 @@ class FlashCardQuiz {
 
   async loadCards() {
     try {
-      // Load cards from cards.json
+      // Load decks from cards.json
       const response = await fetch("cards.json");
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      this.cards = await response.json();
+      const decks = await response.json();
+      this.decks = decks;
 
-      // Initialize card tracking
-      this.cards.forEach((card) => {
-        card.consecutiveCorrect = 0;
-        card.totalAttempts = 0;
-        card.correctAttempts = 0;
+      // Populate deck selector
+      const deckSelect = document.getElementById("deck-select");
+      deckSelect.innerHTML = "";
+      Object.keys(decks).forEach((deckName) => {
+        const option = document.createElement("option");
+        option.value = deckName;
+        option.textContent = deckName;
+        deckSelect.appendChild(option);
       });
 
-      console.log("Cards loaded:", this.cards.length);
+      // Default to first deck
+      this.setDeck(deckSelect.value);
+
+      deckSelect.addEventListener("change", () => {
+        this.setDeck(deckSelect.value);
+        this.updateStartScreen();
+      });
+
+      console.log("Decks loaded:", Object.keys(decks));
     } catch (error) {
       console.error("Error loading cards:", error);
-      // Fallback to empty array if loading fails
-      this.cards = [];
+      this.decks = {};
       alert(
         "Error loading flash cards. Please make sure cards.json is available.",
       );
     }
+  }
+
+  setDeck(deckName) {
+    this.currentDeck = deckName;
+    this.cards = this.decks[deckName] || [];
+    // Reset card tracking for new deck
+    this.cards.forEach((card) => {
+      card.consecutiveCorrect = 0;
+      card.totalAttempts = 0;
+      card.correctAttempts = 0;
+    });
+    this.masteredCards = [];
+    this.cardsInPlay = [];
+    this.currentCardIndex = 0;
+    this.totalAttempts = 0;
+    this.correctAttempts = 0;
   }
 
   setupEventListeners() {
@@ -175,6 +204,11 @@ class FlashCardQuiz {
       this.config.initialCards,
       this.cards.length,
     );
+    // Show current deck name if available
+    const deckSelect = document.getElementById("deck-select");
+    if (deckSelect && this.currentDeck) {
+      deckSelect.value = this.currentDeck;
+    }
   }
 
   startQuiz() {

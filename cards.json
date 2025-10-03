@@ -1,258 +1,63 @@
-[
-  {
-    "prompt": "Hi",
-    "answers": ["안녕"]
-  },
-  {
-    "prompt": "Nice to meet you",
-    "answers": ["만나서 반갑습니다"]
-  },
-  {
-    "prompt": "Yes",
-    "answers": ["응", "어", "네", "예"]
-  },
-  {
-    "prompt": "No",
-    "answers": ["아니", "아니요"]
-  },
-  {
-    "prompt": "Good, I like it",
-    "answers": ["좋습니다"]
-  },
-  {
-    "prompt": "I don't like it",
-    "answers": ["싫습니다"]
-  },
-  {
-    "prompt": "I don't know",
-    "answers": ["모릅니다"]
-  },
-  {
-    "prompt": "Thanks",
-    "answers": ["고마워", "고마워요", "고맙습니다", "감사합니다"]
-  },
-  {
-    "prompt": "Sorry",
-    "answers": ["미안해", "미안해요", "죄송합니다"]
-  },
-  {
-    "prompt": "No problem, I'm okay",
-    "answers": ["아닙니다", "괜찮습니다"]
-  },
-  {
-    "prompt": "Excuse me",
-    "answers": ["실례합니다"]
-  },
-  {
-    "prompt": "Please",
-    "answers": ["부탁합니다"]
-  },
-  {
-    "prompt": "Give me",
-    "answers": ["주세요"]
-  },
-  {
-    "prompt": "Thanks for the meal (before eating)",
-    "answers": ["잘 먹겠습니다"]
-  },
-  {
-    "prompt": "Thanks for the meal (after eating)",
-    "answers": ["잘 먹었습니다"]
-  },
-  {
-    "prompt": "Goodbye (they go)",
-    "answers": ["안녕히 가세요"]
-  },
-  {
-    "prompt": "Goodbye (they stay)",
-    "answers": ["안녕히 계세요"]
-  },
-  {
-    "prompt": "Happy birthday",
-    "answers": ["생일 축하합니다"]
-  },
-  {
-    "prompt": "Where is",
-    "answers": ["어디에 있습니까"]
-  },
-  {
-    "prompt": "Mom/mother",
-    "answers": ["엄마", "어머니"]
-  },
-  {
-    "prompt": "Dad/father",
-    "answers": ["아빠", "아버지"]
-  },
-  {
-    "prompt": "This one",
-    "answers": ["이것"]
-  },
-  {
-    "prompt": "That one",
-    "answers": ["저것"]
-  },
-  {
-    "prompt": "Job",
-    "answers": ["직업"]
-  },
-  {
-    "prompt": "Subway",
-    "answers": ["지하철"]
-  },
-  {
-    "prompt": "Restaurant",
-    "answers": ["식당"]
-  },
-  {
-    "prompt": "Work",
-    "answers": ["일"]
-  },
-  {
-    "prompt": "Toilet/bathroom",
-    "answers": ["화장실"]
-  },
-  {
-    "prompt": "Water",
-    "answers": ["물"]
-  },
-  {
-    "prompt": "Bus",
-    "answers": ["버스"]
-  },
-  {
-    "prompt": "Taxi",
-    "answers": ["택시"]
-  },
-  {
-    "prompt": "Travel",
-    "answers": ["여행"]
-  },
-  {
-    "prompt": "Meal",
-    "answers": ["밥"]
-  },
-  {
-    "prompt": "Marriage",
-    "answers": ["결혼"]
-  },
-  {
-    "prompt": "Worry",
-    "answers": ["고민"]
-  },
-  {
-    "prompt": "Born",
-    "answers": ["태어나다"]
-  },
-  {
-    "prompt": "Employment, getting a job",
-    "answers": ["취직"]
-  },
-  {
-    "prompt": "Dream",
-    "answers": ["꿈"]
-  },
-  {
-    "prompt": "Age",
-    "answers": ["나이"]
-  },
-  {
-    "prompt": "Date",
-    "answers": ["데이트하다"]
-  },
-  {
-    "prompt": "Die",
-    "answers": ["죽다"]
-  },
-  {
-    "prompt": "Become",
-    "answers": ["되다"]
-  },
-  {
-    "prompt": "Wish",
-    "answers": ["바라다"]
-  },
-  {
-    "prompt": "Luck",
-    "answers": ["운"]
-  },
-  {
-    "prompt": "Birthday (honorific)",
-    "answers": ["생신"]
-  },
-  {
-    "prompt": "Birthday",
-    "answers": ["생일"]
-  },
-  {
-    "prompt": "Gender",
-    "answers": ["성별"]
-  },
-  {
-    "prompt": "Feast",
-    "answers": ["잔치"]
-  },
-  {
-    "prompt": "Child",
-    "answers": ["어린이"]
-  },
-  {
-    "prompt": "Congratulations",
-    "answers": ["축하"]
-  },
-  {
-    "prompt": "Young",
-    "answers": ["어리다"]
-  },
-  {
-    "prompt": "Tteokbokki (rice cakes)",
-    "answers": ["떡볶이"]
-  },
-  {
-    "prompt": "Gimbap (seaweed rice roll)",
-    "answers": ["김밥"]
-  },
-  {
-    "prompt": "Drink",
-    "answers": ["음료수"]
-  },
-  {
-    "prompt": "Menu",
-    "answers": ["메뉴"]
-  },
-  {
-    "prompt": "Serving",
-    "answers": ["인분"]
-  },
-  {
-    "prompt": "I'll order",
-    "answers": ["주세요"]
-  },
-  {
-    "prompt": "Tasty",
-    "answers": ["맛있다"]
-  },
-  {
-    "prompt": "Bad (taste)",
-    "answers": ["맛없다"]
-  },
-  {
-    "prompt": "Spicy",
-    "answers": ["맵다"]
-  },
-  {
-    "prompt": "Sweet",
-    "answers": ["달다"]
-  },
-  {
-    "prompt": "Bland",
-    "answers": ["싱겁다"]
-  },
-  {
-    "prompt": "Salty",
-    "answers": ["짜다"]
-  },
-  {
-    "prompt": "Bitter",
-    "answers": ["쓰다"]
-  }
-]
+{
+  "Test Deck": [
+    { "prompt": "2 + 2", "answers": ["4", "four"] },
+    { "prompt": "Color of the sky on a clear day", "answers": ["blue"] },
+    { "prompt": "First letter of the English alphabet", "answers": ["A", "a"] },
+    { "prompt": "Opposite of hot", "answers": ["cold"] },
+    { "prompt": "What do cows drink?", "answers": ["water"] }
+  ],
+  "Korean to English": [
+    { "prompt": "가르치다", "answers": ["Teach"] },
+    { "prompt": "가지다", "answers": ["Bring", "have"] },
+    { "prompt": "숙제", "answers": ["Homework", "assignment"] },
+    { "prompt": "제목", "answers": ["Title"] },
+    { "prompt": "알아듣다", "answers": ["Understand what was said"] },
+    { "prompt": "끝", "answers": ["End"] },
+    { "prompt": "끝나다", "answers": ["Over", "end"] },
+    { "prompt": "찾다", "answers": ["Find"] },
+    { "prompt": "수업", "answers": ["Class", "lesson"] },
+    { "prompt": "늦다", "answers": ["Late"] },
+    { "prompt": "대답하다", "answers": ["Answer", "respond"] },
+    { "prompt": "중", "answers": ["In the middle of"] },
+    { "prompt": "마치다", "answers": ["Finish", "complete"] },
+    { "prompt": "말", "answers": ["Talk", "chat"] },
+    { "prompt": "말씀", "answers": ["Talk", "what is said (honorific)"] },
+    { "prompt": "말하다", "answers": ["Speak", "talk"] },
+    { "prompt": "모르다", "answers": ["Not know"] },
+    { "prompt": "물어보다", "answers": ["Ask", "inquire"] },
+    { "prompt": "적다", "answers": ["Write"] },
+    { "prompt": "빌리다", "answers": ["Lend", "borrow"] },
+    { "prompt": "졸리다", "answers": ["Sleepy"] }
+  ],
+  "English to Korean": [
+    { "prompt": "Teach", "answers": ["가르치다"] },
+    { "prompt": "Bring", "answers": ["가지다"] },
+    { "prompt": "have", "answers": ["가지다"] },
+    { "prompt": "Homework", "answers": ["숙제"] },
+    { "prompt": "assignment", "answers": ["숙제"] },
+    { "prompt": "Title", "answers": ["제목"] },
+    { "prompt": "Understand what was said", "answers": ["알아듣다"] },
+    { "prompt": "End", "answers": ["끝"] },
+    { "prompt": "Over", "answers": ["끝나다"] },
+    { "prompt": "Find", "answers": ["찾다"] },
+    { "prompt": "Class", "answers": ["수업"] },
+    { "prompt": "lesson", "answers": ["수업"] },
+    { "prompt": "Late", "answers": ["늦다"] },
+    { "prompt": "Answer", "answers": ["대답하다"] },
+    { "prompt": "respond", "answers": ["대답하다"] },
+    { "prompt": "In the middle of", "answers": ["중"] },
+    { "prompt": "Finish", "answers": ["마치다"] },
+    { "prompt": "complete", "answers": ["마치다"] },
+    { "prompt": "Talk", "answers": ["말", "말씀", "말하다"] },
+    { "prompt": "chat", "answers": ["말"] },
+    { "prompt": "what is said (honorific)", "answers": ["말씀"] },
+    { "prompt": "Speak", "answers": ["말하다"] },
+    { "prompt": "Not know", "answers": ["모르다"] },
+    { "prompt": "Ask", "answers": ["물어보다"] },
+    { "prompt": "inquire", "answers": ["물어보다"] },
+    { "prompt": "Write", "answers": ["적다"] },
+    { "prompt": "Lend", "answers": ["빌리다"] },
+    { "prompt": "borrow", "answers": ["빌리다"] },
+    { "prompt": "Sleepy", "answers": ["졸리다"] }
+  ]
+}
