@@ -111,10 +111,17 @@ class FlashCardQuiz {
 
     // Specific handler for the answer input
     this.answerInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !isComposing) {
-        e.preventDefault();
-        if (this.gameState === "playing" && !this.isPaused) {
-          this.submitAnswer();
+      if (!isComposing) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          if (this.gameState === "playing" && !this.isPaused) {
+            this.submitAnswer(false); // Only show answer if incorrect
+          }
+        } else if (e.key === "Tab") {
+          e.preventDefault();
+          if (this.gameState === "playing" && !this.isPaused) {
+            this.submitAnswer(true); // Always show answer
+          }
         }
       }
     });
@@ -260,7 +267,7 @@ class FlashCardQuiz {
     }
   }
 
-  submitAnswer() {
+  submitAnswer(alwaysShowAnswer = false) {
     if (this.isPaused) return;
 
     const userAnswer = this.answerInput.value.trim();
@@ -277,7 +284,7 @@ class FlashCardQuiz {
     const isCorrect = this.checkAnswer(userAnswer, this.currentCard.answers);
 
     if (isCorrect) {
-      this.handleCorrectAnswer();
+      this.handleCorrectAnswer(alwaysShowAnswer);
     } else {
       this.handleIncorrectAnswer();
     }
@@ -293,13 +300,18 @@ class FlashCardQuiz {
     );
   }
 
-  handleCorrectAnswer() {
+  handleCorrectAnswer(showAnswer = false) {
     this.currentCard.consecutiveCorrect++;
     this.currentCard.correctAttempts++;
     this.correctAttempts++;
 
     this.playAudioFeedback("correct");
-    this.showFeedback("Correct!", "correct");
+    if (showAnswer) {
+      const correctAnswer = this.currentCard.answers[0];
+      this.showFeedback(`Correct! The answer is: ${correctAnswer}`, "correct");
+    } else {
+      this.showFeedback("Correct!", "correct");
+    }
     this.addVisualFeedback("pulse");
 
     if (this.currentCard.consecutiveCorrect >= this.config.masteryRequirement) {
