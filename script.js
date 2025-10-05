@@ -4,7 +4,7 @@ class FlashCardQuiz {
       timeLimit: 30,
       timePerChar: 0.5,
       masteryRequirement: 5,
-      initialCards: 5,
+      initialCards: 1,
     };
 
     this.cards = [];
@@ -20,6 +20,7 @@ class FlashCardQuiz {
     this.totalAttempts = 0;
     this.correctAttempts = 0;
     this.gameState = "start"; // 'start', 'playing', 'paused', 'finished'
+    this.currentRoundCorrect = new Set(); // Track cards answered correctly in current round
 
     this.initializeElements();
     this.loadConfiguration();
@@ -63,7 +64,7 @@ class FlashCardQuiz {
         timeLimit: 30,
         timePerChar: 0.5,
         masteryRequirement: 5,
-        initialCards: 5,
+        initialCards: 1,
       };
       this.config = { ...defaultConfig };
       console.log("Configuration loaded:", this.config);
@@ -235,6 +236,7 @@ class FlashCardQuiz {
     this.shuffleArray(this.cardsInPlay);
 
     this.currentCardIndex = 0;
+    this.currentRoundCorrect.clear(); // Reset round tracking
     this.updateStats();
     this.updateProgress();
   }
@@ -345,6 +347,7 @@ class FlashCardQuiz {
     this.currentCard.consecutiveCorrect++;
     this.currentCard.correctAttempts++;
     this.correctAttempts++;
+    this.currentRoundCorrect.add(this.currentCard); // Track correct answer in this round
 
     this.playAudioFeedback("correct");
     if (showAnswer) {
@@ -377,6 +380,7 @@ class FlashCardQuiz {
     this.currentCard.totalAttempts++;
     this.totalAttempts++;
     this.currentCard.consecutiveCorrect = 0;
+    this.currentRoundCorrect.delete(this.currentCard); // Remove from correct tracking
 
     this.playAudioFeedback("timeout");
     const correctAnswer = this.currentCard.answers[0];
@@ -418,18 +422,22 @@ class FlashCardQuiz {
   }
 
   checkRoundComplete() {
-    // Check if we need to add more cards
-    const availableCards = this.cards.filter(
-      (card) =>
-        card.consecutiveCorrect < this.config.masteryRequirement &&
-        !this.cardsInPlay.includes(card),
+    // Check if all cards in play were answered correctly this round
+    const allCorrectThisRound = this.cardsInPlay.every((card) =>
+      this.currentRoundCorrect.has(card),
     );
 
-    if (
-      this.cardsInPlay.length < this.config.initialCards &&
-      availableCards.length > 0
-    ) {
-      this.cardsInPlay.push(availableCards[0]);
+    // Only add a new card if all current cards were answered correctly
+    if (allCorrectThisRound) {
+      const availableCards = this.cards.filter(
+        (card) =>
+          card.consecutiveCorrect < this.config.masteryRequirement &&
+          !this.cardsInPlay.includes(card),
+      );
+
+      if (availableCards.length > 0) {
+        this.cardsInPlay.push(availableCards[0]);
+      }
     }
 
     if (this.cardsInPlay.length === 0) {
@@ -440,6 +448,7 @@ class FlashCardQuiz {
     // Shuffle and restart round
     this.shuffleArray(this.cardsInPlay);
     this.currentCardIndex = 0;
+    this.currentRoundCorrect.clear(); // Reset for next round
     this.updateProgress();
     this.displayCurrentCard();
   }
