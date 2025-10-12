@@ -139,5 +139,26 @@
     { "prompt": "exam", "answers": ["시험"] },
     { "prompt": "Correct", "answers": ["알맞다"] },
     { "prompt": "suitable", "answers": ["알맞다"] }
+  ],
+  "Korean Travel → English": [
+    { "prompt": "외국", "answers": ["Foreign country", "abroad"] },
+    { "prompt": "여권", "answers": ["Passport"] },
+    { "prompt": "여행사", "answers": ["Travel agency"] },
+    { "prompt": "호텔", "answers": ["Hotel"] },
+    { "prompt": "신혼여행", "answers": ["Honeymoon"] },
+    { "prompt": "예약하다", "answers": ["Reserve", "make a reservation"] },
+    { "prompt": "예매하다", "answers": ["Book", "purchase tickets"] }
+  ],
+  "English → Korean Travel": [
+    { "prompt": "Foreign country", "answers": ["외국"] },
+    { "prompt": "abroad", "answers": ["외국"] },
+    { "prompt": "Passport", "answers": ["여권"] },
+    { "prompt": "Travel agency", "answers": ["여행사"] },
+    { "prompt": "Hotel", "answers": ["호텔"] },
+    { "prompt": "Honeymoon", "answers": ["신혼여행"] },
+    { "prompt": "Reserve", "answers": ["예약하다"] },
+    { "prompt": "make a reservation", "answers": ["예약하다"] },
+    { "prompt": "Book", "answers": ["예매하다"] },
+    { "prompt": "purchase tickets", "answers": ["예매하다"] }
   ]
 }
