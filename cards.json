@@ -1,12 +1,12 @@
 {
-  "Test Deck": [
+  "Math & General Knowledge": [
     { "prompt": "2 + 2", "answers": ["4", "four"] },
     { "prompt": "Color of the sky on a clear day", "answers": ["blue"] },
     { "prompt": "First letter of the English alphabet", "answers": ["A", "a"] },
     { "prompt": "Opposite of hot", "answers": ["cold"] },
     { "prompt": "What do cows drink?", "answers": ["water"] }
   ],
-  "Korean to English": [
+  "Korean classroom -> English": [
     { "prompt": "가르치다", "answers": ["Teach"] },
     { "prompt": "가지다", "answers": ["Bring", "have"] },
     { "prompt": "숙제", "answers": ["Homework", "assignment"] },
@@ -29,7 +29,7 @@
     { "prompt": "빌리다", "answers": ["Lend", "borrow"] },
     { "prompt": "졸리다", "answers": ["Sleepy"] }
   ],
-  "English to Korean": [
+  "English -> Korean Classroom": [
     { "prompt": "Teach", "answers": ["가르치다"] },
     { "prompt": "Bring", "answers": ["가지다"] },
     { "prompt": "have", "answers": ["가지다"] },
@@ -59,5 +59,36 @@
     { "prompt": "Lend", "answers": ["빌리다"] },
     { "prompt": "borrow", "answers": ["빌리다"] },
     { "prompt": "Sleepy", "answers": ["졸리다"] }
+  ],
+  "Korean Hobbies → English": [
+    { "prompt": "취미", "answers": ["hobby", "hobbies"] },
+    { "prompt": "케이팝 댄스", "answers": ["k-pop dance", "kpop dance"] },
+    { "prompt": "추다", "answers": ["dance"] },
+    { "prompt": "그림", "answers": ["painting", "picture", "drawing"] },
+    { "prompt": "악기", "answers": ["instrument", "musical instrument"] },
+    { "prompt": "사진", "answers": ["picture", "photo", "photograph"] },
+    { "prompt": "찍다", "answers": ["to take a picture", "take", "shoot"] },
+    { "prompt": "요리", "answers": ["food", "cooking", "dish"] },
+    { "prompt": "만들다", "answers": ["to make", "make", "create"] },
+    { "prompt": "한국 음식", "answers": ["korean food"] },
+    { "prompt": "배우다", "answers": ["to learn", "learn"] },
+    { "prompt": "외국어", "answers": ["foreign language"] }
+  ],
+  "English → Korean Hobbies": [
+    { "prompt": "hobby", "answers": ["취미"] },
+    { "prompt": "hobbies", "answers": ["취미"] },
+    { "prompt": "k-pop dance", "answers": ["케이팝 댄스"] },
+    { "prompt": "dance", "answers": ["추다"] },
+    { "prompt": "painting", "answers": ["그림"] },
+    { "prompt": "drawing", "answers": ["그림"] },
+    { "prompt": "instrument", "answers": ["악기"] },
+    { "prompt": "play", "answers": ["연주하다"] },
+    { "prompt": "photo", "answers": ["사진"] },
+    { "prompt": "photograph", "answers": ["사진"] },
+    { "prompt": "food", "answers": ["요리", "음식"] },
+    { "prompt": "cooking", "answers": ["요리"] },
+    { "prompt": "dish", "answers": ["요리"] },
+    { "prompt": "make", "answers": ["만들다"] },
+    { "prompt": "learn", "answers": ["배우다"] }
   ]
 }
