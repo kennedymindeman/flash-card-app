@@ -205,5 +205,39 @@
     { "prompt": "going (polite)", "answers": ["가요"] },
     { "prompt": "because of", "answers": ["때문에"] },
     { "prompt": "due to", "answers": ["때문에"] }
+  ],
+  "Korean School Supplies → English": [
+    { "prompt": "가위", "answers": ["Scissors"] },
+    { "prompt": "공책", "answers": ["Notebook"] },
+    { "prompt": "의자", "answers": ["Chair"] },
+    { "prompt": "칠판", "answers": ["Blackboard", "whiteboard"] },
+    { "prompt": "사전", "answers": ["Dictionary"] },
+    { "prompt": "시계", "answers": ["Clock", "watch"] },
+    { "prompt": "볼펜", "answers": ["Ballpoint pen"] },
+    { "prompt": "색연필", "answers": ["Colored pencil"] },
+    { "prompt": "연필", "answers": ["Pencil"] },
+    { "prompt": "종이", "answers": ["Paper"] },
+    { "prompt": "지우개", "answers": ["Eraser"] },
+    { "prompt": "책", "answers": ["Book"] },
+    { "prompt": "책상", "answers": ["Desk"] },
+    { "prompt": "테이프", "answers": ["Tape"] },
+    { "prompt": "필통", "answers": ["Pencil case"] }
+  ],
+  "Korean School Supplies → English": [
+    { "prompt": "가위", "answers": ["Scissors"] },
+    { "prompt": "공책", "answers": ["Notebook"] },
+    { "prompt": "의자", "answers": ["Chair"] },
+    { "prompt": "칠판", "answers": ["Blackboard", "whiteboard"] },
+    { "prompt": "사전", "answers": ["Dictionary"] },
+    { "prompt": "시계", "answers": ["Clock", "watch"] },
+    { "prompt": "볼펜", "answers": ["Ballpoint pen"] },
+    { "prompt": "색연필", "answers": ["Colored pencil"] },
+    { "prompt": "연필", "answers": ["Pencil"] },
+    { "prompt": "종이", "answers": ["Paper"] },
+    { "prompt": "지우개", "answers": ["Eraser"] },
+    { "prompt": "책", "answers": ["Book"] },
+    { "prompt": "책상", "answers": ["Desk"] },
+    { "prompt": "테이프", "answers": ["Tape"] },
+    { "prompt": "필통", "answers": ["Pencil case"] }
   ]
 }
