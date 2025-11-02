@@ -221,7 +221,8 @@
     { "prompt": "책", "answers": ["Book"] },
     { "prompt": "책상", "answers": ["Desk"] },
     { "prompt": "테이프", "answers": ["Tape"] },
-    { "prompt": "필통", "answers": ["Pencil case"] }
+    { "prompt": "필통", "answers": ["Pencil case"] },
+    { "prompt": "노트", "answers": ["Note", "Notebook"] }
   ],
   "English → Korean School Supplies": [
     { "prompt": "Scissors", "answers": ["가위"] },
@@ -240,7 +241,9 @@
     { "prompt": "Book", "answers": ["책"] },
     { "prompt": "Desk", "answers": ["책상"] },
     { "prompt": "Tape", "answers": ["테이프"] },
-    { "prompt": "Pencil case", "answers": ["필통"] }
+    { "prompt": "Pencil case", "answers": ["필통"] },
+    { "prompt": "Note", "answers": ["노트"] },
+    { "prompt": "Notebook", "answers": ["노트"] }
   ],
   "Korean Health → English": [
     { "prompt": "머리", "answers": ["head"] },
