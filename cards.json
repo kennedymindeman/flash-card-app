@@ -475,6 +475,57 @@
     {
       "prompt": "-습니다 / -ㅂ니다 (formal polite)",
       "answers": ["formal present tense"]
+    },
+    {
+      "prompt": "부산역",
+      "answers": ["Busan Station"]
+    },
+    {
+      "prompt": "해운대",
+      "answers": ["Haeundae (beach district in Busan)"]
+    },
+    {
+      "prompt": "서면역",
+      "answers": ["Seomyeon Station"]
+    },
+    {
+      "prompt": "타다 → 타고",
+      "answers": [
+        "to ride; connective form '-고' meaning 'and (then) ride'",
+        "used before another verb (타고 가다 = to go by riding)"
+      ]
+    },
+    {
+      "prompt": "(시간)이 걸리다",
+      "answers": [
+        "to take (time)",
+        "used to express duration (e.g., 3시간 걸렸어요)"
+      ]
+    },
+    {
+      "prompt": "에서 (starting point)",
+      "answers": ["from (a location)", "marks the starting point of movement"]
+    },
+    {
+      "prompt": "까지 (ending point)",
+      "answers": [
+        "to / until (a location)",
+        "marks the destination of movement"
+      ]
+    },
+    {
+      "prompt": "돌아가다",
+      "answers": [
+        "to return (go back)",
+        "돌아가서 = return and then (connector form)"
+      ]
+    },
+    {
+      "prompt": "갈아타다",
+      "answers": [
+        "to transfer (between buses/trains)",
+        "갈아타서 = transfer and then (connector form)"
+      ]
     }
   ]
 }
