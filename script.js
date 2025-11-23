@@ -332,7 +332,7 @@ class FlashCardQuiz {
     } else {
       this.handleIncorrectAnswer();
       this.updateStats();
-      this.pauseForFeedback();
+      // Don't pause - let user try again immediately
     }
   }
 
@@ -369,10 +369,17 @@ class FlashCardQuiz {
     this.playAudioFeedback("incorrect");
     const correctAnswer = this.currentCard.answers[0];
     this.showFeedback(
-      `Incorrect. The answer is: ${correctAnswer}`,
+      `Incorrect. The answer is: ${correctAnswer}. Please type it correctly.`,
       "incorrect",
     );
     this.addVisualFeedback("shake");
+
+    // Clear the input and let user try again
+    this.answerInput.value = "";
+    this.answerInput.focus();
+
+    // Restart the timer
+    this.startTimer();
   }
 
   handleTimeout() {
