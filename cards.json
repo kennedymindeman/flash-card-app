@@ -527,5 +527,38 @@
         "갈아타서 = transfer and then (connector form)"
       ]
     }
+  ],
+  "Korean Symptoms/Condition → English": [
+    { "prompt": "기침", "answers": ["Cough"] },
+    { "prompt": "나다", "answers": ["Have symptoms"] },
+    { "prompt": "낫다", "answers": ["Get better"] },
+    { "prompt": "땀", "answers": ["Sweat"] },
+    { "prompt": "못", "answers": ["Unable to"] },
+    { "prompt": "배탈", "answers": ["Stomachache"] },
+    { "prompt": "열", "answers": ["Fever"] },
+    { "prompt": "설사", "answers": ["Diarrhea"] },
+    { "prompt": "콧물", "answers": ["Runny nose"] },
+    { "prompt": "숨", "answers": ["Breath"] },
+    { "prompt": "심하다", "answers": ["Severe"] },
+    { "prompt": "아프다", "answers": ["Sick"] },
+    { "prompt": "약하다", "answers": ["Weak"] },
+    { "prompt": "특별히", "answers": ["Especially", "particularly"] }
+  ],
+  "English → Korean Symptoms/Condition": [
+    { "prompt": "Cough", "answers": ["기침"] },
+    { "prompt": "Have (symptoms)", "answers": ["나다"] },
+    { "prompt": "Get better", "answers": ["낫다"] },
+    { "prompt": "Sweat", "answers": ["땀"] },
+    { "prompt": "Unable to", "answers": ["못"] },
+    { "prompt": "Stomachache", "answers": ["배탈"] },
+    { "prompt": "Fever", "answers": ["열"] },
+    { "prompt": "Diarrhea", "answers": ["설사"] },
+    { "prompt": "Runny nose", "answers": ["콧물"] },
+    { "prompt": "Breath", "answers": ["숨"] },
+    { "prompt": "Severe", "answers": ["심하다"] },
+    { "prompt": "Sick", "answers": ["아프다"] },
+    { "prompt": "Weak", "answers": ["약하다"] },
+    { "prompt": "Especially", "answers": ["특별히"] },
+    { "prompt": "particularly", "answers": ["특별히"] }
   ]
 }
