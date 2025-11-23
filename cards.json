@@ -388,5 +388,93 @@
     { "prompt": "Pharmacist", "answers": ["약사"] },
     { "prompt": "X-ray", "answers": ["엑스레이"] },
     { "prompt": "Ointment", "answers": ["연고"] }
+  ],
+  "Korean Grammar → English": [
+    { "prompt": "-지 않다", "answers": ["to not do", "do not", "don’t"] },
+    { "prompt": "-아서/어서", "answers": ["because", "so"] },
+    { "prompt": "-(으)려고", "answers": ["in order to"] },
+    { "prompt": "-(으)ㄹ 거예요", "answers": ["will do"] },
+    { "prompt": "-(으)ㄹ 수 있다", "answers": ["can do"] },
+    { "prompt": "까지", "answers": ["to", "until"] },
+    {
+      "prompt": "에서 (location particle)",
+      "answers": [
+        "from (a place)",
+        "at (location where an action occurs)",
+        "starting point marker"
+      ]
+    },
+    {
+      "prompt": "까지 (location particle)",
+      "answers": ["to (a place)", "until (place/time)", "ending point marker"]
+    },
+    {
+      "prompt": "걸리다 (time)",
+      "answers": ["to take (time)", "to require (time/duration)"]
+    },
+    {
+      "prompt": "A에서 B까지",
+      "answers": ["from A to B"]
+    },
+    {
+      "prompt": "-고",
+      "answers": ["verb connector"]
+    },
+    {
+      "prompt": "걸어가다",
+      "answers": ["to walk"]
+    },
+    {
+      "prompt": "식당",
+      "answers": ["restaurant"]
+    },
+    {
+      "prompt": "여행사",
+      "answers": ["travel agency"]
+    },
+    {
+      "prompt": "공원",
+      "answers": ["park"]
+    },
+    {
+      "prompt": "공항",
+      "answers": ["airport"]
+    },
+    {
+      "prompt": "호텔",
+      "answers": ["hotel"]
+    },
+    {
+      "prompt": "-(으)십시오",
+      "answers": ["formal command"]
+    },
+    {
+      "prompt": "몇 시까지",
+      "answers": ["by what time", "until what time"]
+    },
+    {
+      "prompt": "A(time)까지",
+      "answers": ["by A", "until A"]
+    },
+    {
+      "prompt": "씻다",
+      "answers": ["to wash (vegetables/hands/etc.)"]
+    },
+    {
+      "prompt": "먼저",
+      "answers": ["first", "before anything else"]
+    },
+    {
+      "prompt": "박물관",
+      "answers": ["museum"]
+    },
+    {
+      "prompt": "-아요/어요",
+      "answers": ["polite present tense"]
+    },
+    {
+      "prompt": "-습니다 / -ㅂ니다 (formal polite)",
+      "answers": ["formal present tense"]
+    }
   ]
 }
