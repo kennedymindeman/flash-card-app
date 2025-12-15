@@ -560,5 +560,33 @@
     { "prompt": "Weak", "answers": ["약하다"] },
     { "prompt": "Especially", "answers": ["특별히"] },
     { "prompt": "particularly", "answers": ["특별히"] }
+  ],
+  "Korean → English Chapter 18 Homework page 1": [
+    { "prompt": "학당", "answers": ["institute"] },
+    { "prompt": "익힘책", "answers": ["workbook"] },
+    { "prompt": "여가", "answers": ["leisure"] },
+    { "prompt": "길", "answers": ["road"] },
+    { "prompt": "막히다", "answers": ["block"] },
+    { "prompt": "-으니까", "answers": ["because"] },
+    { "prompt": "공연장", "answers": ["theater"] },
+    { "prompt": "-까지", "answers": ["until"] },
+    { "prompt": "지하철", "answers": ["subway"] },
+    { "prompt": "로", "answers": ["on"] },
+    { "prompt": "-ㅂ시다", "answers": ["let's"] },
+    { "prompt": "활동", "answers": ["activity"] }
+  ],
+  "English → Korean Chapter 18 Homework page 1": [
+    { "prompt": "institute", "answers": ["학당"] },
+    { "prompt": "workbook", "answers": ["익힘책"] },
+    { "prompt": "leisure", "answers": ["여가"] },
+    { "prompt": "road", "answers": ["길"] },
+    { "prompt": "block", "answers": ["막히다"] },
+    { "prompt": "because", "answers": ["-으니까"] },
+    { "prompt": "theater", "answers": ["공연장"] },
+    { "prompt": "until", "answers": ["-까지"] },
+    { "prompt": "subway", "answers": ["지하철"] },
+    { "prompt": "on", "answers": ["로"] },
+    { "prompt": "let's", "answers": ["-ㅂ시다"] },
+    { "prompt": "activity", "answers": ["활동"] }
   ]
 }
