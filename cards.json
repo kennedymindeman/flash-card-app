@@ -180,5 +180,147 @@
     { "prompt": "delicious", "answers": ["맛있다"] },
     { "prompt": "not salty enough", "answers": ["싱겁다"] },
     { "prompt": "salty", "answers": ["짜다"] }
+  ],
+  "Chapter 3 - Restaurant (Korean to English)": [
+    { "prompt": "식당", "answers": ["restaurant"] },
+    { "prompt": "차갑다", "answers": ["cold"] },
+    { "prompt": "냄새", "answers": ["smell"] },
+    { "prompt": "접시", "answers": ["plate", "dish"] },
+    { "prompt": "마시다", "answers": ["drink"] },
+    { "prompt": "메뉴", "answers": ["menu"] },
+    { "prompt": "물", "answers": ["water"] },
+    { "prompt": "배부르다", "answers": ["full", "be full"] },
+    { "prompt": "주문", "answers": ["order"] },
+    { "prompt": "숟가락", "answers": ["spoon"] },
+    { "prompt": "식다", "answers": ["cool off"] },
+    { "prompt": "식사", "answers": ["meal"] },
+    { "prompt": "남기다", "answers": ["leave", "leave behind"] },
+    { "prompt": "드시다", "answers": ["eat (honorific)"] },
+    { "prompt": "뜨겁다", "answers": ["hot"] },
+    { "prompt": "먹다", "answers": ["eat"] },
+    { "prompt": "목마르다", "answers": ["thirsty", "be thirsty"] },
+    { "prompt": "배고프다", "answers": ["hungry", "be hungry"] },
+    { "prompt": "집다", "answers": ["pick up"] },
+    { "prompt": "컵", "answers": ["cup"] },
+    { "prompt": "시키다", "answers": ["order"] },
+    { "prompt": "젓가락", "answers": ["chopsticks"] }
+  ],
+  "Chapter 3 - Restaurant (English to Korean)": [
+    { "prompt": "restaurant", "answers": ["식당"] },
+    { "prompt": "cold", "answers": ["차갑다"] },
+    { "prompt": "smell", "answers": ["냄새"] },
+    { "prompt": "plate", "answers": ["접시"] },
+    { "prompt": "dish", "answers": ["접시"] },
+    { "prompt": "drink", "answers": ["마시다"] },
+    { "prompt": "menu", "answers": ["메뉴"] },
+    { "prompt": "water", "answers": ["물"] },
+    { "prompt": "full", "answers": ["배부르다"] },
+    { "prompt": "order (noun)", "answers": ["주문"] },
+    { "prompt": "spoon", "answers": ["숟가락"] },
+    { "prompt": "cool off", "answers": ["식다"] },
+    { "prompt": "meal", "answers": ["식사"] },
+    { "prompt": "leave (food/message)", "answers": ["남기다"] },
+    { "prompt": "eat (honorific)", "answers": ["드시다"] },
+    { "prompt": "hot", "answers": ["뜨겁다"] },
+    { "prompt": "eat", "answers": ["먹다"] },
+    { "prompt": "thirsty", "answers": ["목마르다"] },
+    { "prompt": "hungry", "answers": ["배고프다"] },
+    { "prompt": "pick up", "answers": ["집다"] },
+    { "prompt": "cup", "answers": ["컵"] },
+    { "prompt": "order (verb)", "answers": ["시키다"] },
+    { "prompt": "chopsticks", "answers": ["젓가락"] }
+  ],
+  "Chapter 3 - Weather (Korean to English)": [
+    { "prompt": "날씨", "answers": ["weather"] },
+    { "prompt": "맑다", "answers": ["clear", "sunny"] },
+    { "prompt": "흐리다", "answers": ["cloudy"] },
+    { "prompt": "비", "answers": ["rain"] },
+    { "prompt": "눈", "answers": ["snow"] },
+    { "prompt": "오다", "answers": ["come", "fall (precipitation)"] },
+    { "prompt": "덥다", "answers": ["hot"] },
+    { "prompt": "춥다", "answers": ["cold"] },
+    { "prompt": "따뜻하다", "answers": ["warm"] },
+    { "prompt": "시원하다", "answers": ["cool"] },
+    { "prompt": "봄", "answers": ["spring"] },
+    { "prompt": "여름", "answers": ["summer"] },
+    { "prompt": "가을", "answers": ["autumn", "fall"] },
+    { "prompt": "겨울", "answers": ["winter"] }
+  ],
+  "Chapter 3 - Weather (English to Korean)": [
+    { "prompt": "weather", "answers": ["날씨"] },
+    { "prompt": "clear", "answers": ["맑다"] },
+    { "prompt": "sunny", "answers": ["맑다"] },
+    { "prompt": "cloudy", "answers": ["흐리다"] },
+    { "prompt": "rain", "answers": ["비"] },
+    { "prompt": "snow", "answers": ["눈"] },
+    { "prompt": "fall (precipitation)", "answers": ["오다"] },
+    { "prompt": "hot (weather)", "answers": ["덥다"] },
+    { "prompt": "cold (weather)", "answers": ["춥다"] },
+    { "prompt": "warm", "answers": ["따뜻하다"] },
+    { "prompt": "cool", "answers": ["시원하다"] },
+    { "prompt": "spring", "answers": ["봄"] },
+    { "prompt": "summer", "answers": ["여름"] },
+    { "prompt": "autumn", "answers": ["가을"] },
+    { "prompt": "fall", "answers": ["가을"] },
+    { "prompt": "winter", "answers": ["겨울"] }
+  ],
+  "Chapter 3 - Weather Expressions (Korean to English)": [
+    {
+      "prompt": "날씨가 어떻습니까?",
+      "answers": ["How is the weather?", "How's the weather?"]
+    },
+    {
+      "prompt": "오늘 날씨가 좋습니다.",
+      "answers": ["Today's weather is good.", "The weather is good today."]
+    },
+    {
+      "prompt": "하늘이 맑습니다.",
+      "answers": ["The sky is clear."]
+    },
+    {
+      "prompt": "하늘이 흐립니다.",
+      "answers": ["The sky is cloudy."]
+    },
+    {
+      "prompt": "눈이 옵니다.",
+      "answers": ["It is snowing.", "It's snowing."]
+    },
+    {
+      "prompt": "눈이 내립니다.",
+      "answers": ["Snow is falling."]
+    },
+    {
+      "prompt": "비가 옵니다.",
+      "answers": ["It is raining.", "It's raining."]
+    },
+    {
+      "prompt": "비가 내립니다.",
+      "answers": ["Rain is falling."]
+    },
+    {
+      "prompt": "날씨가 덥습니다.",
+      "answers": ["The weather is hot."]
+    },
+    {
+      "prompt": "날씨가 춥습니다.",
+      "answers": ["The weather is cold."]
+    },
+    {
+      "prompt": "날씨가 따뜻합니다.",
+      "answers": ["The weather is warm."]
+    },
+    {
+      "prompt": "날씨가 시원합니다.",
+      "answers": ["The weather is cool."]
+    }
+  ],
+  "Chapter 3 - 어떻다 pattern - Fill in the blank": [
+    { "prompt": "날씨가 ___?", "answers": ["어떻습니까", "어떻습니까?"] },
+    { "prompt": "하늘이 ___.", "answers": ["맑습니다"] },
+    { "prompt": "비가 ___.", "answers": ["옵니다"] },
+    {
+      "prompt": "날씨가 ___.",
+      "answers": ["춥습니다", "덥습니다", "따뜻합니다", "시원합니다"]
+    }
   ]
 }
