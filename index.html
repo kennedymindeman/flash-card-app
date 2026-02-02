@@ -13,8 +13,10 @@
             <div id="start-screen" class="start-screen">
                 <h1>Flash Card Quiz</h1>
                 <div class="deck-selector" style="margin-bottom: 20px;">
-                    <label for="deck-select"><strong>Choose a deck:</strong></label>
-                    <select id="deck-select"></select>
+                    <label><strong>Choose deck(s):</strong></label>
+                    <div id="deck-checkboxes" style="margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+                    <button id="select-all-decks" class="btn" style="margin-top: 10px; padding: 5px 10px; font-size: 14px;">Select All</button>
+                    <button id="deselect-all-decks" class="btn" style="margin-top: 10px; padding: 5px 10px; font-size: 14px; margin-left: 5px;">Deselect All</button>
                 </div>
                 <div class="instructions">
                     <h3>Instructions:</h3>

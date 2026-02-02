@@ -214,3 +214,43 @@ body {
 .shake {
     animation: shake 0.5s ease-in-out;
 }
+
+/* Deck selector styles */
+.deck-selector label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+#deck-checkboxes {
+    text-align: left;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+#deck-checkboxes label {
+    display: block;
+    padding: 5px;
+    margin-bottom: 5px;
+    transition: background-color 0.2s;
+}
+
+#deck-checkboxes label:hover {
+    background-color: #e9ecef;
+    border-radius: 3px;
+}
+
+#deck-checkboxes input[type="checkbox"] {
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+#select-all-decks,
+#deselect-all-decks {
+    padding: 5px 10px;
+    font-size: 14px;
+    margin-top: 10px;
+}

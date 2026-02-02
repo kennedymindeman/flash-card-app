@@ -9,7 +9,7 @@ class FlashCardQuiz {
 
     this.cards = [];
     this.decks = {};
-    this.currentDeck = null;
+    this.selectedDeckNames = [];
     this.cardsInPlay = [];
     this.masteredCards = [];
     this.currentCardIndex = 0;
@@ -83,23 +83,57 @@ class FlashCardQuiz {
       const decks = await response.json();
       this.decks = decks;
 
-      // Populate deck selector
-      const deckSelect = document.getElementById("deck-select");
-      deckSelect.innerHTML = "";
+      // Populate deck checkboxes
+      const deckCheckboxContainer = document.getElementById("deck-checkboxes");
+      deckCheckboxContainer.innerHTML = "";
+
       Object.keys(decks).forEach((deckName) => {
-        const option = document.createElement("option");
-        option.value = deckName;
-        option.textContent = deckName;
-        deckSelect.appendChild(option);
+        const label = document.createElement("label");
+        label.style.display = "block";
+        label.style.marginBottom = "8px";
+        label.style.cursor = "pointer";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = deckName;
+        checkbox.className = "deck-checkbox";
+        checkbox.style.marginRight = "8px";
+
+        // Select first deck by default
+        if (Object.keys(decks)[0] === deckName) {
+          checkbox.checked = true;
+        }
+
+        checkbox.addEventListener("change", () => {
+          this.updateSelectedDecks();
+          this.updateStartScreen();
+        });
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(deckName));
+        deckCheckboxContainer.appendChild(label);
       });
 
-      // Default to first deck
-      this.setDeck(deckSelect.value);
+      // Setup Select All / Deselect All buttons
+      const selectAllBtn = document.getElementById("select-all-decks");
+      const deselectAllBtn = document.getElementById("deselect-all-decks");
 
-      deckSelect.addEventListener("change", () => {
-        this.setDeck(deckSelect.value);
+      selectAllBtn.addEventListener("click", () => {
+        const checkboxes = document.querySelectorAll(".deck-checkbox");
+        checkboxes.forEach((cb) => (cb.checked = true));
+        this.updateSelectedDecks();
         this.updateStartScreen();
       });
+
+      deselectAllBtn.addEventListener("click", () => {
+        const checkboxes = document.querySelectorAll(".deck-checkbox");
+        checkboxes.forEach((cb) => (cb.checked = false));
+        this.updateSelectedDecks();
+        this.updateStartScreen();
+      });
+
+      // Initialize with first deck selected
+      this.updateSelectedDecks();
 
       console.log("Decks loaded:", Object.keys(decks));
     } catch (error) {
@@ -111,20 +145,39 @@ class FlashCardQuiz {
     }
   }
 
-  setDeck(deckName) {
-    this.currentDeck = deckName;
-    this.cards = this.decks[deckName] || [];
-    // Reset card tracking for new deck
+  updateSelectedDecks() {
+    // Get all checked decks
+    const checkboxes = document.querySelectorAll(".deck-checkbox:checked");
+    const selectedDecks = Array.from(checkboxes).map((cb) => cb.value);
+
+    // Combine cards from all selected decks
+    this.cards = [];
+    selectedDecks.forEach((deckName) => {
+      if (this.decks[deckName]) {
+        // Add deck name to each card for reference
+        const deckCards = this.decks[deckName].map((card) => ({
+          ...card,
+          deckName: deckName,
+        }));
+        this.cards.push(...deckCards);
+      }
+    });
+
+    // Reset card tracking for combined cards
     this.cards.forEach((card) => {
       card.consecutiveCorrect = 0;
       card.totalAttempts = 0;
       card.correctAttempts = 0;
     });
+
     this.masteredCards = [];
     this.cardsInPlay = [];
     this.currentCardIndex = 0;
     this.totalAttempts = 0;
     this.correctAttempts = 0;
+
+    // Store selected deck names for display
+    this.selectedDeckNames = selectedDecks;
   }
 
   setupEventListeners() {
@@ -205,11 +258,6 @@ class FlashCardQuiz {
       this.config.initialCards,
       this.cards.length,
     );
-    // Show current deck name if available
-    const deckSelect = document.getElementById("deck-select");
-    if (deckSelect && this.currentDeck) {
-      deckSelect.value = this.currentDeck;
-    }
   }
 
   startQuiz() {
@@ -553,8 +601,9 @@ class FlashCardQuiz {
   playAudioFeedback(type) {
     // Simple audio feedback using Web Audio API
     try {
-      const audioContext = new (window.AudioContext ||
-        window.webkitAudioContext)();
+      const audioContext = new (
+        window.AudioContext || window.webkitAudioContext
+      )();
       const oscillator = audioContext.createOscillator();
       const gainNode = audioContext.createGain();
 
