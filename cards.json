@@ -322,5 +322,44 @@
       "prompt": "날씨가 ___.",
       "answers": ["춥습니다", "덥습니다", "따뜻합니다", "시원합니다"]
     }
+  ],
+  "Chapter 3 - Grammar: Formal Conjugations": [
+    { "prompt": "좋다 (Formal)", "answers": ["좋습니다"] },
+    { "prompt": "가다 (Formal)", "answers": ["갑니다"] },
+    { "prompt": "만들다 (Formal)", "answers": ["만듭니다"] },
+    { "prompt": "좋다 (Formal Question)", "answers": ["좋습니까?"] },
+    { "prompt": "가다 (Formal Question)", "answers": ["갑니까?"] }
+  ],
+  "Chapter 3 - Grammar: Object Markers (Noun + 을/를)": [
+    { "prompt": "밥 (Object)", "answers": ["밥을"] },
+    { "prompt": "가족 (Object)", "answers": ["가족을"] },
+    { "prompt": "노래 (Object)", "answers": ["노래를"] },
+    { "prompt": "드라마 (Object)", "answers": ["드라마를"] },
+    { "prompt": "저 (Shortened)", "answers": ["절"] },
+    { "prompt": "피자 (Shortened)", "answers": ["피잘"] }
+  ],
+  "Chapter 3 - Grammar: Particle 도 (too/also)": [
+    { "prompt": "제인 (also)", "answers": ["제인도"] },
+    { "prompt": "케니 (also)", "answers": ["케니도"] }
+  ],
+  "Chapter 3 - Verbs/Adjectives (Korean to English)": [
+    { "prompt": "하다", "answers": ["do"] },
+    { "prompt": "좋아하다", "answers": ["like"] },
+    { "prompt": "가다", "answers": ["go"] },
+    { "prompt": "듣다", "answers": ["listen"] },
+    { "prompt": "크다", "answers": ["big"] },
+    { "prompt": "작다", "answers": ["small"] },
+    { "prompt": "예쁘다", "answers": ["pretty"] },
+    { "prompt": "좋다", "answers": ["good", "like"] }
+  ],
+  "Chapter 3 - Verbs/Adjectives (English to Korean)": [
+    { "prompt": "do", "answers": ["하다"] },
+    { "prompt": "like", "answers": ["좋아하다", "좋다"] },
+    { "prompt": "go", "answers": ["가다"] },
+    { "prompt": "listen", "answers": ["듣다"] },
+    { "prompt": "big", "answers": ["크다"] },
+    { "prompt": "small", "answers": ["작다"] },
+    { "prompt": "pretty", "answers": ["예쁘다"] },
+    { "prompt": "good", "answers": ["좋다"] }
   ]
 }
