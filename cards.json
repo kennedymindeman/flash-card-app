@@ -438,5 +438,254 @@
     { "prompt": "building", "answers": ["건물"] },
     { "prompt": "there is no", "answers": ["없다"] },
     { "prompt": "not exist", "answers": ["없다"] }
+  ],
+  "Reset to main() Sequence": [
+    {
+      "prompt": "On Cortex-M, the first value loaded from the vector table at reset is the ___.",
+      "answers": ["initial stack pointer", "stack pointer", "SP"]
+    },
+    {
+      "prompt": "On Cortex-M, the second value loaded from the vector table at reset is the ___.",
+      "answers": ["reset handler address", "program counter", "PC"]
+    },
+    {
+      "prompt": "Where is the vector table typically located on a Cortex-M?",
+      "answers": ["0x0"]
+    },
+    {
+      "prompt": "Startup code copies initialized data from ___ to ___.",
+      "answers": ["flash to RAM", "flash, RAM"]
+    },
+    {
+      "prompt": "The .data section contains ___ globals.",
+      "answers": ["initialized"]
+    },
+    {
+      "prompt": "The .bss section contains ___ globals.",
+      "answers": ["zero-initialized", "uninitialized"]
+    },
+    {
+      "prompt": "What does startup code do to .bss?",
+      "answers": ["zeros it out", "zeroes it"]
+    },
+    {
+      "prompt": "Reset → main() order: vector table → ___ → copy .data → zero .bss → ___ → main()",
+      "answers": [
+        "reset handler, clock config",
+        "startup code, clock/PLL config"
+      ]
+    }
+  ],
+  "Interrupts vs Polling": [
+    {
+      "prompt": "Polling wastes ___ because the CPU spins in a check loop.",
+      "answers": ["CPU cycles", "cycles"]
+    },
+    {
+      "prompt": "When an interrupt fires, the CPU pushes ___ onto the stack before jumping to the ISR.",
+      "answers": ["context", "execution context", "registers"]
+    },
+    {
+      "prompt": "ISRs should be kept short to minimize ___ for other interrupts.",
+      "answers": ["latency"]
+    },
+    {
+      "prompt": "Common ISR pattern: set a ___ in the ISR, do heavy work in ___.",
+      "answers": ["flag, main loop", "flag, RTOS task"]
+    },
+    {
+      "prompt": "Polling is preferred when ___ timing is needed.",
+      "answers": ["deterministic"]
+    }
+  ],
+  "Memory: Stack vs Heap vs Static": [
+    {
+      "prompt": "On ARM, the stack grows ___ (toward ___ addresses).",
+      "answers": ["downward, lower", "downward"]
+    },
+    {
+      "prompt": "Exceeding the stack size causes a ___ or silent ___.",
+      "answers": ["hard fault, corruption", "hard fault, memory corruption"]
+    },
+    {
+      "prompt": "Heap is avoided in safety-critical systems because of ___ and ___ timing.",
+      "answers": ["fragmentation, non-deterministic"]
+    },
+    {
+      "prompt": "The stack stores local variables, ___, and function call frames.",
+      "answers": ["return addresses"]
+    },
+    {
+      "prompt": "Static/global variables live at ___ addresses for the ___ of the program.",
+      "answers": ["fixed, lifetime"]
+    }
+  ],
+  "Volatile Keyword": [
+    {
+      "prompt": "volatile tells the compiler: don't ___ reads/writes to this variable.",
+      "answers": ["optimize away", "optimize"]
+    },
+    {
+      "prompt": "volatile use case 1: memory-mapped ___.",
+      "answers": ["hardware registers", "peripheral registers"]
+    },
+    {
+      "prompt": "volatile use case 2: variables shared with an ___.",
+      "answers": ["ISR", "interrupt service routine"]
+    },
+    {
+      "prompt": "volatile use case 3: ___ shared variables (but not sufficient alone).",
+      "answers": ["multi-threaded", "multithreaded"]
+    },
+    {
+      "prompt": "Is volatile alone sufficient for thread safety?",
+      "answers": ["no"]
+    },
+    {
+      "prompt": "Without volatile, the compiler may ___ a value in a register and never re-read memory.",
+      "answers": ["cache"]
+    }
+  ],
+  "RTOS Concepts": [
+    {
+      "prompt": "In FreeRTOS, is there a practical difference between a task and a thread?",
+      "answers": ["no"]
+    },
+    {
+      "prompt": "Each RTOS task has its own ___ and execution ___.",
+      "answers": ["stack, context"]
+    },
+    {
+      "prompt": "A preemptive scheduler always runs the highest-___ ready task.",
+      "answers": ["priority"]
+    },
+    {
+      "prompt": "The key difference between a mutex and a binary semaphore is ___.",
+      "answers": ["ownership", "mutex has ownership"]
+    },
+    {
+      "prompt": "Only the ___ of a mutex can release it.",
+      "answers": ["holder", "owner"]
+    },
+    {
+      "prompt": "Most mutex implementations support ___ to prevent priority inversion.",
+      "answers": ["priority inheritance"]
+    },
+    {
+      "prompt": "A counting semaphore tracks ___.",
+      "answers": ["available resources", "resource count"]
+    },
+    {
+      "prompt": "Deadlock: two+ tasks each hold a ___ the other needs.",
+      "answers": ["resource", "lock"]
+    },
+    {
+      "prompt": "Deadlock prevention: always acquire locks in the same ___.",
+      "answers": ["order"]
+    },
+    {
+      "prompt": "Deadlock prevention: use ___ on lock attempts.",
+      "answers": ["timeouts"]
+    }
+  ],
+  "UART / SPI / I2C": [
+    {
+      "prompt": "UART uses ___ wires.",
+      "answers": ["2"]
+    },
+    {
+      "prompt": "UART's two wires are ___ and ___.",
+      "answers": ["TX, RX", "TX and RX"]
+    },
+    {
+      "prompt": "SPI uses a minimum of ___ wires.",
+      "answers": ["4"]
+    },
+    {
+      "prompt": "SPI's four wires are ___, ___, ___, ___.",
+      "answers": ["MOSI, MISO, SCLK, CS"]
+    },
+    {
+      "prompt": "I2C uses ___ wires.",
+      "answers": ["2"]
+    },
+    {
+      "prompt": "I2C's two wires are ___ and ___.",
+      "answers": ["SDA, SCL", "SDA and SCL"]
+    },
+    {
+      "prompt": "UART is ___ (synchronous/asynchronous).",
+      "answers": ["asynchronous"]
+    },
+    {
+      "prompt": "UART devices agree on timing by configuring the same ___.",
+      "answers": ["baud rate"]
+    },
+    {
+      "prompt": "In SPI, the ___ drives the clock.",
+      "answers": ["master"]
+    },
+    {
+      "prompt": "SPI selects a slave using a dedicated ___ line.",
+      "answers": ["chip select", "CS"]
+    },
+    {
+      "prompt": "I2C addresses devices by sending a unique ___ on SDA.",
+      "answers": ["address"]
+    },
+    {
+      "prompt": "Fastest protocol: UART, SPI, or I2C?",
+      "answers": ["SPI"]
+    },
+    {
+      "prompt": "Fewest pins for many devices: UART, SPI, or I2C?",
+      "answers": ["I2C"]
+    },
+    {
+      "prompt": "Pick SPI over I2C when you need ___ and pin count isn't a constraint.",
+      "answers": ["speed", "high speed"]
+    }
+  ],
+  "BLE Communication": [
+    {
+      "prompt": "A BLE peripheral becomes discoverable by broadcasting ___ packets.",
+      "answers": ["advertising"]
+    },
+    {
+      "prompt": "BLE pairing establishes ___.",
+      "answers": ["encryption keys"]
+    },
+    {
+      "prompt": "BLE bonding stores keys for future ___.",
+      "answers": ["reconnection"]
+    },
+    {
+      "prompt": "GATT stands for ___.",
+      "answers": ["Generic Attribute Profile"]
+    },
+    {
+      "prompt": "In GATT, a ___ is a logical grouping of characteristics identified by a UUID.",
+      "answers": ["service"]
+    },
+    {
+      "prompt": "In GATT, a ___ is an individual data point within a service.",
+      "answers": ["characteristic"]
+    },
+    {
+      "prompt": "BLE characteristic properties: read, write, ___, ___.",
+      "answers": ["notify, indicate"]
+    },
+    {
+      "prompt": "BLE notify is fire-and-forget (no ___).",
+      "answers": ["ACK", "acknowledgment"]
+    },
+    {
+      "prompt": "BLE indicate requires an ___ from the central.",
+      "answers": ["ACK", "acknowledgment"]
+    },
+    {
+      "prompt": "BLE GATT hierarchy: Profile → ___ → ___.",
+      "answers": ["Service, Characteristic", "Services, Characteristics"]
+    }
   ]
 }
