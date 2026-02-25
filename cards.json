@@ -450,7 +450,7 @@
     },
     {
       "prompt": "Where is the vector table typically located on a Cortex-M?",
-      "answers": ["0x0"]
+      "answers": ["0x0", "address 0x0"]
     },
     {
       "prompt": "Startup code copies initialized data from ___ to ___.",
@@ -686,6 +686,64 @@
     {
       "prompt": "BLE GATT hierarchy: Profile → ___ → ___.",
       "answers": ["Service, Characteristic", "Services, Characteristics"]
+    }
+  ],
+  "Flash vs RAM": [
+    {
+      "prompt": "Flash is ___ (volatile/non-volatile).",
+      "answers": ["non-volatile"]
+    },
+    {
+      "prompt": "RAM is ___ (volatile/non-volatile).",
+      "answers": ["volatile"]
+    },
+    {
+      "prompt": "Non-volatile means data is ___ when power is removed.",
+      "answers": ["retained", "kept"]
+    },
+    {
+      "prompt": "Your program binary lives in ___.",
+      "answers": ["flash"]
+    },
+    {
+      "prompt": "Running program state (stack, heap, globals) lives in ___.",
+      "answers": ["RAM"]
+    },
+    {
+      "prompt": "Flash is fast to ___ but slow to ___.",
+      "answers": ["read, write"]
+    },
+    {
+      "prompt": "RAM is fast to both ___ and ___.",
+      "answers": ["read, write", "read and write"]
+    },
+    {
+      "prompt": "Flash has limited ___ endurance (~10k–100k cycles).",
+      "answers": ["write"]
+    },
+    {
+      "prompt": "Writing to flash requires a ___ before programming.",
+      "answers": ["block erase", "erase"]
+    },
+    {
+      "prompt": "On a typical Cortex-M, which is larger: flash or RAM?",
+      "answers": ["flash"]
+    },
+    {
+      "prompt": "Typical Cortex-M flash size (order of magnitude): ___KB.",
+      "answers": ["256-512", "512", "256"]
+    },
+    {
+      "prompt": "Typical Cortex-M RAM size (order of magnitude): ___KB.",
+      "answers": ["64-128", "64", "128"]
+    },
+    {
+      "prompt": "The scarce resource you're always budgeting on an MCU is ___.",
+      "answers": ["RAM"]
+    },
+    {
+      "prompt": "Startup code copies .data from flash to RAM because variables need to be ___ at runtime.",
+      "answers": ["writable", "mutable"]
     }
   ]
 }
