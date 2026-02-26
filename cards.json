@@ -100,6 +100,38 @@
     { "prompt": "선생님___ 한국 사람이에요.", "answers": ["은"] },
     { "prompt": "학생___ 중국 사람이에요.", "answers": ["은"] }
   ],
+  "Beverage/Tea (Korean to English)": [
+    { "prompt": "녹차", "answers": ["green tea"] },
+    { "prompt": "맥주", "answers": ["beer"] },
+    { "prompt": "사이다", "answers": ["clear soda"] },
+    { "prompt": "소주", "answers": ["Korean liquor"] },
+    { "prompt": "술", "answers": ["alcohol"] },
+    { "prompt": "요구르트", "answers": ["yogurt"] },
+    { "prompt": "우유", "answers": ["milk"] },
+    { "prompt": "음료수", "answers": ["beverage"] },
+    { "prompt": "인삼", "answers": ["ginseng"] },
+    { "prompt": "주스", "answers": ["juice"] },
+    { "prompt": "차", "answers": ["tea"] },
+    { "prompt": "커피", "answers": ["coffee"] },
+    { "prompt": "콜라", "answers": ["coke"] },
+    { "prompt": "홍차", "answers": ["black tea"] }
+  ],
+  "Beverage/Tea (English to Korean)": [
+    { "prompt": "green tea", "answers": ["녹차"] },
+    { "prompt": "beer", "answers": ["맥주"] },
+    { "prompt": "clear soda", "answers": ["사이다"] },
+    { "prompt": "Korean liquor", "answers": ["소주"] },
+    { "prompt": "alcohol", "answers": ["술"] },
+    { "prompt": "yogurt", "answers": ["요구르트"] },
+    { "prompt": "milk", "answers": ["우유"] },
+    { "prompt": "beverage", "answers": ["음료수"] },
+    { "prompt": "ginseng", "answers": ["인삼"] },
+    { "prompt": "juice", "answers": ["주스"] },
+    { "prompt": "tea", "answers": ["차"] },
+    { "prompt": "coffee", "answers": ["커피"] },
+    { "prompt": "coke", "answers": ["콜라"] },
+    { "prompt": "black tea", "answers": ["홍차"] }
+  ],
   "Sentences (Korean to English)": [
     {
       "prompt": "저는 베트남 사람이에요.",
