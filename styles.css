@@ -399,6 +399,7 @@ button:hover {
 }
 
 .fb-answer {
+    font-family: "Fira Code", monospace;
     font-size: 0.9rem;
     font-weight: 400;
     color: var(--text);
