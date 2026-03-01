@@ -95,7 +95,6 @@ function render() {
   document.getElementById("prompt-sym").className = "prompt-sym";
   document.getElementById("prompt-sym").textContent = "›";
   document.getElementById("prompt-sym").style.color = "";
-  document.getElementById("answer-sym").textContent = "_";
   document.getElementById("feedback-row").textContent = "";
   input.value = "";
   input.disabled = false;
