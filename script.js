@@ -1,658 +1,187 @@
-class FlashCardQuiz {
-  constructor() {
-    this.config = {
-      timeLimit: 30,
-      timePerChar: 0.5,
-      masteryRequirement: 5,
-      initialCards: 1,
-    };
+const CARDS = [
+  { q: "What does HTTP stand for?", a: "hypertext transfer protocol" },
+  { q: "What is the time complexity of binary search?", a: "o log n" },
+  { q: "What keyword creates a function in Python?", a: "def" },
+  { q: "What does CSS stand for?", a: "cascading style sheets" },
+  { q: "What is 2 to the power of 10?", a: "1024" },
+  { q: "What does SQL stand for?", a: "structured query language" },
+  { q: "What symbol denotes a comment in Python?", a: "#" },
+  { q: "What does RAM stand for?", a: "random access memory" },
+];
 
-    this.cards = [];
-    this.decks = {};
-    this.selectedDeckNames = [];
-    this.cardsInPlay = [];
-    this.masteredCards = [];
-    this.currentCardIndex = 0;
-    this.currentCard = null;
-    this.timer = null;
-    this.timeRemaining = 0;
-    this.isPaused = false;
-    this.totalAttempts = 0;
-    this.correctAttempts = 0;
-    this.gameState = "start"; // 'start', 'playing', 'paused', 'finished'
-    this.currentRoundCorrect = new Set(); // Track cards answered correctly in current round
+let deck, idx, stats, checked;
 
-    this.initializeElements();
-    this.loadConfiguration();
-    this.loadCards();
-    this.setupEventListeners();
-    this.updateStartScreen();
+// --- Theme ---
+
+let theme = localStorage.getItem("dash-theme") || "auto";
+
+function applyTheme() {
+  const root = document.documentElement;
+  if (theme === "auto") {
+    root.removeAttribute("data-theme");
+  } else {
+    root.setAttribute("data-theme", theme);
   }
-
-  initializeElements() {
-    this.startScreen = document.getElementById("start-screen");
-    this.quizScreen = document.getElementById("quiz-screen");
-    this.finishedScreen = document.getElementById("finished-screen");
-    this.timerElement = document.getElementById("timer");
-    this.promptElement = document.getElementById("prompt");
-    this.answerInput = document.getElementById("answer-input");
-    this.feedbackElement = document.getElementById("feedback");
-    this.nextBtn = document.getElementById("next-btn");
-    this.resetBtn = document.getElementById("reset-btn");
-    this.progressFill = document.getElementById("progress-fill");
-    this.cardInfo = document.getElementById("card-info");
-
-    // Stats elements
-    this.percentCorrectElement = document.getElementById("percent-correct");
-    this.cardsMasteredElement = document.getElementById("cards-mastered");
-    this.cardsInPlayElement = document.getElementById("cards-in-play");
-    this.totalCardsElement = document.getElementById("total-cards");
-    this.masteryRequirementElement = document.getElementById(
-      "mastery-requirement",
-    );
-    this.initialCardsElement = document.getElementById("initial-cards");
-    this.finalPercentElement = document.getElementById("final-percent");
-    this.finalMasteredElement = document.getElementById("final-mastered");
-  }
-
-  loadConfiguration() {
-    // In a real implementation, this would load from config.json
-    // For now, using default values
-    try {
-      // Simulate loading config.json
-      const defaultConfig = {
-        timeLimit: 30,
-        timePerChar: 0.5,
-        masteryRequirement: 5,
-        initialCards: 1,
-      };
-      this.config = { ...defaultConfig };
-      console.log("Configuration loaded:", this.config);
-    } catch (error) {
-      console.error("Error loading configuration, using defaults:", error);
-    }
-  }
-
-  async loadCards() {
-    try {
-      // Load decks from cards.json
-      const response = await fetch("cards.json");
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const decks = await response.json();
-      this.decks = decks;
-
-      // Populate deck checkboxes
-      const deckCheckboxContainer = document.getElementById("deck-checkboxes");
-      deckCheckboxContainer.innerHTML = "";
-
-      Object.keys(decks).forEach((deckName) => {
-        const label = document.createElement("label");
-        label.style.display = "block";
-        label.style.marginBottom = "8px";
-        label.style.cursor = "pointer";
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.value = deckName;
-        checkbox.className = "deck-checkbox";
-        checkbox.style.marginRight = "8px";
-
-        // Select first deck by default
-        if (Object.keys(decks)[0] === deckName) {
-          checkbox.checked = true;
-        }
-
-        checkbox.addEventListener("change", () => {
-          this.updateSelectedDecks();
-          this.updateStartScreen();
-        });
-
-        label.appendChild(checkbox);
-        label.appendChild(document.createTextNode(deckName));
-        deckCheckboxContainer.appendChild(label);
-      });
-
-      // Setup Select All / Deselect All buttons
-      const selectAllBtn = document.getElementById("select-all-decks");
-      const deselectAllBtn = document.getElementById("deselect-all-decks");
-
-      selectAllBtn.addEventListener("click", () => {
-        const checkboxes = document.querySelectorAll(".deck-checkbox");
-        checkboxes.forEach((cb) => (cb.checked = true));
-        this.updateSelectedDecks();
-        this.updateStartScreen();
-      });
-
-      deselectAllBtn.addEventListener("click", () => {
-        const checkboxes = document.querySelectorAll(".deck-checkbox");
-        checkboxes.forEach((cb) => (cb.checked = false));
-        this.updateSelectedDecks();
-        this.updateStartScreen();
-      });
-
-      // Initialize with first deck selected
-      this.updateSelectedDecks();
-
-      console.log("Decks loaded:", Object.keys(decks));
-    } catch (error) {
-      console.error("Error loading cards:", error);
-      this.decks = {};
-      alert(
-        "Error loading flash cards. Please make sure cards.json is available.",
-      );
-    }
-  }
-
-  updateSelectedDecks() {
-    // Get all checked decks
-    const checkboxes = document.querySelectorAll(".deck-checkbox:checked");
-    const selectedDecks = Array.from(checkboxes).map((cb) => cb.value);
-
-    // Combine cards from all selected decks
-    this.cards = [];
-    selectedDecks.forEach((deckName) => {
-      if (this.decks[deckName]) {
-        // Add deck name to each card for reference
-        const deckCards = this.decks[deckName].map((card) => ({
-          ...card,
-          deckName: deckName,
-        }));
-        this.cards.push(...deckCards);
-      }
-    });
-
-    // Reset card tracking for combined cards
-    this.cards.forEach((card) => {
-      card.consecutiveCorrect = 0;
-      card.totalAttempts = 0;
-      card.correctAttempts = 0;
-    });
-
-    this.masteredCards = [];
-    this.cardsInPlay = [];
-    this.currentCardIndex = 0;
-    this.totalAttempts = 0;
-    this.correctAttempts = 0;
-
-    // Store selected deck names for display
-    this.selectedDeckNames = selectedDecks;
-  }
-
-  setupEventListeners() {
-    let isComposing = false;
-
-    // Composition event listeners for Korean/IME input
-    this.answerInput.addEventListener("compositionstart", () => {
-      isComposing = true;
-    });
-
-    this.answerInput.addEventListener("compositionend", () => {
-      isComposing = false;
-    });
-
-    // Specific handler for the answer input
-    this.answerInput.addEventListener("keydown", (e) => {
-      if (!isComposing) {
-        if (e.key === "Enter") {
-          e.preventDefault();
-          if (this.gameState === "playing" && !this.isPaused) {
-            this.submitAnswer(false); // Only show answer if incorrect
-          }
-        } else if (e.key === "Tab") {
-          e.preventDefault();
-          if (this.gameState === "playing" && !this.isPaused) {
-            this.submitAnswer(true); // Always show answer
-          }
-        }
-      }
-    });
-
-    // Global listener for other screens (but NOT when focused on answer input)
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && e.target !== this.answerInput) {
-        this.handleEnterKey();
-      }
-    });
-
-    // Answer input listener for other input events
-    this.answerInput.addEventListener("input", (e) => {
-      if (this.gameState === "playing" && !this.isPaused) {
-        // Auto-submit could be added here if desired
-      }
-    });
-
-    // Button listeners
-    this.nextBtn.addEventListener("click", () => {
-      this.nextCard();
-    });
-
-    this.resetBtn.addEventListener("click", () => {
-      this.resetGame();
-    });
-  }
-  handleEnterKey() {
-    switch (this.gameState) {
-      case "start":
-        this.startQuiz();
-        break;
-      case "playing":
-        if (!this.isPaused) {
-          this.submitAnswer();
-        }
-        break;
-      case "paused":
-        this.nextCard();
-        break;
-      case "finished":
-        this.resetGame();
-        break;
-    }
-  }
-
-  updateStartScreen() {
-    this.totalCardsElement.textContent = this.cards.length;
-    this.masteryRequirementElement.textContent = this.config.masteryRequirement;
-    this.initialCardsElement.textContent = Math.min(
-      this.config.initialCards,
-      this.cards.length,
-    );
-  }
-
-  startQuiz() {
-    this.gameState = "playing";
-    this.showScreen("quiz");
-    this.initializeRound();
-    this.displayCurrentCard();
-  }
-
-  initializeRound() {
-    // Shuffle all cards
-    this.shuffleArray(this.cards);
-
-    // Select initial cards
-    const availableCards = this.cards.filter(
-      (card) => card.consecutiveCorrect < this.config.masteryRequirement,
-    );
-    this.cardsInPlay = availableCards.slice(
-      0,
-      Math.min(this.config.initialCards, availableCards.length),
-    );
-
-    // Shuffle cards in play
-    this.shuffleArray(this.cardsInPlay);
-
-    this.currentCardIndex = 0;
-    this.currentRoundCorrect.clear(); // Reset round tracking
-    this.updateStats();
-    this.updateProgress();
-  }
-
-  displayCurrentCard() {
-    if (this.currentCardIndex >= this.cardsInPlay.length) {
-      this.checkRoundComplete();
-      return;
-    }
-
-    this.currentCard = this.cardsInPlay[this.currentCardIndex];
-    this.promptElement.textContent = this.currentCard.prompt;
-    this.answerInput.value = "";
-    this.answerInput.disabled = false;
-    this.answerInput.focus();
-
-    // Calculate time limit
-    const flatTime = this.config.timeLimit;
-    const charTime = this.currentCard.prompt.length * this.config.timePerChar;
-    this.timeRemaining = Math.max(flatTime, charTime);
-
-    this.hideFeedback();
-    this.updateCardInfo();
-    this.startTimer();
-  }
-
-  startTimer() {
-    this.clearTimer();
-    this.updateTimerDisplay();
-
-    this.timer = setInterval(() => {
-      this.timeRemaining--;
-      this.updateTimerDisplay();
-
-      if (this.timeRemaining <= 0) {
-        this.handleTimeout();
-      }
-    }, 1000);
-  }
-
-  updateTimerDisplay() {
-    this.timerElement.textContent = this.timeRemaining;
-
-    // Update timer styling based on remaining time
-    const percentage =
-      this.timeRemaining /
-      Math.max(
-        this.config.timeLimit,
-        this.currentCard.prompt.length * this.config.timePerChar,
-      );
-
-    this.timerElement.classList.remove("warning", "danger");
-    if (percentage <= 0.25) {
-      this.timerElement.classList.add("danger");
-    } else if (percentage <= 0.5) {
-      this.timerElement.classList.add("warning");
-    }
-  }
-
-  clearTimer() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  }
-
-  submitAnswer(alwaysShowAnswer = false) {
-    if (this.isPaused) return;
-
-    const userAnswer = this.answerInput.value.trim();
-
-    if (userAnswer === "") {
-      this.showFeedback("Please enter an answer", "incorrect");
-      return;
-    }
-
-    this.clearTimer();
-    this.currentCard.totalAttempts++;
-    this.totalAttempts++;
-
-    const isCorrect = this.checkAnswer(userAnswer, this.currentCard.answers);
-
-    if (isCorrect) {
-      if (alwaysShowAnswer) {
-        this.handleCorrectAnswer(true);
-        this.updateStats();
-        this.pauseForFeedback();
-      } else {
-        this.handleCorrectAnswer(false);
-        this.updateStats();
-        this.nextCard(); // Immediately go to next card
-      }
-    } else {
-      this.handleIncorrectAnswer();
-      this.updateStats();
-      // Don't pause - let user try again immediately
-    }
-  }
-
-  checkAnswer(userAnswer, correctAnswers) {
-    const normalizedUserAnswer = userAnswer.toLowerCase().trim();
-    return correctAnswers.some(
-      (answer) => answer.toLowerCase().trim() === normalizedUserAnswer,
-    );
-  }
-
-  handleCorrectAnswer(showAnswer = false) {
-    this.currentCard.consecutiveCorrect++;
-    this.currentCard.correctAttempts++;
-    this.correctAttempts++;
-    this.currentRoundCorrect.add(this.currentCard); // Track correct answer in this round
-
-    this.playAudioFeedback("correct");
-    if (showAnswer) {
-      const correctAnswer = this.currentCard.answers[0];
-      this.showFeedback(`Correct! The answer is: ${correctAnswer}`, "correct");
-    } else {
-      this.showFeedback("Correct!", "correct");
-    }
-    this.addVisualFeedback("pulse");
-
-    if (this.currentCard.consecutiveCorrect >= this.config.masteryRequirement) {
-      this.masterCard();
-    }
-  }
-
-  handleIncorrectAnswer() {
-    this.currentCard.consecutiveCorrect = 0;
-
-    this.playAudioFeedback("incorrect");
-    const correctAnswer = this.currentCard.answers[0];
-    this.showFeedback(
-      `Incorrect. The answer is: ${correctAnswer}. Please type it correctly.`,
-      "incorrect",
-    );
-    this.addVisualFeedback("shake");
-
-    // Clear the input and let user try again
-    this.answerInput.value = "";
-    this.answerInput.focus();
-
-    // Restart the timer
-    this.startTimer();
-  }
-
-  handleTimeout() {
-    this.clearTimer();
-    this.currentCard.totalAttempts++;
-    this.totalAttempts++;
-    this.currentCard.consecutiveCorrect = 0;
-    this.currentRoundCorrect.delete(this.currentCard); // Remove from correct tracking
-
-    this.playAudioFeedback("timeout");
-    const correctAnswer = this.currentCard.answers[0];
-    this.showFeedback(`Time's up! The answer is: ${correctAnswer}`, "timeout");
-    this.addVisualFeedback("shake");
-
-    this.updateStats();
-    this.pauseForFeedback();
-  }
-
-  masterCard() {
-    this.masteredCards.push(this.currentCard);
-    this.cardsInPlay.splice(this.currentCardIndex, 1);
-    this.currentCardIndex--; // Adjust index since we removed a card
-
-    this.showFeedback("Mastered! 🎉", "correct");
-
-    if (this.masteredCards.length === this.cards.length) {
-      setTimeout(() => {
-        this.finishQuiz();
-      }, 2000);
-    }
-  }
-
-  pauseForFeedback() {
-    this.isPaused = true;
-    this.answerInput.disabled = true;
-    this.gameState = "paused";
-    this.nextBtn.classList.remove("hidden");
-    this.nextBtn.disabled = false;
-  }
-
-  nextCard() {
-    this.isPaused = false;
-    this.gameState = "playing";
-    this.nextBtn.classList.add("hidden");
-    this.currentCardIndex++;
-    this.displayCurrentCard();
-  }
-
-  checkRoundComplete() {
-    // Check if all cards in play were answered correctly this round
-    const allCorrectThisRound = this.cardsInPlay.every((card) =>
-      this.currentRoundCorrect.has(card),
-    );
-
-    // Only add a new card if all current cards were answered correctly
-    if (allCorrectThisRound) {
-      const availableCards = this.cards.filter(
-        (card) =>
-          card.consecutiveCorrect < this.config.masteryRequirement &&
-          !this.cardsInPlay.includes(card),
-      );
-
-      if (availableCards.length > 0) {
-        this.cardsInPlay.push(availableCards[0]);
-      }
-    }
-
-    if (this.cardsInPlay.length === 0) {
-      this.finishQuiz();
-      return;
-    }
-
-    // Shuffle and restart round
-    this.shuffleArray(this.cardsInPlay);
-    this.currentCardIndex = 0;
-    this.currentRoundCorrect.clear(); // Reset for next round
-    this.updateProgress();
-    this.displayCurrentCard();
-  }
-
-  finishQuiz() {
-    this.gameState = "finished";
-    this.clearTimer();
-
-    const finalPercent =
-      this.totalAttempts > 0
-        ? Math.round((this.correctAttempts / this.totalAttempts) * 100)
-        : 0;
-
-    this.finalPercentElement.textContent = `${finalPercent}%`;
-    this.finalMasteredElement.textContent = this.masteredCards.length;
-
-    this.showScreen("finished");
-  }
-
-  resetGame() {
-    this.clearTimer();
-
-    // Reset all card states
-    this.cards.forEach((card) => {
-      card.consecutiveCorrect = 0;
-      card.totalAttempts = 0;
-      card.correctAttempts = 0;
-    });
-
-    // Reset game state
-    this.cardsInPlay = [];
-    this.masteredCards = [];
-    this.currentCardIndex = 0;
-    this.currentCard = null;
-    this.totalAttempts = 0;
-    this.correctAttempts = 0;
-    this.isPaused = false;
-    this.gameState = "start";
-
-    this.showScreen("start");
-    this.updateStartScreen();
-  }
-
-  showScreen(screen) {
-    this.startScreen.classList.add("hidden");
-    this.quizScreen.classList.add("hidden");
-    this.finishedScreen.classList.add("hidden");
-
-    switch (screen) {
-      case "start":
-        this.startScreen.classList.remove("hidden");
-        break;
-      case "quiz":
-        this.quizScreen.classList.remove("hidden");
-        break;
-      case "finished":
-        this.finishedScreen.classList.remove("hidden");
-        break;
-    }
-  }
-
-  showFeedback(message, type) {
-    this.feedbackElement.textContent = message;
-    this.feedbackElement.className = `feedback ${type}`;
-    this.feedbackElement.classList.remove("hidden");
-  }
-
-  hideFeedback() {
-    this.feedbackElement.classList.add("hidden");
-  }
-
-  updateStats() {
-    const percentCorrect =
-      this.totalAttempts > 0
-        ? Math.round((this.correctAttempts / this.totalAttempts) * 100)
-        : 0;
-
-    this.percentCorrectElement.textContent = `${percentCorrect}%`;
-    this.cardsMasteredElement.textContent = this.masteredCards.length;
-    this.cardsInPlayElement.textContent = this.cardsInPlay.length;
-  }
-
-  updateProgress() {
-    const progress =
-      this.cards.length > 0
-        ? (this.masteredCards.length / this.cards.length) * 100
-        : 0;
-    this.progressFill.style.width = `${progress}%`;
-  }
-
-  updateCardInfo() {
-    this.cardInfo.textContent = `Card ${this.currentCardIndex + 1} of ${this.cardsInPlay.length}`;
-  }
-
-  playAudioFeedback(type) {
-    // Simple audio feedback using Web Audio API
-    try {
-      const audioContext = new (
-        window.AudioContext || window.webkitAudioContext
-      )();
-      const oscillator = audioContext.createOscillator();
-      const gainNode = audioContext.createGain();
-
-      oscillator.connect(gainNode);
-      gainNode.connect(audioContext.destination);
-
-      let frequency;
-      switch (type) {
-        case "correct":
-          frequency = 800; // High pleasant tone
-          break;
-        case "incorrect":
-          frequency = 200; // Low tone
-          break;
-        case "timeout":
-          frequency = 300; // Medium tone
-          break;
-      }
-
-      oscillator.frequency.value = frequency;
-      gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-      gainNode.gain.exponentialRampToValueAtTime(
-        0.01,
-        audioContext.currentTime + 0.1,
-      );
-
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.1);
-    } catch (error) {
-      console.log("Audio feedback not available:", error);
-    }
-  }
-
-  addVisualFeedback(type) {
-    this.promptElement.classList.add(type);
-    setTimeout(() => {
-      this.promptElement.classList.remove(type);
-    }, 500);
-  }
-
-  shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
+  document.getElementById("theme-toggle").textContent =
+    theme === "dark" ? "○" : theme === "light" ? "●" : "◐";
 }
 
-// Initialize the quiz when the page loads
-document.addEventListener("DOMContentLoaded", () => {
-  new FlashCardQuiz();
+document.getElementById("theme-toggle").addEventListener("click", () => {
+  theme = theme === "auto" ? "dark" : theme === "dark" ? "light" : "auto";
+  localStorage.setItem("dash-theme", theme);
+  applyTheme();
 });
+
+applyTheme();
+
+// --- Scoring ---
+
+function normalize(s) {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function fuzzyScore(input, answer) {
+  const a = normalize(input);
+  const b = normalize(answer);
+  if (a === b) return "correct";
+  const bWords = b.split(" ");
+  const aWords = a.split(" ");
+  const ratio = bWords.filter((w) => aWords.includes(w)).length / bWords.length;
+  return ratio >= 0.4 ? "partial" : "wrong";
+}
+
+// --- Progress ---
+
+function updateProgress() {
+  const pct = Math.round((idx / deck.length) * 100);
+  document.getElementById("progress-fill").style.width = pct + "%";
+  document.getElementById("nav-prog").textContent = pct + "%";
+}
+
+// --- Stats ---
+
+function updateStats() {
+  ["correct", "partial", "wrong"].forEach((k) => {
+    document.getElementById(`stat-${k}`).textContent = stats[k];
+  });
+}
+
+// --- Lifecycle ---
+
+function load() {
+  deck = [...CARDS].sort(() => Math.random() - 0.5);
+  idx = 0;
+  stats = { correct: 0, partial: 0, wrong: 0 };
+  checked = false;
+  document.getElementById("done").classList.remove("show");
+  document.getElementById("quiz").style.display = "";
+  render();
+}
+
+function render() {
+  const card = deck[idx];
+  document.getElementById("question-text").textContent = card.q;
+  document.getElementById("card-label").textContent =
+    `Question ${idx + 1} of ${deck.length}`;
+  updateProgress();
+
+  const input = document.getElementById("answer-input");
+  input.value = "";
+  input.className = "";
+  input.disabled = false;
+  input.focus();
+
+  const fb = document.getElementById("feedback");
+  fb.className = "feedback";
+  document.getElementById("fb-tag").textContent = "";
+  document.getElementById("fb-answer").textContent = "";
+
+  document.getElementById("submit-btn").textContent = "Check";
+  document.getElementById("skip-btn").textContent = "Skip";
+
+  checked = false;
+  updateStats();
+}
+
+function check() {
+  if (checked) {
+    advance();
+    return;
+  }
+
+  const input = document.getElementById("answer-input");
+  const val = input.value.trim();
+  if (!val) return;
+
+  const result = fuzzyScore(val, deck[idx].a);
+  stats[result]++;
+  checked = true;
+  input.disabled = true;
+  input.className = result;
+
+  const fb = document.getElementById("feedback");
+  fb.className = `feedback show ${result}`;
+  document.getElementById("fb-tag").textContent = {
+    correct: "✓ Correct",
+    partial: "~ Partial",
+    wrong: "✗ Incorrect",
+  }[result];
+  document.getElementById("fb-answer").textContent = deck[idx].a;
+
+  document.getElementById("submit-btn").textContent = "Next →";
+  document.getElementById("skip-btn").textContent = "Next →";
+  updateStats();
+}
+
+function advance() {
+  if (++idx >= deck.length) showDone();
+  else render();
+}
+
+function skip() {
+  if (checked) {
+    advance();
+    return;
+  }
+
+  stats.wrong++;
+  checked = true;
+
+  const input = document.getElementById("answer-input");
+  input.disabled = true;
+  input.className = "wrong";
+
+  const fb = document.getElementById("feedback");
+  fb.className = "feedback show wrong";
+  document.getElementById("fb-tag").textContent = "— Skipped";
+  document.getElementById("fb-answer").textContent = deck[idx].a;
+
+  document.getElementById("submit-btn").textContent = "Next →";
+  document.getElementById("skip-btn").textContent = "Next →";
+  updateStats();
+}
+
+function showDone() {
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("done").classList.add("show");
+  document.getElementById("card-label").textContent = "Complete";
+  document.getElementById("progress-fill").style.width = "100%";
+  document.getElementById("nav-prog").textContent = "100%";
+  document.getElementById("done-summary").textContent =
+    `${stats.correct} correct · ${stats.partial} partial · ${stats.wrong} wrong`;
+}
+
+// --- Events ---
+
+document.getElementById("submit-btn").addEventListener("click", check);
+document.getElementById("skip-btn").addEventListener("click", skip);
+document.getElementById("restart-btn").addEventListener("click", load);
+document.getElementById("answer-input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter") check();
+});
+
+load();
