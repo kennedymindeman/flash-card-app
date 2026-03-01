@@ -92,19 +92,6 @@ nav {
     flex-shrink: 0;
 }
 
-.nav-brand {
-    font-family: "Fira Code", monospace;
-    font-size: 0.75rem;
-    font-weight: 300;
-    color: var(--sub);
-    letter-spacing: 0.08em;
-}
-
-.nav-brand b {
-    color: var(--text);
-    font-weight: 400;
-}
-
 .nav-spacer {
     flex: 1;
 }
