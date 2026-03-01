@@ -154,7 +154,7 @@ function showDone() {
 
 document.getElementById("submit-btn").addEventListener("click", check);
 document.getElementById("restart-btn").addEventListener("click", load);
-document.getElementById("answer-input").addEventListener("keydown", (e) => {
+document.addEventListener("keydown", (e) => {
   if (e.key === "Enter") check();
 });
 
