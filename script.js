@@ -101,7 +101,6 @@ function render() {
   document.getElementById("fb-answer").textContent = "";
 
   document.getElementById("submit-btn").textContent = "Check";
-  document.getElementById("skip-btn").textContent = "Skip";
 
   checked = false;
   updateStats();
@@ -133,36 +132,12 @@ function check() {
   document.getElementById("fb-answer").textContent = deck[idx].a;
 
   document.getElementById("submit-btn").textContent = "Next →";
-  document.getElementById("skip-btn").textContent = "Next →";
   updateStats();
 }
 
 function advance() {
   if (++idx >= deck.length) showDone();
   else render();
-}
-
-function skip() {
-  if (checked) {
-    advance();
-    return;
-  }
-
-  stats.wrong++;
-  checked = true;
-
-  const input = document.getElementById("answer-input");
-  input.disabled = true;
-  input.className = "wrong";
-
-  const fb = document.getElementById("feedback");
-  fb.className = "feedback show wrong";
-  document.getElementById("fb-tag").textContent = "— Skipped";
-  document.getElementById("fb-answer").textContent = deck[idx].a;
-
-  document.getElementById("submit-btn").textContent = "Next →";
-  document.getElementById("skip-btn").textContent = "Next →";
-  updateStats();
 }
 
 function showDone() {
@@ -178,7 +153,6 @@ function showDone() {
 // --- Events ---
 
 document.getElementById("submit-btn").addEventListener("click", check);
-document.getElementById("skip-btn").addEventListener("click", skip);
 document.getElementById("restart-btn").addEventListener("click", load);
 document.getElementById("answer-input").addEventListener("keydown", (e) => {
   if (e.key === "Enter") check();
