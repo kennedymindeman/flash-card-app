@@ -13,19 +13,19 @@ let deck, idx, wronged;
 
 // --- Theme ---
 
-let theme = localStorage.getItem('mono-theme') || 'auto';
+let theme = localStorage.getItem("mono-theme") || "auto";
 
 function applyTheme() {
   const r = document.documentElement;
-  if (theme === 'auto') r.removeAttribute('data-theme');
-  else r.setAttribute('data-theme', theme);
-  document.getElementById('theme-btn').textContent =
-    theme === 'dark' ? '○' : theme === 'light' ? '●' : '◐';
+  if (theme === "auto") r.removeAttribute("data-theme");
+  else r.setAttribute("data-theme", theme);
+  document.getElementById("theme-btn").textContent =
+    theme === "dark" ? "○" : theme === "light" ? "●" : "◐";
 }
 
-document.getElementById('theme-btn').addEventListener('click', () => {
-  theme = theme === 'auto' ? 'dark' : theme === 'dark' ? 'light' : 'auto';
-  localStorage.setItem('mono-theme', theme);
+document.getElementById("theme-btn").addEventListener("click", () => {
+  theme = theme === "auto" ? "dark" : theme === "dark" ? "light" : "auto";
+  localStorage.setItem("mono-theme", theme);
   applyTheme();
 });
 
@@ -36,44 +36,45 @@ applyTheme();
 function playCorrect() {
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   [523, 784].forEach((freq, i) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.connect(g); g.connect(ac.destination);
-    o.type = 'sine';
+    const o = ac.createOscillator(),
+      g = ac.createGain();
+    o.connect(g);
+    g.connect(ac.destination);
+    o.type = "sine";
     o.frequency.setValueAtTime(freq, ac.currentTime);
     const t = ac.currentTime + i * 0.13;
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(0.25, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-    o.start(t); o.stop(t + 0.4);
+    o.start(t);
+    o.stop(t + 0.4);
   });
 }
 
 function playWrong() {
   const ac = new (window.AudioContext || window.webkitAudioContext)();
   [330, 220].forEach((freq, i) => {
-    const o = ac.createOscillator(), g = ac.createGain();
-    o.connect(g); g.connect(ac.destination);
-    o.type = 'sine';
+    const o = ac.createOscillator(),
+      g = ac.createGain();
+    o.connect(g);
+    g.connect(ac.destination);
+    o.type = "sine";
     o.frequency.setValueAtTime(freq, ac.currentTime);
     const t = ac.currentTime + i * 0.14;
     g.gain.setValueAtTime(0, t);
     g.gain.linearRampToValueAtTime(0.25, t + 0.02);
     g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-    o.start(t); o.stop(t + 0.35);
+    o.start(t);
+    o.stop(t + 0.35);
   });
 }
 
 // --- Scoring ---
 
-function normalize(s) {
-  return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
-}
-
 function score(input, answer) {
-  const a = normalize(input), b = normalize(answer);
-  if (a === b) return 'correct';
-  const ratio = b.split(' ').filter(w => a.split(' ').includes(w)).length / b.split(' ').length;
-  return ratio >= 0.4 ? 'partial' : 'wrong';
+  return input.trim().toLowerCase() === answer.trim().toLowerCase()
+    ? "correct"
+    : "wrong";
 }
 
 // --- Lifecycle ---
@@ -82,43 +83,43 @@ function load() {
   deck = [...CARDS].sort(() => Math.random() - 0.5);
   idx = 0;
   wronged = false;
-  document.getElementById('done').classList.remove('show');
-  document.getElementById('quiz').style.display = '';
+  document.getElementById("done").classList.remove("show");
+  document.getElementById("quiz").style.display = "";
   render();
 }
 
 function render() {
-  const input = document.getElementById('answer-input');
-  document.getElementById('question-text').textContent = deck[idx].q;
-  document.getElementById('question-text').classList.remove('fading');
-  document.getElementById('prompt-sym').className = 'prompt-sym';
-  document.getElementById('prompt-sym').textContent = '›';
-  document.getElementById('prompt-sym').style.color = '';
-  document.getElementById('answer-sym').textContent = '_';
-  document.getElementById('feedback-row').textContent = '';
-  input.value = '';
+  const input = document.getElementById("answer-input");
+  document.getElementById("question-text").textContent = deck[idx].q;
+  document.getElementById("question-text").classList.remove("fading");
+  document.getElementById("prompt-sym").className = "prompt-sym";
+  document.getElementById("prompt-sym").textContent = "›";
+  document.getElementById("prompt-sym").style.color = "";
+  document.getElementById("answer-sym").textContent = "_";
+  document.getElementById("feedback-row").textContent = "";
+  input.value = "";
   input.disabled = false;
   wronged = false;
   input.focus();
 }
 
 function check() {
-  const input = document.getElementById('answer-input');
+  const input = document.getElementById("answer-input");
   const val = input.value.trim();
   if (!val) return;
 
-  const correct = score(val, deck[idx].a) === 'correct';
+  const correct = score(val, deck[idx].a) === "correct";
 
   if (correct) {
     playCorrect();
 
-    const sym = document.getElementById('prompt-sym');
-    sym.textContent = '✓';
-    sym.style.color = 'var(--correct)';
-    sym.classList.add('flash-correct');
+    const sym = document.getElementById("prompt-sym");
+    sym.textContent = "✓";
+    sym.style.color = "var(--correct)";
+    sym.classList.add("flash-correct");
 
     setTimeout(() => {
-      document.getElementById('question-text').classList.add('fading');
+      document.getElementById("question-text").classList.add("fading");
     }, 300);
 
     setTimeout(() => {
@@ -126,31 +127,32 @@ function check() {
       if (++idx >= deck.length) showDone();
       else render();
     }, 700);
-
   } else {
     if (!wronged) {
       wronged = true;
       playWrong();
 
-      const sym = document.getElementById('prompt-sym');
-      sym.textContent = '✗';
-      sym.style.color = 'var(--wrong)';
+      const sym = document.getElementById("prompt-sym");
+      sym.textContent = "✗";
+      sym.style.color = "var(--wrong)";
 
-      const fb = document.getElementById('feedback-row');
+      const fb = document.getElementById("feedback-row");
       fb.innerHTML = `<span>correct:</span><span class="feedback-answer">${deck[idx].a}</span>`;
     }
 
-    input.value = '';
+    input.value = "";
     input.focus();
   }
 }
 
 function showDone() {
-  document.getElementById('quiz').style.display = 'none';
-  document.getElementById('done').classList.add('show');
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("done").classList.add("show");
 }
 
 // --- Events ---
 
-document.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") check();
+});
 load();
