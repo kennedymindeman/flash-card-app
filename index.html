@@ -7,75 +7,36 @@
         <link rel="stylesheet" href="styles.css" />
     </head>
     <body>
-        <nav>
-            <div class="nav-spacer"></div>
-            <div class="progress-bar-wrap">
-                <div class="progress-bar-fill" id="progress-fill"></div>
-            </div>
-            <div class="nav-prog-text" id="nav-prog">0%</div>
-            <button class="theme-toggle" id="theme-toggle">◐</button>
-        </nav>
+        <button class="theme-btn" id="theme-btn">◐</button>
 
-        <div class="layout">
-            <div class="sidebar">
-                <div class="stat-card">
-                    <div class="stat-dot correct"></div>
-                    <div class="stat-info">
-                        <div class="stat-label">correct</div>
-                        <div class="stat-value" id="stat-correct">0</div>
-                    </div>
+        <div class="shell">
+            <div id="quiz">
+                <div class="prompt-block">
+                    <span class="prompt-sym" id="prompt-sym">›</span>
+                    <div id="question-text">Loading…</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-dot partial"></div>
-                    <div class="stat-info">
-                        <div class="stat-label">partial</div>
-                        <div class="stat-value" id="stat-partial">0</div>
-                    </div>
+
+                <div class="answer-block">
+                    <span class="answer-sym" id="answer-sym">_</span>
+                    <input
+                        type="text"
+                        id="answer-input"
+                        placeholder="answer…"
+                        autocomplete="off"
+                    />
                 </div>
-                <div class="stat-card">
-                    <div class="stat-dot wrong"></div>
-                    <div class="stat-info">
-                        <div class="stat-label">wrong</div>
-                        <div class="stat-value" id="stat-wrong">0</div>
-                    </div>
-                </div>
+
+                <div class="feedback-row" id="feedback-row"></div>
             </div>
 
-            <div class="main-card">
-                <div class="card-header">
-                    <div class="card-header-dot"></div>
-                    <div class="card-header-label" id="card-label">
-                        Question 1 of 8
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div id="quiz">
-                        <div id="question-text">Loading…</div>
-
-                        <div class="input-group">
-                            <div class="input-label">Answer</div>
-                            <input
-                                type="text"
-                                id="answer-input"
-                                placeholder="type your answer…"
-                                autocomplete="off"
-                            />
-                        </div>
-
-                        <div class="btn-row">
-                            <button id="submit-btn">Check</button>
-                        </div>
-
-                        <div class="feedback" id="feedback">
-                            <div class="fb-tag" id="fb-tag"></div>
-                            <div class="fb-answer" id="fb-answer"></div>
-                        </div>
-                    </div>
-
-                    <div class="done-screen" id="done">
-                        <div class="done-head">Session complete.</div>
-                        <div class="done-sub" id="done-summary"></div>
-                        <button id="restart-btn">Restart</button>
+            <div class="done-screen" id="done">
+                <div class="done-prompt">
+                    <span class="done-sym">✓</span>
+                    <div class="done-msg">
+                        Session complete.
+                        <span class="done-sub"
+                            >Come back tomorrow for your next review.</span
+                        >
                     </div>
                 </div>
             </div>

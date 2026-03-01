@@ -9,65 +9,71 @@ const CARDS = [
   { q: "What does RAM stand for?", a: "random access memory" },
 ];
 
-let deck, idx, stats, checked;
+let deck, idx, wronged;
 
 // --- Theme ---
 
-let theme = localStorage.getItem("dash-theme") || "auto";
+let theme = localStorage.getItem('mono-theme') || 'auto';
 
 function applyTheme() {
-  const root = document.documentElement;
-  if (theme === "auto") {
-    root.removeAttribute("data-theme");
-  } else {
-    root.setAttribute("data-theme", theme);
-  }
-  document.getElementById("theme-toggle").textContent =
-    theme === "dark" ? "○" : theme === "light" ? "●" : "◐";
+  const r = document.documentElement;
+  if (theme === 'auto') r.removeAttribute('data-theme');
+  else r.setAttribute('data-theme', theme);
+  document.getElementById('theme-btn').textContent =
+    theme === 'dark' ? '○' : theme === 'light' ? '●' : '◐';
 }
 
-document.getElementById("theme-toggle").addEventListener("click", () => {
-  theme = theme === "auto" ? "dark" : theme === "dark" ? "light" : "auto";
-  localStorage.setItem("dash-theme", theme);
+document.getElementById('theme-btn').addEventListener('click', () => {
+  theme = theme === 'auto' ? 'dark' : theme === 'dark' ? 'light' : 'auto';
+  localStorage.setItem('mono-theme', theme);
   applyTheme();
 });
 
 applyTheme();
 
+// --- Audio ---
+
+function playCorrect() {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  [523, 784].forEach((freq, i) => {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, ac.currentTime);
+    const t = ac.currentTime + i * 0.13;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.25, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
+    o.start(t); o.stop(t + 0.4);
+  });
+}
+
+function playWrong() {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  [330, 220].forEach((freq, i) => {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.connect(g); g.connect(ac.destination);
+    o.type = 'sine';
+    o.frequency.setValueAtTime(freq, ac.currentTime);
+    const t = ac.currentTime + i * 0.14;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.25, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
+    o.start(t); o.stop(t + 0.35);
+  });
+}
+
 // --- Scoring ---
 
 function normalize(s) {
-  return s
-    .toLowerCase()
-    .replace(/[^a-z0-9]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+  return s.toLowerCase().replace(/[^a-z0-9]/g, ' ').replace(/\s+/g, ' ').trim();
 }
 
-function fuzzyScore(input, answer) {
-  const a = normalize(input);
-  const b = normalize(answer);
-  if (a === b) return "correct";
-  const bWords = b.split(" ");
-  const aWords = a.split(" ");
-  const ratio = bWords.filter((w) => aWords.includes(w)).length / bWords.length;
-  return ratio >= 0.4 ? "partial" : "wrong";
-}
-
-// --- Progress ---
-
-function updateProgress() {
-  const pct = Math.round((idx / deck.length) * 100);
-  document.getElementById("progress-fill").style.width = pct + "%";
-  document.getElementById("nav-prog").textContent = pct + "%";
-}
-
-// --- Stats ---
-
-function updateStats() {
-  ["correct", "partial", "wrong"].forEach((k) => {
-    document.getElementById(`stat-${k}`).textContent = stats[k];
-  });
+function score(input, answer) {
+  const a = normalize(input), b = normalize(answer);
+  if (a === b) return 'correct';
+  const ratio = b.split(' ').filter(w => a.split(' ').includes(w)).length / b.split(' ').length;
+  return ratio >= 0.4 ? 'partial' : 'wrong';
 }
 
 // --- Lifecycle ---
@@ -75,87 +81,76 @@ function updateStats() {
 function load() {
   deck = [...CARDS].sort(() => Math.random() - 0.5);
   idx = 0;
-  stats = { correct: 0, partial: 0, wrong: 0 };
-  checked = false;
-  document.getElementById("done").classList.remove("show");
-  document.getElementById("quiz").style.display = "";
+  wronged = false;
+  document.getElementById('done').classList.remove('show');
+  document.getElementById('quiz').style.display = '';
   render();
 }
 
 function render() {
-  const card = deck[idx];
-  document.getElementById("question-text").textContent = card.q;
-  document.getElementById("card-label").textContent =
-    `Question ${idx + 1} of ${deck.length}`;
-  updateProgress();
-
-  const input = document.getElementById("answer-input");
-  input.value = "";
-  input.className = "";
+  const input = document.getElementById('answer-input');
+  document.getElementById('question-text').textContent = deck[idx].q;
+  document.getElementById('question-text').classList.remove('fading');
+  document.getElementById('prompt-sym').className = 'prompt-sym';
+  document.getElementById('prompt-sym').textContent = '›';
+  document.getElementById('prompt-sym').style.color = '';
+  document.getElementById('answer-sym').textContent = '_';
+  document.getElementById('feedback-row').textContent = '';
+  input.value = '';
   input.disabled = false;
+  wronged = false;
   input.focus();
-
-  const fb = document.getElementById("feedback");
-  fb.className = "feedback";
-  document.getElementById("fb-tag").textContent = "";
-  document.getElementById("fb-answer").textContent = "";
-
-  document.getElementById("submit-btn").textContent = "Check";
-
-  checked = false;
-  updateStats();
 }
 
 function check() {
-  if (checked) {
-    advance();
-    return;
-  }
-
-  const input = document.getElementById("answer-input");
+  const input = document.getElementById('answer-input');
   const val = input.value.trim();
   if (!val) return;
 
-  const result = fuzzyScore(val, deck[idx].a);
-  stats[result]++;
-  checked = true;
-  input.disabled = true;
-  input.className = result;
+  const correct = score(val, deck[idx].a) === 'correct';
 
-  const fb = document.getElementById("feedback");
-  fb.className = `feedback show ${result}`;
-  document.getElementById("fb-tag").textContent = {
-    correct: "✓ Correct",
-    partial: "~ Partial",
-    wrong: "✗ Incorrect",
-  }[result];
-  document.getElementById("fb-answer").textContent = deck[idx].a;
+  if (correct) {
+    playCorrect();
 
-  document.getElementById("submit-btn").textContent = "Next →";
-  updateStats();
-}
+    const sym = document.getElementById('prompt-sym');
+    sym.textContent = '✓';
+    sym.style.color = 'var(--correct)';
+    sym.classList.add('flash-correct');
 
-function advance() {
-  if (++idx >= deck.length) showDone();
-  else render();
+    setTimeout(() => {
+      document.getElementById('question-text').classList.add('fading');
+    }, 300);
+
+    setTimeout(() => {
+      wronged = false;
+      if (++idx >= deck.length) showDone();
+      else render();
+    }, 700);
+
+  } else {
+    if (!wronged) {
+      wronged = true;
+      playWrong();
+
+      const sym = document.getElementById('prompt-sym');
+      sym.textContent = '✗';
+      sym.style.color = 'var(--wrong)';
+
+      const fb = document.getElementById('feedback-row');
+      fb.innerHTML = `<span>correct:</span><span class="feedback-answer">${deck[idx].a}</span>`;
+    }
+
+    input.value = '';
+    input.focus();
+  }
 }
 
 function showDone() {
-  document.getElementById("quiz").style.display = "none";
-  document.getElementById("done").classList.add("show");
-  document.getElementById("card-label").textContent = "Complete";
-  document.getElementById("progress-fill").style.width = "100%";
-  document.getElementById("nav-prog").textContent = "100%";
-  document.getElementById("done-summary").textContent =
-    `${stats.correct} correct · ${stats.partial} partial · ${stats.wrong} wrong`;
+  document.getElementById('quiz').style.display = 'none';
+  document.getElementById('done').classList.add('show');
 }
 
 // --- Events ---
 
-document.getElementById("submit-btn").addEventListener("click", check);
-document.getElementById("restart-btn").addEventListener("click", load);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") check();
-});
-
+document.addEventListener('keydown', e => { if (e.key === 'Enter') check(); });
 load();
