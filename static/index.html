@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cards</title>
+        <link rel="icon" href="data:," />
+        <link rel="stylesheet" href="/static/styles.css" />
+    </head>
+    <body>
+        <button class="theme-btn" id="theme-btn">◐</button>
+
+        <div class="shell">
+            <div class="prompt-block">
+                <span class="prompt-sym">›</span>
+                <div id="picker-title" class="question-text">select a deck</div>
+            </div>
+
+            <div
+                id="deck-list"
+                class="answer-block"
+                style="
+                    display: block;
+                    border-top: 1px solid var(--line);
+                    padding-top: 1.5rem;
+                "
+            >
+                <div class="loading">loading…</div>
+            </div>
+        </div>
+
+        <script src="/static/theme.js"></script>
+        <script>
+            async function loadDecks() {
+                const res = await fetch("/api/decks");
+                const decks = await res.json();
+                const list = document.getElementById("deck-list");
+
+                if (decks.length === 0) {
+                    list.innerHTML =
+                        '<div class="feedback-row">no decks found — add a .json file to the decks/ directory</div>';
+                    return;
+                }
+
+                list.innerHTML = decks
+                    .map((deck, i) => {
+                        const num = String(i + 1).padStart(2, "0");
+                        let meta = `${deck.total} card${deck.total !== 1 ? "s" : ""}`;
+                        let due = "";
+                        if (deck.due > 0) {
+                            due = `<span class="due">${deck.due} due</span>`;
+                        } else if (deck.acquiring > 0) {
+                            due = `<span class="acquiring">in progress</span>`;
+                        }
+                        return `
+      <a class="deck-item" href="/study/${deck.name}">
+        <span class="deck-num">${num}</span>
+        <span class="deck-name">${deck.name}</span>
+        <span class="deck-spacer"></span>
+        ${due}
+        <span class="deck-meta">${meta}</span>
+        <span class="deck-arrow">→</span>
+      </a>`;
+                    })
+                    .join("");
+            }
+
+            loadDecks();
+        </script>
+    </body>
+</html>

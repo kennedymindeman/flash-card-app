@@ -1,45 +1,108 @@
 import json
 import os
+from datetime import date
 
 from flask import Flask, jsonify, request, send_from_directory
 
 app = Flask(__name__)
 
-DATA_FILE = "data.json"
+DECKS_DIR = "decks"
+STATE_DIR = "state"
+
+os.makedirs(DECKS_DIR, exist_ok=True)
+os.makedirs(STATE_DIR, exist_ok=True)
 
 
-def read_data():
-    if not os.path.exists(DATA_FILE):
-        return {}
-    with open(DATA_FILE, "r") as f:
+def read_deck(name: str) -> list:
+    path = os.path.join(DECKS_DIR, f"{name}.json")
+    if not os.path.exists(path):
+        return []
+    with open(path) as f:
         return json.load(f)
 
 
-def write_data(data):
-    with open(DATA_FILE, "w") as f:
-        json.dump(data, f, indent=2)
+def read_state(name: str) -> dict:
+    path = os.path.join(STATE_DIR, f"{name}-state.json")
+    if not os.path.exists(path):
+        return {}
+    with open(path) as f:
+        return json.load(f)
 
 
-# Serve static files
+def write_state(name: str, state: dict):
+    path = os.path.join(STATE_DIR, f"{name}-state.json")
+    with open(path, "w") as f:
+        json.dump(state, f, indent=2)
+
+
+def deck_summary(name: str) -> dict:
+    cards = read_deck(name)
+    state = read_state(name)
+    today = date.today().isoformat()
+
+    total = len(cards)
+    due = sum(
+        1
+        for card in cards
+        if (s := state.get(card["prompt"]))
+        and s.get("phase") == "srs"
+        and s.get("dueDate", "") <= today
+    )
+    acquiring = sum(
+        1
+        for card in cards
+        if not state.get(card["prompt"])
+        or state.get(card["prompt"], {}).get("phase") == "acquisition"
+    )
+
+    return {
+        "name": name,
+        "total": total,
+        "due": due,
+        "acquiring": acquiring,
+    }
+
+
+# --- Static files ---
+
+
 @app.route("/")
 def index():
-    return send_from_directory(".", "index.html")
+    return send_from_directory("static", "index.html")
 
 
-@app.route("/<path:path>")
+@app.route("/study/<name>")
+def study(name):
+    return send_from_directory("static", "study.html")
+
+
+@app.route("/static/<path:path>")
 def static_files(path):
-    return send_from_directory(".", path)
+    return send_from_directory("static", path)
 
 
-# Data endpoints
-@app.route("/api/state", methods=["GET"])
-def get_state():
-    return jsonify(read_data())
+# --- API ---
 
 
-@app.route("/api/state", methods=["POST"])
-def set_state():
-    write_data(request.get_json())
+@app.route("/api/decks")
+def get_decks():
+    names = [f[:-5] for f in os.listdir(DECKS_DIR) if f.endswith(".json")]
+    return jsonify([deck_summary(name) for name in sorted(names)])
+
+
+@app.route("/api/deck/<name>")
+def get_deck(name):
+    cards = read_deck(name)
+    state = read_state(name)
+    return jsonify({"cards": cards, "state": state})
+
+
+@app.route("/api/deck/<name>/state", methods=["POST"])
+def update_state(name):
+    state = read_state(name)
+    update = request.get_json()
+    state[update["prompt"]] = update["state"]
+    write_state(name, state)
     return jsonify({"ok": True})
 
 
