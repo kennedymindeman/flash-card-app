@@ -11,6 +11,7 @@ const deckName = location.pathname.split("/").pop();
 let allCards = []; // full deck from server: [{ prompt, response }]
 let cardState = {}; // per-card state keyed by prompt
 let pool = []; // prompts currently in the acquisition pool
+let queue = []; // shuffled order for current pass
 let currentPrompt = null;
 let wronged = false;
 let keystrokeTimer = null;
@@ -156,27 +157,40 @@ function fillPool() {
   const candidates = acquisitionCards()
     .map((c) => c.prompt)
     .filter((p) => !inPool.has(p));
+  let changed = false;
   while (pool.length < POOL_SIZE && candidates.length > 0) {
     const idx = Math.floor(Math.random() * candidates.length);
     pool.push(candidates.splice(idx, 1)[0]);
+    changed = true;
   }
+  if (changed) queue = []; // reset queue when pool composition changes
 }
 
-/**
- * Pick next card to show. Avoids repeating currentPrompt if possible.
- * Pool cards take priority over SRS due cards during a session.
- */
-function pickNext() {
-  if (pool.length === 0 && srsCards().length === 0) return null;
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 
-  // prefer pool
+function pickNext() {
   const candidates =
     pool.length > 0 ? [...pool] : srsCards().map((c) => c.prompt);
 
-  const filtered = candidates.filter((p) => p !== currentPrompt);
-  const choices = filtered.length > 0 ? filtered : candidates;
+  if (candidates.length === 0) return null;
+  if (candidates.length === 1) return candidates[0];
 
-  return choices[Math.floor(Math.random() * choices.length)];
+  if (queue.length === 0) {
+    const rest = candidates.filter((p) => p !== currentPrompt);
+    shuffle(rest);
+    if (currentPrompt && candidates.includes(currentPrompt)) {
+      rest.push(currentPrompt);
+    }
+    queue = rest;
+  }
+
+  return queue.shift();
 }
 
 // --- Render ---
