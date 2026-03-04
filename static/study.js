@@ -261,6 +261,7 @@ async function check() {
 }
 
 async function handleCorrect(prompt, responseMs) {
+  keystrokeTimer = null; // ignore keystrokes during transition
   playCorrect();
 
   const sym = document.getElementById("prompt-sym");
@@ -276,10 +277,7 @@ async function handleCorrect(prompt, responseMs) {
   const state = getOrInitState(prompt);
 
   if (state.phase === "acquisition") {
-    const tooSlow = responseMs > ACQUISITION_TIME_LIMIT_MS && !wronged;
-    const cleanRep = !wronged && !tooSlow;
-
-    if (cleanRep) {
+    if (!wronged) {
       state.streak = (state.streak || 0) + 1;
     } else {
       state.streak = 0;
@@ -373,8 +371,9 @@ document.addEventListener("keydown", (e) => {
 });
 
 // Capture first keystroke time on any key in the input
+// keystrokeTimer is null during transitions -- ignore keystrokes then
 document.getElementById("answer-input").addEventListener("keydown", (e) => {
-  if (e.key === "Enter") return; // handled separately
+  if (e.key === "Enter") return;
   if (firstKeystrokeTime === null && keystrokeTimer !== null) {
     firstKeystrokeTime = Date.now() - keystrokeTimer;
   }
