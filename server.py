@@ -26,13 +26,18 @@ def read_state(name: str) -> dict:
     if not os.path.exists(path):
         return {}
     with open(path) as f:
-        return json.load(f)
+        try:
+            return json.load(f)
+        except json.JSONDecodeError:
+            return {}
 
 
 def write_state(name: str, state: dict):
     path = os.path.join(STATE_DIR, f"{name}-state.json")
-    with open(path, "w") as f:
+    tmp = path + ".tmp"
+    with open(tmp, "w") as f:
         json.dump(state, f, indent=2)
+    os.replace(tmp, path)
 
 
 def deck_summary(name: str) -> dict:
