@@ -1,5 +1,6 @@
 *
+!.gitignore
+!readme.md
+!server.py
 !static/
 !static/*
-!server.py
-!readme.md
