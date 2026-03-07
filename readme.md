@@ -22,13 +22,25 @@ Create a `.json` file in the `decks/` directory. It will appear in the deck pick
 ]
 ```
 
+### Reversible cards
+
+Add `"reversible": true` to any card to generate a second card with prompt and response swapped. Both directions are tracked independently in the SRS.
+
+```json
+[
+  { "prompt": "hello", "response": "안녕하세요", "reversible": true }
+]
+```
+
+This creates two cards: `hello → 안녕하세요` and `안녕하세요 → hello`. Avoid adding a reversed card manually if you're already using `reversible` on the same entry -- they'd share the same state key and conflict.
+
 ### Writing good cards
 
-**Type the exact response.** Matching is case-insensitive but otherwise exact -- "O(log n)" and "o(log n)" both pass, but "log n" does not. Avoid answers that have multiple reasonable phrasings; pick one form and stick to it.
+**Type the exact response.** Matching is case-insensitive but otherwise exact -- "O(log n)" and "o(log n)" both pass, but "log n" does not. Avoid answers with multiple reasonable phrasings; pick one form and stick to it.
 
 **Keep responses short.** Aim for under 5 words. Long answers are hard to type exactly and slow to recall.
 
-**One fact per card.** If a card is testing two things, split it into two cards. A card that asks "what are the two types of RAM and what is each used for?" should be two cards.
+**One fact per card.** If a card is testing two things, split it into two cards.
 
 **Prefer formulas and abbreviations over prose.** Instead of asking for Newton's second law in words, ask for the formula (`F = ma`). It's shorter, unambiguous, and faster to recall.
 
@@ -45,7 +57,7 @@ Create a `.json` file in the `decks/` directory. It will appear in the deck pick
 ## How It Works
 
 ### Acquisition phase
-New cards enter a pool of up to 5 at a time. Answer a card correctly 3 times in a row (with the first keystroke within 1 second) and it graduates to SRS. A wrong answer resets the streak. You must type the correct answer before moving on.
+New cards enter a pool of up to 5 at a time. Answer a card correctly 3 times in a row and it graduates to SRS. A wrong answer resets the streak. You must type the correct answer before moving on.
 
 ### SRS phase
 Graduated cards are scheduled using SM-2. Response time influences the next interval -- fast correct answers get longer intervals than slow ones. Due cards appear in your session alongside acquisition cards.

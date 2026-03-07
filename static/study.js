@@ -155,8 +155,15 @@ function srsCards() {
 function fillPool() {
   const inPool = new Set(pool);
   const candidates = acquisitionCards()
-    .map((c) => c.prompt)
-    .filter((p) => !inPool.has(p));
+    .filter((c) => {
+      if (inPool.has(c.prompt)) return false;
+      if (c.reversedOf) {
+        const sourceState = cardState[c.reversedOf];
+        if (!sourceState || sourceState.phase !== "srs") return false;
+      }
+      return true;
+    })
+    .map((c) => c.prompt);
   let changed = false;
   while (pool.length < POOL_SIZE && candidates.length > 0) {
     const idx = Math.floor(Math.random() * candidates.length);

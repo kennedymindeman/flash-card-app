@@ -40,8 +40,24 @@ def write_state(name: str, state: dict):
     os.replace(tmp, path)
 
 
+def expand_cards(raw_cards: list) -> list:
+    """Expand reversible cards into two entries. Reversed card is keyed by response."""
+    cards = []
+    for card in raw_cards:
+        cards.append({"prompt": card["prompt"], "response": card["response"]})
+        if card.get("reversible"):
+            cards.append(
+                {
+                    "prompt": card["response"],
+                    "response": card["prompt"],
+                    "reversedOf": card["prompt"],
+                }
+            )
+    return cards
+
+
 def deck_summary(name: str) -> dict:
-    cards = read_deck(name)
+    cards = expand_cards(read_deck(name))
     state = read_state(name)
     today = date.today().isoformat()
 
@@ -97,7 +113,7 @@ def get_decks():
 
 @app.route("/api/deck/<name>")
 def get_deck(name):
-    cards = read_deck(name)
+    cards = expand_cards(read_deck(name))
     state = read_state(name)
     return jsonify({"cards": cards, "state": state})
 
