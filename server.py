@@ -36,7 +36,7 @@ def read_state(name: str) -> dict:
     path = os.path.join(STATE_DIR, f"{name}-state.json")
     if not os.path.exists(path):
         return {}
-    with open(path) as f:
+    with open(path, encoding="utf-8") as f:
         try:
             return json.load(f)
         except json.JSONDecodeError:
@@ -48,8 +48,8 @@ def write_state(name: str, state: dict):
 
     path = os.path.join(STATE_DIR, f"{name}-state.json")
     tmp = path + f".{uuid.uuid4().hex}.tmp"
-    with open(tmp, "w") as f:
-        json.dump(state, f, indent=2)
+    with open(tmp, "w", encoding="utf-8") as f:
+        json.dump(state, f, indent=2, ensure_ascii=False)
     os.replace(tmp, path)
 
 
