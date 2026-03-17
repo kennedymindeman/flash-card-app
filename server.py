@@ -1,5 +1,6 @@
 import json
 import os
+import threading
 from datetime import date
 
 from flask import Flask, jsonify, request, send_from_directory
@@ -11,6 +12,16 @@ STATE_DIR = "state"
 
 os.makedirs(DECKS_DIR, exist_ok=True)
 os.makedirs(STATE_DIR, exist_ok=True)
+
+_state_locks: dict[str, threading.Lock] = {}
+_state_locks_lock = threading.Lock()
+
+
+def get_lock(name: str) -> threading.Lock:
+    with _state_locks_lock:
+        if name not in _state_locks:
+            _state_locks[name] = threading.Lock()
+        return _state_locks[name]
 
 
 def read_deck(name: str) -> list:
@@ -33,8 +44,10 @@ def read_state(name: str) -> dict:
 
 
 def write_state(name: str, state: dict):
+    import uuid
+
     path = os.path.join(STATE_DIR, f"{name}-state.json")
-    tmp = path + ".tmp"
+    tmp = path + f".{uuid.uuid4().hex}.tmp"
     with open(tmp, "w") as f:
         json.dump(state, f, indent=2)
     os.replace(tmp, path)
@@ -120,10 +133,11 @@ def get_deck(name):
 
 @app.route("/api/deck/<name>/state", methods=["POST"])
 def update_state(name):
-    state = read_state(name)
     update = request.get_json()
-    state[update["prompt"]] = update["state"]
-    write_state(name, state)
+    with get_lock(name):
+        state = read_state(name)
+        state[update["prompt"]] = update["state"]
+        write_state(name, state)
     return jsonify({"ok": True})
 
 
