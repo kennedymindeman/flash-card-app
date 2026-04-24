@@ -230,6 +230,8 @@ function render(prompt) {
 
 function showDone() {
   document.getElementById("quiz").style.display = "none";
+  const zone = document.getElementById("answer-zone");
+  if (zone) zone.style.display = "none";
   const done = document.getElementById("done");
   done.classList.add("show");
 

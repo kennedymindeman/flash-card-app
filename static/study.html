@@ -8,16 +8,33 @@
         <link rel="stylesheet" href="/static/styles.css" />
     </head>
     <body>
-        <button class="theme-btn" id="theme-btn">◐</button>
         <a class="back-btn" href="/">←</a>
 
-        <div class="shell">
-            <div id="quiz">
-                <div class="prompt-block">
-                    <span class="prompt-sym" id="prompt-sym">›</span>
-                    <div id="question-text" class="question-text">loading…</div>
+        <div class="study-wrapper">
+            <div class="shell">
+                <div id="quiz">
+                    <div class="prompt-block">
+                        <span class="prompt-sym" id="prompt-sym">›</span>
+                        <div id="question-text" class="question-text">
+                            loading…
+                        </div>
+                    </div>
                 </div>
 
+                <div class="done-screen" id="done">
+                    <div class="prompt-block">
+                        <span class="prompt-sym" style="color: var(--correct)"
+                            >✓</span
+                        >
+                        <div class="question-text">
+                            session complete
+                            <span class="done-sub" id="done-sub"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="answer-zone" id="answer-zone">
                 <div class="answer-block">
                     <input
                         type="text"
@@ -27,20 +44,7 @@
                         spellcheck="false"
                     />
                 </div>
-
                 <div class="feedback-row" id="feedback-row"></div>
-            </div>
-
-            <div class="done-screen" id="done">
-                <div class="prompt-block">
-                    <span class="prompt-sym" style="color: var(--correct)"
-                        >✓</span
-                    >
-                    <div class="question-text">
-                        session complete
-                        <span class="done-sub" id="done-sub"></span>
-                    </div>
-                </div>
             </div>
         </div>
 
