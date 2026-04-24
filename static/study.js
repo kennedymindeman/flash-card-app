@@ -21,38 +21,68 @@ let firstKeystrokeTime = null;
 
 function playCorrect() {
   const ac = new (window.AudioContext || window.webkitAudioContext)();
-  [523, 784].forEach((freq, i) => {
-    const o = ac.createOscillator(),
-      g = ac.createGain();
-    o.connect(g);
-    g.connect(ac.destination);
-    o.type = "sine";
-    o.frequency.setValueAtTime(freq, ac.currentTime);
-    const t = ac.currentTime + i * 0.13;
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.25, t + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-    o.start(t);
-    o.stop(t + 0.4);
-  });
+  const t = ac.currentTime;
+
+  // Pop body — fast sine burst with upward pitch sweep
+  const o1 = ac.createOscillator();
+  const g1 = ac.createGain();
+  o1.connect(g1);
+  g1.connect(ac.destination);
+  o1.type = "sine";
+  o1.frequency.setValueAtTime(600, t);
+  o1.frequency.exponentialRampToValueAtTime(1200, t + 0.08);
+  g1.gain.setValueAtTime(0, t);
+  g1.gain.linearRampToValueAtTime(0.3, t + 0.005);
+  g1.gain.exponentialRampToValueAtTime(0.001, t + 0.16);
+  o1.start(t);
+  o1.stop(t + 0.2);
+
+  // Bright shimmer overtone
+  const o2 = ac.createOscillator();
+  const g2 = ac.createGain();
+  o2.connect(g2);
+  g2.connect(ac.destination);
+  o2.type = "sine";
+  o2.frequency.setValueAtTime(1800, t + 0.015);
+  o2.frequency.exponentialRampToValueAtTime(2400, t + 0.06);
+  g2.gain.setValueAtTime(0, t + 0.015);
+  g2.gain.linearRampToValueAtTime(0.12, t + 0.02);
+  g2.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
+  o2.start(t + 0.015);
+  o2.stop(t + 0.12);
 }
 
 function playWrong() {
   const ac = new (window.AudioContext || window.webkitAudioContext)();
-  [330, 220].forEach((freq, i) => {
-    const o = ac.createOscillator(),
-      g = ac.createGain();
-    o.connect(g);
-    g.connect(ac.destination);
-    o.type = "sine";
-    o.frequency.setValueAtTime(freq, ac.currentTime);
-    const t = ac.currentTime + i * 0.14;
-    g.gain.setValueAtTime(0, t);
-    g.gain.linearRampToValueAtTime(0.25, t + 0.02);
-    g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-    o.start(t);
-    o.stop(t + 0.35);
-  });
+  const t = ac.currentTime;
+
+  // Low thud
+  const o1 = ac.createOscillator();
+  const g1 = ac.createGain();
+  o1.connect(g1);
+  g1.connect(ac.destination);
+  o1.type = "sine";
+  o1.frequency.setValueAtTime(280, t);
+  o1.frequency.exponentialRampToValueAtTime(180, t + 0.08);
+  g1.gain.setValueAtTime(0, t);
+  g1.gain.linearRampToValueAtTime(0.25, t + 0.005);
+  g1.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+  o1.start(t);
+  o1.stop(t + 0.25);
+
+  // Subtle buzz overtone
+  const o2 = ac.createOscillator();
+  const g2 = ac.createGain();
+  o2.connect(g2);
+  g2.connect(ac.destination);
+  o2.type = "triangle";
+  o2.frequency.setValueAtTime(360, t);
+  o2.frequency.exponentialRampToValueAtTime(240, t + 0.1);
+  g2.gain.setValueAtTime(0, t);
+  g2.gain.linearRampToValueAtTime(0.12, t + 0.005);
+  g2.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+  o2.start(t);
+  o2.stop(t + 0.2);
 }
 
 // --- Scoring ---
@@ -212,12 +242,13 @@ function render(prompt) {
   qt.textContent = card.prompt;
   qt.classList.remove("fading");
 
-  const sym = document.getElementById("prompt-sym");
-  sym.textContent = "›";
-  sym.style.color = "";
-  sym.className = "prompt-sym";
+  // Clear on-card feedback
+  const cfb = document.getElementById("card-feedback");
+  if (cfb) cfb.innerHTML = "";
 
-  document.getElementById("feedback-row").textContent = "";
+  // Remove any lingering shake classes
+  const shell = document.querySelector(".shell");
+  if (shell) shell.classList.remove("shake-wrong", "shake-correct");
 
   const input = document.getElementById("answer-input");
   input.value = "";
@@ -273,10 +304,13 @@ async function handleCorrect(prompt, responseMs) {
   keystrokeTimer = null; // ignore keystrokes during transition
   playCorrect();
 
-  const sym = document.getElementById("prompt-sym");
-  sym.textContent = "✓";
-  sym.style.color = "var(--correct)";
-  sym.classList.add("flash-correct");
+  // Bounce the card
+  const shell = document.querySelector(".shell");
+  if (shell) {
+    shell.classList.remove("shake-correct");
+    void shell.offsetWidth; // reflow to restart animation
+    shell.classList.add("shake-correct");
+  }
 
   setTimeout(() => {
     document.getElementById("question-text").classList.add("fading");
@@ -332,12 +366,19 @@ function handleWrong(correctResponse) {
       state.streak = 0;
     }
 
-    const sym = document.getElementById("prompt-sym");
-    sym.textContent = "✗";
-    sym.style.color = "var(--wrong)";
+    // Shake the card
+    const shell = document.querySelector(".shell");
+    if (shell) {
+      shell.classList.remove("shake-wrong");
+      void shell.offsetWidth; // reflow to restart animation
+      shell.classList.add("shake-wrong");
+    }
 
-    const fb = document.getElementById("feedback-row");
-    fb.innerHTML = `<span>correct:</span><span class="feedback-answer">${correctResponse}</span>`;
+    // Show correct answer on the card
+    const cfb = document.getElementById("card-feedback");
+    if (cfb) {
+      cfb.innerHTML = `<span class="card-feedback-label">correct answer</span><span class="card-feedback-answer">${correctResponse}</span>`;
+    }
   }
 
   const input = document.getElementById("answer-input");

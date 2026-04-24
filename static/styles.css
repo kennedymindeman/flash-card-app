@@ -9,15 +9,14 @@
 }
 
 :root {
-    --bg: #1e90ff;
     --surface: #ffffff;
     --text: #1a1d2e;
     --muted: #8892b0;
     --line: #e2e6f2;
-    --accent: #1e90ff;
-    --correct: #3a7e1e;
-    --wrong: #b8293e;
-    --shadow: 0 28px 60px -12px rgba(0, 40, 160, 0.32);
+    --accent: #6366f1;
+    --correct: #22c55e;
+    --wrong: #ef4444;
+    --shadow: 0 28px 60px -12px rgba(30, 20, 100, 0.3);
 }
 
 html {
@@ -25,7 +24,8 @@ html {
 }
 
 body {
-    background: var(--bg);
+    background: linear-gradient(150deg, #3b82f6 0%, #8b5cf6 100%);
+    background-attachment: fixed;
     color: var(--text);
     font-family: "JetBrains Mono", monospace;
     font-weight: 300;
@@ -45,7 +45,7 @@ body {
     right: 1.5rem;
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.5);
     font-family: "JetBrains Mono", monospace;
     font-size: 0.65rem;
     cursor: pointer;
@@ -63,7 +63,7 @@ body {
     position: fixed;
     top: 1.25rem;
     left: 1.5rem;
-    color: rgba(255, 255, 255, 0.55);
+    color: rgba(255, 255, 255, 0.5);
     font-family: "JetBrains Mono", monospace;
     font-size: 0.65rem;
     text-decoration: none;
@@ -81,13 +81,58 @@ body {
     width: min(92vw, 880px);
     min-height: 62vh;
     background: var(--surface);
-    border-radius: 1.75rem;
+    border-radius: 2rem;
     padding: 3.5rem;
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.18),
-        var(--shadow);
+    box-shadow: var(--shadow);
     display: flex;
     flex-direction: column;
+}
+
+/* ── Shake / bounce animations ───────────────────────────── */
+
+@keyframes shake-wrong {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    15% {
+        transform: translateX(-8px);
+    }
+    30% {
+        transform: translateX(7px);
+    }
+    45% {
+        transform: translateX(-5px);
+    }
+    60% {
+        transform: translateX(4px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
+}
+
+@keyframes bounce-correct {
+    0% {
+        transform: scale(1);
+    }
+    35% {
+        transform: scale(1.015);
+    }
+    70% {
+        transform: scale(0.997);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.shell.shake-wrong {
+    animation: shake-wrong 0.45s ease;
+}
+
+.shell.shake-correct {
+    animation: bounce-correct 0.35s ease;
 }
 
 /* ── Study page wrapper ──────────────────────────────────── */
@@ -130,31 +175,6 @@ body {
     padding: 1rem;
 }
 
-.prompt-sym {
-    color: var(--accent);
-    font-size: 0.85rem;
-    font-weight: 400;
-    user-select: none;
-    line-height: 1;
-}
-
-.prompt-sym.flash-correct {
-    color: var(--correct);
-    animation: flashCorrect 0.6s ease forwards;
-}
-
-@keyframes flashCorrect {
-    0% {
-        opacity: 1;
-    }
-    60% {
-        opacity: 1;
-    }
-    100% {
-        opacity: 0;
-    }
-}
-
 .question-text {
     font-size: 2rem;
     font-weight: 300;
@@ -172,13 +192,37 @@ body {
     opacity: 0;
 }
 
+/* ── On-card feedback (wrong answer) ─────────────────────── */
+
+.card-feedback {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.card-feedback:empty {
+    display: none;
+}
+
+.card-feedback-label {
+    font-size: 0.7rem;
+    font-weight: 200;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.card-feedback-answer {
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--accent);
+}
+
 /* ── Detached answer zone ────────────────────────────────── */
 
 .answer-zone {
     width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
 }
 
 .answer-block {
@@ -188,9 +232,7 @@ body {
     background: var(--surface);
     border-radius: 1rem;
     padding: 1.1rem 1.6rem;
-    box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.18),
-        0 8px 28px rgba(0, 40, 160, 0.2);
+    box-shadow: 0 8px 28px rgba(0, 20, 80, 0.18);
 }
 
 input[type="text"] {
@@ -211,7 +253,8 @@ input[type="text"]::placeholder {
     color: var(--muted);
 }
 
-/* Feedback — default (inside white card) */
+/* ── Feedback row (index page fallback) ──────────────────── */
+
 .feedback-row {
     font-size: 0.8rem;
     font-weight: 200;
@@ -227,15 +270,6 @@ input[type="text"]::placeholder {
 .feedback-answer {
     color: var(--text);
     font-weight: 300;
-}
-
-/* Feedback inside .answer-zone sits on the blue background */
-.answer-zone .feedback-row {
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.answer-zone .feedback-answer {
-    color: rgba(255, 255, 255, 0.96);
 }
 
 /* ── Done screen ─────────────────────────────────────────── */
