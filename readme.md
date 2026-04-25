@@ -43,6 +43,21 @@ A card may depend on multiple prerequisites:
 
 **Validation.** The server rejects a deck at load time if `requires` references a prompt that doesn't exist in the deck, or if the dependency graph contains a cycle. A clear error is shown rather than failing silently.
 
+### Prompt tags
+
+You can add hashtag-style tags to a prompt to disambiguate cards that share the same base text. Tags are space-separated tokens that start with `#`; they are stripped from the displayed prompt and shown as small muted labels underneath.
+
+```json
+[
+  { "prompt": "일 #sino",  "response": "1" },
+  { "prompt": "일 #day",   "response": "day of the month" }
+]
+```
+
+The first card displays **일** with a small "sino" label; the second displays **일** with a "day" label. Both are distinct cards because the full prompt string (including the `#` token) is the card's unique identifier — state keys, `requires` references, and validation all use the raw unparsed prompt.
+
+Tags are purely a display concern. Cards without any `#` tokens render exactly as before. Old-style parenthetical hints like `일 (Sino)` still work — they just display with the parentheses visible.
+
 ### Hangul fuzzy matching
 
 When the expected answer contains Hangul, the app decomposes both the input and the answer into jamo (Unicode NFD) and computes Levenshtein distance at the jamo level. If the distance is exactly 1 and that single edit represents less than 25% of the answer's total jamo count, the attempt is treated as a **near-miss**: you'll see an "almost — try again" prompt without losing your streak. Completely wrong answers still reset the streak as usual.

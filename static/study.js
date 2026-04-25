@@ -277,6 +277,15 @@ function pickNext() {
   return queue.shift();
 }
 
+// --- Prompt parsing ---
+
+function parsePrompt(raw) {
+  const parts = raw.split(/\s+/);
+  const tags = parts.filter((p) => p.startsWith("#")).map((p) => p.slice(1));
+  const text = parts.filter((p) => !p.startsWith("#")).join(" ");
+  return { text, tags };
+}
+
 // --- Render ---
 
 function render(prompt) {
@@ -286,8 +295,25 @@ function render(prompt) {
 
   const card = allCards.find((c) => c.prompt === prompt);
   const qt = document.getElementById("question-text");
-  qt.textContent = card.prompt;
   qt.classList.remove("fading");
+
+  const { text, tags } = parsePrompt(card.prompt);
+
+  if (tags.length === 0) {
+    qt.textContent = text;
+  } else {
+    qt.textContent = "";
+    qt.appendChild(document.createTextNode(text));
+    const tagsDiv = document.createElement("div");
+    tagsDiv.className = "prompt-tags";
+    for (const tag of tags) {
+      const span = document.createElement("span");
+      span.className = "prompt-tag";
+      span.textContent = tag;
+      tagsDiv.appendChild(span);
+    }
+    qt.appendChild(tagsDiv);
+  }
 
   // Clear on-card feedback
   const cfb = document.getElementById("card-feedback");
