@@ -17,32 +17,45 @@ Create a `.json` file in the `decks/` directory. It will appear in the deck pick
 
 ```json
 [
-  { "prompt": "time complexity of binary search", "response": "O(log n)" },
-  { "prompt": "what does HTTP stand for", "response": "hypertext transfer protocol" }
+  { "prompt": "what does HTTP stand for", "response": "hypertext transfer protocol" },
+  { "prompt": "default SSH port", "response": "22" }
 ]
 ```
 
-### Reversible cards
+### Card dependencies with `requires`
 
-Add `"reversible": true` to any card to generate a second card with prompt and response swapped. Both directions are tracked independently in the SRS.
+Use the `requires` field (an array of prompt strings) to declare that a card should only enter the study pool after its prerequisites have graduated to SRS. This is the recommended way to create forward/reverse card pairs:
 
 ```json
 [
-  { "prompt": "hello", "response": "안녕하세요", "reversible": true }
+  { "prompt": "hello", "response": "안녕하세요" },
+  { "prompt": "안녕하세요", "response": "hello", "requires": ["hello"] }
 ]
 ```
 
-This creates two cards: `hello → 안녕하세요` and `안녕하세요 → hello`. Avoid adding a reversed card manually if you're already using `reversible` on the same entry -- they'd share the same state key and conflict.
+The first card (recognition: English → Korean) has no requirements and is eligible immediately. The second card (production: Korean → English) waits until `"hello"` has graduated to SRS before appearing. This ensures you can recognise a word before you're asked to produce it.
+
+A card may depend on multiple prerequisites:
+
+```json
+{ "prompt": "greet and introduce", "response": "...", "requires": ["hello", "my name is"] }
+```
+
+**Validation.** The server rejects a deck at load time if `requires` references a prompt that doesn't exist in the deck, or if the dependency graph contains a cycle. A clear error is shown rather than failing silently.
+
+### Hangul fuzzy matching
+
+When the expected answer contains Hangul, the app decomposes both the input and the answer into jamo (Unicode NFD) and computes Levenshtein distance at the jamo level. If the distance is exactly 1 and that single edit represents less than 25% of the answer's total jamo count, the attempt is treated as a **near-miss**: you'll see an "almost — try again" prompt without losing your streak. Completely wrong answers still reset the streak as usual.
 
 ### Writing good cards
 
-**Type the exact response.** Matching is case-insensitive but otherwise exact -- "O(log n)" and "o(log n)" both pass, but "log n" does not. Avoid answers with multiple reasonable phrasings; pick one form and stick to it.
+**Type the exact response.** Matching is case-insensitive but otherwise exact (except for the Hangul fuzzy matching described above). Avoid answers with multiple reasonable phrasings; pick one form and stick to it.
 
 **Keep responses short.** Aim for under 5 words. Long answers are hard to type exactly and slow to recall.
 
 **One fact per card.** If a card is testing two things, split it into two cards.
 
-**Prefer formulas and abbreviations over prose.** Instead of asking for Newton's second law in words, ask for the formula (`F = ma`). It's shorter, unambiguous, and faster to recall.
+**Prefer formulas and abbreviations over prose.**
 
 **Bad:**
 ```json
@@ -59,8 +72,34 @@ This creates two cards: `hello → 안녕하세요` and `안녕하세요 → hel
 ### Acquisition phase
 New cards enter a pool of up to 5 at a time. Answer a card correctly 3 times in a row and it graduates to SRS. A wrong answer resets the streak. You must type the correct answer before moving on.
 
+Cards with `requires` dependencies only enter the pool once all their prerequisites have graduated to SRS.
+
 ### SRS phase
-Graduated cards are scheduled using SM-2. Response time influences the next interval -- fast correct answers get longer intervals than slow ones. Due cards appear in your session alongside acquisition cards.
+Graduated cards are scheduled using SM-2. Response time influences the next interval — fast correct answers get longer intervals than slow ones. Due cards appear in your session alongside acquisition cards.
+
+## Migrating from `reversible: true`
+
+The `reversible` flag is no longer supported. If your deck used `reversible: true`:
+
+1. Remove the `reversible` field from each card.
+2. Add an explicit reverse card with `requires` pointing at the forward card's prompt.
+
+Before:
+```json
+[
+  { "prompt": "hello", "response": "안녕하세요", "reversible": true }
+]
+```
+
+After:
+```json
+[
+  { "prompt": "hello", "response": "안녕하세요" },
+  { "prompt": "안녕하세요", "response": "hello", "requires": ["hello"] }
+]
+```
+
+Existing state files from before this change may reference auto-generated reversed prompts that no longer exist. Delete the deck's state file from `state/` to start fresh, or manually edit it to remove stale entries.
 
 ## File Structure
 

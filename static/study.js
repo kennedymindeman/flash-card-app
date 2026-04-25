@@ -85,12 +85,58 @@ function playWrong() {
   o2.stop(t + 0.2);
 }
 
+function playNear() {
+  const ac = new (window.AudioContext || window.webkitAudioContext)();
+  const t = ac.currentTime;
+  const o = ac.createOscillator();
+  const g = ac.createGain();
+  o.connect(g);
+  g.connect(ac.destination);
+  o.type = "sine";
+  o.frequency.setValueAtTime(440, t);
+  o.frequency.exponentialRampToValueAtTime(520, t + 0.04);
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(0.15, t + 0.004);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
+  o.start(t);
+  o.stop(t + 0.15);
+}
+
+function containsHangul(text) {
+  return /[\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]/.test(text);
+}
+
+function levenshtein(a, b) {
+  const m = a.length,
+    n = b.length;
+  if (m === 0) return n;
+  if (n === 0) return m;
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
+  let curr = new Array(n + 1);
+  for (let i = 1; i <= m; i++) {
+    curr[0] = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+    }
+    [prev, curr] = [curr, prev];
+  }
+  return prev[n];
+}
+
 // --- Scoring ---
 
 function score(input, answer) {
-  return input.trim().toLowerCase() === answer.trim().toLowerCase()
-    ? "correct"
-    : "wrong";
+  const normInput = input.trim().toLowerCase();
+  const normAnswer = answer.trim().toLowerCase();
+  if (normInput === normAnswer) return "correct";
+  if (containsHangul(normAnswer)) {
+    const jamoInput = normInput.normalize("NFD");
+    const jamoAnswer = normAnswer.normalize("NFD");
+    const dist = levenshtein(jamoInput, jamoAnswer);
+    if (dist === 1 && jamoAnswer.length > 4) return "near";
+  }
+  return "wrong";
 }
 
 // --- SM-2 ---
@@ -187,9 +233,10 @@ function fillPool() {
   const candidates = acquisitionCards()
     .filter((c) => {
       if (inPool.has(c.prompt)) return false;
-      if (c.reversedOf) {
-        const sourceState = cardState[c.reversedOf];
-        if (!sourceState || sourceState.phase !== "srs") return false;
+      const reqs = c.requires || [];
+      for (const req of reqs) {
+        const reqState = cardState[req];
+        if (!reqState || reqState.phase !== "srs") return false;
       }
       return true;
     })
@@ -248,7 +295,8 @@ function render(prompt) {
 
   // Remove any lingering shake classes
   const shell = document.querySelector(".shell");
-  if (shell) shell.classList.remove("shake-wrong", "shake-correct");
+  if (shell)
+    shell.classList.remove("shake-wrong", "shake-correct", "shake-near");
 
   const input = document.getElementById("answer-input");
   input.value = "";
@@ -290,11 +338,13 @@ async function check() {
   }
 
   const card = allCards.find((c) => c.prompt === currentPrompt);
-  const correct = score(val, card.response) === "correct";
+  const result = score(val, card.response);
 
-  if (correct) {
+  if (result === "correct") {
     const responseMs = firstKeystrokeTime;
     await handleCorrect(currentPrompt, responseMs);
+  } else if (result === "near") {
+    handleNear();
   } else {
     handleWrong(card.response);
   }
@@ -355,6 +405,27 @@ async function handleCorrect(prompt, responseMs) {
   }, 700);
 }
 
+function handleNear() {
+  playNear();
+
+  const shell = document.querySelector(".shell");
+  if (shell) {
+    shell.classList.remove("shake-near");
+    void shell.offsetWidth;
+    shell.classList.add("shake-near");
+  }
+
+  const cfb = document.getElementById("card-feedback");
+  if (cfb) {
+    cfb.innerHTML =
+      '<span class="card-feedback-label card-feedback-near">almost — try again</span>';
+  }
+
+  const input = document.getElementById("answer-input");
+  input.value = "";
+  input.focus();
+}
+
 function handleWrong(correctResponse) {
   if (!wronged) {
     wronged = true;
@@ -394,6 +465,12 @@ function handleWrong(correctResponse) {
 async function init() {
   const res = await fetch(`/api/deck/${deckName}`);
   const data = await res.json();
+  if (data.error) {
+    document.getElementById("question-text").textContent = data.error;
+    const zone = document.getElementById("answer-zone");
+    if (zone) zone.style.display = "none";
+    return;
+  }
   allCards = data.cards;
   cardState = data.state;
 

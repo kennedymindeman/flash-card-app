@@ -53,24 +53,75 @@ def write_state(name: str, state: dict):
     os.replace(tmp, path)
 
 
-def expand_cards(raw_cards: list) -> list:
-    """Expand reversible cards into two entries. Reversed card is keyed by response."""
+def normalize_cards(raw_cards: list) -> list:
+    """Shallow-copy each card dict and normalize the requires field."""
     cards = []
     for card in raw_cards:
-        cards.append({"prompt": card["prompt"], "response": card["response"]})
-        if card.get("reversible"):
-            cards.append(
-                {
-                    "prompt": card["response"],
-                    "response": card["prompt"],
-                    "reversedOf": card["prompt"],
-                }
-            )
+        c = dict(card)
+        requires = c.get("requires")
+        if requires is None:
+            c["requires"] = []
+        elif isinstance(requires, str):
+            c["requires"] = [requires]
+        cards.append(c)
     return cards
 
 
+def validate_deck(cards: list) -> str | None:
+    """Validate that all requires references exist and there are no cycles.
+
+    Returns an error string if invalid, or None if the deck is valid.
+    """
+    prompts = {card["prompt"] for card in cards}
+
+    # Check that every requires reference points to an existing prompt
+    for card in cards:
+        for req in card["requires"]:
+            if req not in prompts:
+                return f'Card "{card["prompt"]}" requires "{req}" which does not exist in the deck'
+
+    # DFS 3-colour cycle detection
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color: dict[str, int] = {card["prompt"]: WHITE for card in cards}
+    adj: dict[str, list[str]] = {card["prompt"]: card["requires"] for card in cards}
+
+    def dfs(node: str, path: list[str]) -> str | None:
+        color[node] = GRAY
+        path.append(node)
+        for neighbor in adj[node]:
+            if color[neighbor] == GRAY:
+                cycle_start = path.index(neighbor)
+                cycle = path[cycle_start:] + [neighbor]
+                return "Dependency cycle: " + " → ".join(cycle)
+            if color[neighbor] == WHITE:
+                result = dfs(neighbor, path)
+                if result is not None:
+                    return result
+        path.pop()
+        color[node] = BLACK
+        return None
+
+    for card in cards:
+        if color[card["prompt"]] == WHITE:
+            result = dfs(card["prompt"], [])
+            if result is not None:
+                return result
+
+    return None
+
+
 def deck_summary(name: str) -> dict:
-    cards = expand_cards(read_deck(name))
+    cards = normalize_cards(read_deck(name))
+    err = validate_deck(cards)
+    if err is not None:
+        return {
+            "name": name,
+            "total": len(cards),
+            "due": 0,
+            "acquiring": 0,
+            "error": err,
+        }
+
     state = read_state(name)
     today = date.today().isoformat()
 
@@ -126,7 +177,10 @@ def get_decks():
 
 @app.route("/api/deck/<name>")
 def get_deck(name):
-    cards = expand_cards(read_deck(name))
+    cards = normalize_cards(read_deck(name))
+    err = validate_deck(cards)
+    if err is not None:
+        return jsonify({"error": err}), 400
     state = read_state(name)
     return jsonify({"cards": cards, "state": state})
 

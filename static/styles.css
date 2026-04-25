@@ -135,6 +135,26 @@ body {
     animation: bounce-correct 0.35s ease;
 }
 
+@keyframes wobble-near {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-4px);
+    }
+    50% {
+        transform: translateX(3px);
+    }
+    75% {
+        transform: translateX(-2px);
+    }
+}
+
+.shell.shake-near {
+    animation: wobble-near 0.35s ease;
+}
+
 /* ── Study page wrapper ──────────────────────────────────── */
 
 .study-wrapper {
@@ -211,6 +231,10 @@ body {
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--muted);
+}
+
+.card-feedback-near {
+    color: #f59e0b;
 }
 
 .card-feedback-answer {
